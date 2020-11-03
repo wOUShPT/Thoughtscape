@@ -2,7 +2,7 @@
 
 Unity Version: 2019.4.13F1 (LTS) Windows/Android
 
-Packeges Dependencies:
+Package Dependencies:
 
 2D PSD Importer (v2.1.6)
 2D Sprite (v1.0.0)
