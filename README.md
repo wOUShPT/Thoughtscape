@@ -1,6 +1,8 @@
 # Thoughtscape
 
-Unity Version: 2019.4.13F1 (LTS) Windows/Android
+Unity Version:
+
+<br>2019.4.13F1 (LTS) Windows/Android
 
 Package Dependencies:
 
