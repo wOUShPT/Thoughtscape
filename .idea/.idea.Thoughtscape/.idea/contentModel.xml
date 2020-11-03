@@ -2,12 +2,13 @@
 <project version="4">
   <component name="ContentModelStore">
     <e p="C:\Users\gusta\.Rider2019.3\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\gusta\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_Thoughtscape.-2135141431.00" t="ExcludeRecursive" />
-    <e p="E:\Users\Gustavo\Documents\Unity Projects\Thoughtscape" t="IncludeRecursive">
+    <e p="C:\Users\gusta\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_Thoughtscape.1366204263.00" t="ExcludeRecursive" />
+    <e p="E:\Users\Gustavo\Documents\GitHub\Thoughtscape" t="IncludeRecursive">
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
         <e p="Scripts" t="Include">
-          <e p="PlayerBehaviour.cs" t="Include" />
+          <e p="PlayerController.cs" t="Include" />
+          <e p="PulseAnimation.cs" t="Include" />
           <e p="ScoreManager.cs" t="Include" />
           <e p="SpawnManager.cs" t="Include" />
           <e p="ThoughtBehaviour.cs" t="Include" />

@@ -273,7 +273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RenderShadows: 1
+  m_RenderShadows: 0
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
@@ -382,6 +382,8 @@ MonoBehaviour:
   thoughtPrefab: {fileID: 6071474114341930165, guid: 95e86d78fe0f3dc428b0f31bc5fa30dd,
     type: 3}
   thoughtsPoolCapacity: 10
+  minTimeBetweenSpawns: 0.5
+  maxTimeBetweenSpawns: 2.5
 --- !u!114 &631211736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -394,9 +396,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1babd4c02e689ee408bf84910e27430a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thoughtsAttributes:
-  - {fileID: 11400000, guid: 5d7a8d54ae74ecc489724874997c8f81, type: 2}
-  - {fileID: 11400000, guid: 05624a09b5578ce41aa1a6101a0fc5d8, type: 2}
 --- !u!4 &631211737
 Transform:
   m_ObjectHideFlags: 0
@@ -483,6 +482,12 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!212 &1599823774 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 8417203739059913821, guid: 9f9dc3d3fec1ded49b44791ceeff42a8,
+    type: 3}
+  m_PrefabInstance: {fileID: 8417203738799159418}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1818689315
 GameObject:
   m_ObjectHideFlags: 0
@@ -498,7 +503,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1818689316
 Transform:
   m_ObjectHideFlags: 0
@@ -742,6 +747,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3766992790371291025, guid: 9f9dc3d3fec1ded49b44791ceeff42a8,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8417203738514441423, guid: 9f9dc3d3fec1ded49b44791ceeff42a8,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8417203738998054640, guid: 9f9dc3d3fec1ded49b44791ceeff42a8,
+        type: 3}
+      propertyPath: playerDragCollider
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8417203738998054640, guid: 9f9dc3d3fec1ded49b44791ceeff42a8,
+        type: 3}
+      propertyPath: bodySprite
+      value: 
+      objectReference: {fileID: 1599823774}
     - target: {fileID: 8417203738998054643, guid: 9f9dc3d3fec1ded49b44791ceeff42a8,
         type: 3}
       propertyPath: m_Name

@@ -3,23 +3,20 @@ using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
 {
-    public List<ThoughtsAttributesScriptableObject> thoughtsAttributes;
     private float _score;
-    
+   
+    //Sets score to default (zero)
     void Awake()
     {
         _score = 0;
     }
 
-    public void Score(Color color)
+    //sets the score based on increment or decrement passed through 
+    public void Score(float value)
     {
-        for (int i = 0; i < thoughtsAttributes.Count; i++)
-        {
-            if (color == thoughtsAttributes[i].color)
-            {
-                _score += thoughtsAttributes[i].value;
-                return;
-            }
-        }
+        _score += value;
+        
+        //Debug info about score values
+        Debug.Log("Score:" + _score.ToString());
     }
 }
