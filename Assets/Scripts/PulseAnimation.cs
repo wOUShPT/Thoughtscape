@@ -59,6 +59,7 @@ public class PulseAnimation : MonoBehaviour
         _currentDilatationValue = Mathf.Clamp(_currentDilatationValue, -1, 1);
         
         //Sets the Underlay Dilation property value
+        //text.fontMaterial.SetFloat(ShaderUtilities.ID_UnderlayDilate, _currentDilatationValue);
         text.fontMaterial.SetFloat(ShaderUtilities.ID_UnderlayDilate, _currentDilatationValue);
         
         
