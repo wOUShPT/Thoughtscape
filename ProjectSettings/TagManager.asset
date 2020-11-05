@@ -6,7 +6,6 @@ TagManager:
   tags:
   - Thoughts
   - DespawnTrigger
-  - Managers
   layers:
   - Default
   - TransparentFX

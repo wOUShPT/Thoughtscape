@@ -7,12 +7,9 @@
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
         <e p="Scripts" t="Include">
-          <e p="DDOL.cs" t="Include" />
           <e p="PlayerController.cs" t="Include" />
           <e p="PulseAnimation.cs" t="Include" />
-          <e p="SceneManager.cs" t="Include" />
           <e p="ScoreManager.cs" t="Include" />
-          <e p="SetLevelLimits.cs" t="Include" />
           <e p="SpawnManager.cs" t="Include" />
           <e p="ThoughtBehaviour.cs" t="Include" />
           <e p="ThoughtsAttributesScriptableObject.cs" t="Include" />

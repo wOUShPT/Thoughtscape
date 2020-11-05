@@ -4,17 +4,11 @@ using UnityEngine;
 public class ScoreManager : MonoBehaviour
 {
     private float _score;
-    
+   
+    //Sets score to default (zero)
     void Awake()
     {
-        //Sets score to default (zero)
         _score = 0;
-        
-        //Sets the "Managers" gameobject on hierarchy as a parent (this matters if you load the game from _preload scene)
-        if (GameObject.FindGameObjectWithTag("Managers"))
-        {
-            transform.SetParent(GameObject.FindGameObjectWithTag("Managers").transform);
-        }
     }
 
     //sets the score based on increment or decrement passed through 
