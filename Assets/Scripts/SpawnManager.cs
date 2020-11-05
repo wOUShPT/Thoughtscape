@@ -26,12 +26,22 @@ public class SpawnManager : MonoBehaviour
     public float maxTimeBetweenSpawns;
     
     private List<ThoughtBehaviour> _thoughtsPool;
-    
+
     private float _randomTimeInterval;
     private float _timer;
     
+    private Camera _mainCamera;
+    private Vector3 _screenBordersCoords;
+    
+    
     void Awake()
     {
+        
+        _mainCamera = FindObjectOfType<Camera>();
+        
+        //Get screen size width and height in pixels and convert to world units
+        _screenBordersCoords = _mainCamera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
+        
         //Instantiate thoughts and create a pool based on a pre-established capacity
         _thoughtsPool = new List<ThoughtBehaviour>();
         for (int i = 0; i < thoughtsPoolCapacity; i++)
@@ -41,6 +51,12 @@ public class SpawnManager : MonoBehaviour
         
         //ResetSpawnTimer;
         _timer = 0;
+        
+        //Sets the "Managers" gameobject on hierarchy as a parent (this matters if you load the game from _preload scene)
+        if (GameObject.FindGameObjectWithTag("Managers"))
+        {
+            transform.SetParent(GameObject.FindGameObjectWithTag("Managers").transform);
+        }
     }
     
     void Update()
@@ -73,11 +89,12 @@ public class SpawnManager : MonoBehaviour
         thought.gameObject.SetActive(false);
     }
 
-    //It passes a thought as an argument, activates it and resets the behaviour component
+    //It passes a thought as an argument, activates it, resets the behaviour component and sets his spawn position using the screen borders as reference
     void ReSpawnThought(ThoughtBehaviour thought)
     {
         thought.gameObject.SetActive(true);
         thought.ResetBehaviour();
+        thought.transform.position = new Vector3(Random.Range(-_screenBordersCoords.x+0.5f, _screenBordersCoords.x-0.5f),_screenBordersCoords.y+2,0);
     }
 
     //Generates a random time frame between two given values

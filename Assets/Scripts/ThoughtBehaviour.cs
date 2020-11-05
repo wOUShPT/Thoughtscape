@@ -96,15 +96,8 @@ public class ThoughtBehaviour : MonoBehaviour
         }
     }
 
-    //Reset the Thought behaviour to the default values and set its attributes
+    //Reset the Thoughts attributes randomly, based on a collection of Thoughts attributes data containers (ScriptableObjects) / reset other behaviour default values
     public void ResetBehaviour()
-    {
-        SetAttributes();
-        SetPosition();
-    }
-    
-    //Set the Thoughts attributes randomly, based on a collection of Thoughts attributes data containers (ScriptableObjects)
-    private void SetAttributes()
     {
         _randomIndex = Random.Range(0, thoughtsAttributes.Count);
         int categoryIndex = _randomIndex;
@@ -115,19 +108,11 @@ public class ThoughtBehaviour : MonoBehaviour
         _randomIndex = Random.Range(0, thoughtsAttributes[categoryIndex].thoughts.Count);
         thought = thoughtsAttributes[categoryIndex].thoughts[_randomIndex];
         _text.text = thought;
-    }
-
-    //set default movement and position related values
-    private void SetPosition()
-    {
         _timer = 0;
         _timeRandomInterval = Speed/2;
-        _currentPosition = new Vector3(Random.Range(-2f, 2f), 5.3f, 0);
-        _currentTransform.position = _currentPosition;
         _rb.velocity = Vector2.zero;
         _rb.angularVelocity = 0;
     }
-
 }
 
 
