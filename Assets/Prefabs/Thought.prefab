@@ -97,7 +97,7 @@ MonoBehaviour:
   thoughtsAttributes:
   - {fileID: 11400000, guid: 5d7a8d54ae74ecc489724874997c8f81, type: 2}
   - {fileID: 11400000, guid: 05624a09b5578ce41aa1a6101a0fc5d8, type: 2}
-  Speed: 2
+  Speed: 4
   category: 
   value: 0
   color: {r: 0, g: 0, b: 0, a: 0}

@@ -34,7 +34,7 @@ public class ThoughtBehaviour : MonoBehaviour
     public string thought;
     
     private ScoreEvent _score;
-    private ScoreManager _scoreManager;
+    private LevelManager _levelManager;
     private TextMeshPro _text;
     private Transform _currentTransform;
     private Vector3 _currentPosition;
@@ -46,14 +46,14 @@ public class ThoughtBehaviour : MonoBehaviour
     
     void Awake()
     {
-        _scoreManager = FindObjectOfType<ScoreManager>();
+        _levelManager = FindObjectOfType<LevelManager>();
         _text = GetComponentInChildren<TextMeshPro>();
         _currentTransform = GetComponent<Transform>();
         _rb = GetComponent<Rigidbody2D>();
 
         //Adds an event listener that executes the score method on invoke of the ScoreEvent
         _score = new ScoreEvent();
-        _score.AddListener(_scoreManager.Score);
+        _score.AddListener(_levelManager.Score);
         
         //......I think its obvious what it does :-)
         ResetBehaviour();

@@ -10,12 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ac8ee5a11782e1428285521099857cb, type: 3}
-  m_Name: LoveThoughts
+  m_Name: GoodThoughts
   m_EditorClassIdentifier: 
-  category: Love
+  category: Courage
   value: 2
-  color: {r: 1, g: 0.34591186, b: 0.74400276, a: 1}
+  color: {r: 0.4292453, g: 1, b: 0.9160537, a: 1}
   thoughts:
-  - Placeholder thought_01
-  - Placeholder thought_02
-  - Placeholder thought_03
+  - Good
