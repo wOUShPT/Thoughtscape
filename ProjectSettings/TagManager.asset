@@ -7,6 +7,7 @@ TagManager:
   - Thoughts
   - DespawnTrigger
   - Managers
+  - LevelLimits
   layers:
   - Default
   - TransparentFX
@@ -18,7 +19,7 @@ TagManager:
   - 
   - Player
   - Thoughts
-  - 
+  - PostProcessing
   - 
   - 
   - 
@@ -43,4 +44,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Player
+    uniqueID: 241873609
     locked: 0

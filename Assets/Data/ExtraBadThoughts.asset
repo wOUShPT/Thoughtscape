@@ -10,14 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ac8ee5a11782e1428285521099857cb, type: 3}
-  m_Name: BadThoughts
+  m_Name: ExtraBadThoughts
   m_EditorClassIdentifier: 
-  category: Bad
-  value: -0.03
-  color: {r: 0.3019608, g: 0.7882353, b: 0.94509804, a: 1}
+  category: Default
+  value: -0.06
+  color: {r: 0.30259877, g: 0.78805155, b: 0.9433962, a: 1}
   thoughts:
-  - Bad
-  - Bad
-  - Bad
-  - Bad
-  - Bad
+  - extra bad
+  - extra bad

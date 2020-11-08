@@ -48,7 +48,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.014841646, y: 0.22629406}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -59,7 +59,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.4547083, y: 0.78352785}
+  m_Size: {x: 1, y: 0.5}
   m_EdgeRadius: 0
 --- !u!50 &5783952508966375940
 Rigidbody2D:
@@ -75,13 +75,13 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0
+  m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 4
+  m_Constraints: 0
 --- !u!114 &6071474114341930165
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97,7 +97,14 @@ MonoBehaviour:
   thoughtsAttributes:
   - {fileID: 11400000, guid: 5d7a8d54ae74ecc489724874997c8f81, type: 2}
   - {fileID: 11400000, guid: 05624a09b5578ce41aa1a6101a0fc5d8, type: 2}
-  Speed: 4
+  - {fileID: 11400000, guid: d4028124973ac3545afcefd8a80593e5, type: 2}
+  - {fileID: 11400000, guid: 7760f3dd80fcc734eb1c61d7a41e5a33, type: 2}
+  Speed: 2.5
+  SpeedComboIncrement: 0
+  minHorizontalForceValue: 0
+  maxHorizontalForceValue: 0
+  minHorizontalForceTriggerTimeInterval: 0
+  maxHorizontalForceTriggerTimeInterval: 0
   category: 
   value: 0
   color: {r: 0, g: 0, b: 0, a: 0}
@@ -227,7 +234,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Placeholder thought
+  m_text: thought
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 48fb72b9ed4e7ad49b18aa047f325f04, type: 2}
   m_sharedMaterial: {fileID: 1328242269870610966, guid: 48fb72b9ed4e7ad49b18aa047f325f04,

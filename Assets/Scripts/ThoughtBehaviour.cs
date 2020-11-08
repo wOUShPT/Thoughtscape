@@ -20,6 +20,17 @@ public class ThoughtBehaviour : MonoBehaviour
     
     [Tooltip("Drop velocity in units/second")]
     public float Speed;
+
+    [Tooltip("Drop velocity combo increment in units/second")]
+    public float SpeedComboIncrement;
+
+    [Tooltip("Horizontal minimum force value")]
+    public float minHorizontalForceValue;
+    [Tooltip("Horizontal maximum force value")]
+    public float maxHorizontalForceValue;
+
+    public float minHorizontalForceTriggerTimeInterval;
+    public float maxHorizontalForceTriggerTimeInterval;
     
     [Tooltip("Current thought category")]
     public string category;
@@ -34,7 +45,8 @@ public class ThoughtBehaviour : MonoBehaviour
     public string thought;
     
     private ScoreEvent _score;
-    private LevelManager _levelManager;
+    private UnityEvent _miss;
+    private GameManager _gameManager;
     private TextMeshPro _text;
     private Transform _currentTransform;
     private Vector3 _currentPosition;
@@ -46,14 +58,16 @@ public class ThoughtBehaviour : MonoBehaviour
     
     void Awake()
     {
-        _levelManager = FindObjectOfType<LevelManager>();
+        _gameManager = FindObjectOfType<GameManager>();
         _text = GetComponentInChildren<TextMeshPro>();
         _currentTransform = GetComponent<Transform>();
         _rb = GetComponent<Rigidbody2D>();
 
         //Adds an event listener that executes the score method on invoke of the ScoreEvent
         _score = new ScoreEvent();
-        _score.AddListener(_levelManager.Score);
+        _miss = new UnityEvent();
+        _score.AddListener(_gameManager.Score);
+        _miss.AddListener(_gameManager.OnMissChangeDropSpeed);
         
         //......I think its obvious what it does :-)
         ResetBehaviour();
@@ -63,7 +77,7 @@ public class ThoughtBehaviour : MonoBehaviour
     {
         //Drop movement
         _currentPosition = _currentTransform.position;
-        _currentPosition = new Vector3(_currentPosition.x, _currentPosition.y - (Speed*Time.deltaTime), _currentPosition.z);
+        _currentPosition = new Vector3(_currentPosition.x, _currentPosition.y - ((Speed + SpeedComboIncrement)*Time.deltaTime), _currentPosition.z);
         _currentTransform.position = _currentPosition;
     }
 
@@ -74,9 +88,9 @@ public class ThoughtBehaviour : MonoBehaviour
         _timer += Time.deltaTime;
         if (_timer >= _timeRandomInterval)
         {
-            _rb.AddForce(Vector2.right*Random.Range(-0.3f,0.3f), ForceMode2D.Impulse);
+            _rb.AddForce(Vector2.right*Random.Range(minHorizontalForceValue,maxHorizontalForceValue)*Random.Range(-1,2), ForceMode2D.Impulse);
             _timer = 0;
-            _timeRandomInterval = Random.Range(0.8f, 1.2f);
+            _timeRandomInterval = Random.Range(minHorizontalForceTriggerTimeInterval, maxHorizontalForceTriggerTimeInterval);
         }
     }
     
@@ -92,7 +106,16 @@ public class ThoughtBehaviour : MonoBehaviour
         //Tests if it collides with the kill/despawn trigger out of level bounds and if it's true deactivates this object
         if (other.CompareTag("DespawnTrigger"))
         {
+            _miss.Invoke();
             gameObject.SetActive(false);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.collider.CompareTag("LevelLimits"))
+        {
+            _rb.AddForce(other.GetContact(0).normal*Random.Range(minHorizontalForceValue,maxHorizontalForceValue), ForceMode2D.Impulse);
         }
     }
 
@@ -109,7 +132,7 @@ public class ThoughtBehaviour : MonoBehaviour
         thought = thoughtsAttributes[categoryIndex].thoughts[_randomIndex];
         _text.text = thought;
         _timer = 0;
-        _timeRandomInterval = Speed/2;
+        _timeRandomInterval = Random.Range(minHorizontalForceTriggerTimeInterval, maxHorizontalForceTriggerTimeInterval);
         _rb.velocity = Vector2.zero;
         _rb.angularVelocity = 0;
     }

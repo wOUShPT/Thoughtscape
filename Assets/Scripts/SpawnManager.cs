@@ -49,6 +49,9 @@ public class SpawnManager : MonoBehaviour
             InstantiateThought();
         }
         
+        //Set the drop combo velocity increment
+        SetDropSpeed(0);
+        
         //ResetSpawnTimer;
         _timer = 0;
         
@@ -102,7 +105,14 @@ public class SpawnManager : MonoBehaviour
     {
         _randomTimeInterval = Random.Range(minTimeBetweenSpawns, maxTimeBetweenSpawns);
     }
-    
+
+    public void SetDropSpeed(int dropSpeedIncrementValue)
+    {
+        foreach (var thought in _thoughtsPool)
+        {
+            thought.SpeedComboIncrement = dropSpeedIncrementValue * 0.3f;
+        }   
+    }
 }
 
 
