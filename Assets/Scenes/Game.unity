@@ -5581,7 +5581,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1272338129}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -5589,10 +5589,10 @@ RectTransform:
   - {fileID: 100263819}
   m_Father: {fileID: 2090555114}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -200}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 80.20999, y: -729.7}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1272338131
@@ -5842,7 +5842,8 @@ MonoBehaviour:
   scoreIncrementText: {fileID: 1791206495}
   remainingTimeSeconds: 60
   _balanceMeter: {fileID: 1272338131}
-  defaultBalanceMoveSpeed: 0.02
+  postProcessingVolume: {fileID: 999203972}
+  defaultBalanceMoveSpeed: 1.2
 --- !u!4 &1850973787
 Transform:
   m_ObjectHideFlags: 0

@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -20,6 +22,11 @@ public class GameManager : MonoBehaviour
 
     [Tooltip("UI balance meter slider component")]
     public Slider _balanceMeter;
+
+    public Volume postProcessingVolume;
+
+    private WhiteBalance _whiteBalance;
+    private Vignette _vignette;
 
     [Tooltip("Mood balance increase/decrease default speed in units/second")]
     public float defaultBalanceMoveSpeed;
@@ -68,6 +75,13 @@ public class GameManager : MonoBehaviour
         {
             transform.SetParent(GameObject.FindGameObjectWithTag("Managers").transform);
         }
+
+        postProcessingVolume.profile.TryGet(out _whiteBalance);
+        postProcessingVolume.profile.TryGet(out _vignette);
+        _whiteBalance.temperature.min = -40;
+        _whiteBalance.temperature.max = 40;
+        _vignette.intensity.min = 0;
+        _vignette.intensity.max = 0.5f;
     }
 
     void Update()
@@ -95,19 +109,25 @@ public class GameManager : MonoBehaviour
                 scoreValueText.text = _score.ToString();
             }
 
-            _balanceMoveSpeedMultiplier = 2f * _balanceComboMultiplier *_scoreIncrementCombo;
+            _balanceMoveSpeedMultiplier = 1.5f * _scoreIncrementCombo;
             _onMissDropSpeedMultiplier = 0;
         }
         else
         {
             _balanceComboTimer = 0;
-            _balanceMoveSpeedMultiplier = (1 - Mathf.Abs(_balance)) * 10 + 0.02f * _scoreIncrementCombo;
+            _balanceMoveSpeedMultiplier = (1 - Mathf.Abs(_balance))  * _scoreIncrementCombo;
             _balanceComboMultiplier = 1;
             _spawnManager.SetDropSpeed(_balanceComboMultiplier);
             _spawnManager.SetDropSpeed(_onMissDropSpeedMultiplier);
+            _whiteBalance.temperature.value = (((Mathf.Sign(_balance))*Mathf.Abs(_balance - Mathf.Sign(_balance) * 0.02f)) * 48) -8*Mathf.Sign(_balance);
+            Debug.Log(_whiteBalance.temperature.value);
         }
-        _balance += _balanceSign * _balanceMoveSpeed * _balanceMoveSpeedMultiplier * Time.deltaTime;
+        
+        _balance = Mathf.Lerp(_balance, _scoreIncrementValue + _balance, _balanceMoveSpeed * _balanceMoveSpeedMultiplier * Time.deltaTime);
+        //_balance += _balanceSign * _balanceMoveSpeed * _balanceMoveSpeedMultiplier * Time.deltaTime;
         _balanceMeter.value = _balance;
+        
+        _vignette.intensity.value = (Mathf.Abs(_balance) * 0.5f);
     }
 
     //sets the score based on increment or decrement passed through 
