@@ -246,7 +246,7 @@ GameObject:
   m_Component:
   - component: {fileID: 184581560}
   - component: {fileID: 184581561}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5080,7 +5080,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 512736302}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5249,7 +5249,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   thoughtPrefab: {fileID: 6071474114341930165, guid: 95e86d78fe0f3dc428b0f31bc5fa30dd,
     type: 3}
-  thoughtsPoolCapacity: 15
+  thoughtsPoolCapacity: 30
   minTimeBetweenSpawns: 0.8
   maxTimeBetweenSpawns: 1.3
 --- !u!4 &631211737
@@ -5592,7 +5592,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 80.20999, y: -729.7}
+  m_AnchoredPosition: {x: 80.20996, y: -729.7}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1272338131
@@ -6040,7 +6040,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 40
+  m_SortingOrder: 99
   m_TargetDisplay: 0
 --- !u!224 &2090555114
 RectTransform:
@@ -6074,9 +6074,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2478790362765909733}
   - component: {fileID: 2478790362765909734}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Despawn Trigger
-  m_TagString: DespawnTrigger
+  m_TagString: Despawn Trigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6108,7 +6108,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -6}
+  m_Offset: {x: 0, y: -6.5}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -6119,7 +6119,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 10, y: 1}
+  m_Size: {x: 8.6, y: 1}
   m_EdgeRadius: 0
 --- !u!1 &2478790363858620132
 GameObject:
@@ -6133,7 +6133,7 @@ GameObject:
   - component: {fileID: 2478790363858620135}
   - component: {fileID: 2478790363858620133}
   - component: {fileID: 2478790363858620136}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: LevelLimits
   m_TagString: LevelLimits
   m_Icon: {fileID: 0}
@@ -6312,6 +6312,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8417203739493357406, guid: 9f9dc3d3fec1ded49b44791ceeff42a8,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.8018868
+      objectReference: {fileID: 0}
+    - target: {fileID: 8417203739493357406, guid: 9f9dc3d3fec1ded49b44791ceeff42a8,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.8018868
+      objectReference: {fileID: 0}
+    - target: {fileID: 8417203739493357406, guid: 9f9dc3d3fec1ded49b44791ceeff42a8,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.8018868
+      objectReference: {fileID: 0}
+    - target: {fileID: 8417203739587517741, guid: 9f9dc3d3fec1ded49b44791ceeff42a8,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8417203739587517741, guid: 9f9dc3d3fec1ded49b44791ceeff42a8,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8417203739587517741, guid: 9f9dc3d3fec1ded49b44791ceeff42a8,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9f9dc3d3fec1ded49b44791ceeff42a8, type: 3}

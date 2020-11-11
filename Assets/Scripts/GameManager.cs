@@ -86,13 +86,9 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        //Remaining time values update and set on UI
+        //Remaining time values update
         _timerSeconds += Time.deltaTime;
         remainingTimeSeconds = Mathf.Clamp(remainingTimeSeconds - Time.deltaTime, 0, Mathf.Infinity);
-        TimeSpan time = TimeSpan.FromSeconds(remainingTimeSeconds);
-        remainingTimeText.text = time.ToString(@"mm\:ss");
-
-
 
         //Sets balance value 
         if (_balance < 0.20f && _balance > -0.20f)
@@ -106,7 +102,7 @@ public class GameManager : MonoBehaviour
                 _balanceComboMultiplier++;
                 _spawnManager.SetDropSpeed(_balanceComboMultiplier);
 
-                scoreValueText.text = _score.ToString();
+                
             }
 
             _balanceMoveSpeedMultiplier = 1.5f * _scoreIncrementCombo;
@@ -119,15 +115,18 @@ public class GameManager : MonoBehaviour
             _balanceComboMultiplier = 1;
             _spawnManager.SetDropSpeed(_balanceComboMultiplier);
             _spawnManager.SetDropSpeed(_onMissDropSpeedMultiplier);
-            _whiteBalance.temperature.value = (((Mathf.Sign(_balance))*Mathf.Abs(_balance - Mathf.Sign(_balance) * 0.02f)) * 48) -8*Mathf.Sign(_balance);
-            Debug.Log(_whiteBalance.temperature.value);
+            UpdateWhiteBalanceFilter();
+            
         }
         
         _balance = Mathf.Lerp(_balance, _scoreIncrementValue + _balance, _balanceMoveSpeed * _balanceMoveSpeedMultiplier * Time.deltaTime);
-        //_balance += _balanceSign * _balanceMoveSpeed * _balanceMoveSpeedMultiplier * Time.deltaTime;
-        _balanceMeter.value = _balance;
         
-        _vignette.intensity.value = (Mathf.Abs(_balance) * 0.5f);
+        //_balance += _balanceSign * _balanceMoveSpeed * _balanceMoveSpeedMultiplier * Time.deltaTime;
+
+        UpdateVignetteFilter();
+        
+        //UI Update
+        UpdateUI();
     }
 
     //sets the score based on increment or decrement passed through 
@@ -137,7 +136,6 @@ public class GameManager : MonoBehaviour
         if (value == _scoreIncrementValue)
         {
             _scoreIncrementCombo = Mathf.Clamp(_scoreIncrementCombo + 1, 1, 5);
-            Debug.Log(_scoreIncrementCombo.ToString());
         }
         else
         {
@@ -153,5 +151,30 @@ public class GameManager : MonoBehaviour
     {
         _onMissDropSpeedMultiplier = Mathf.Clamp(_onMissDropSpeedMultiplier - 1,-4, 1);
         Debug.Log(_onMissDropSpeedMultiplier.ToString());
+    }
+
+    //Updates post processing vignette filter based on the meter balance values
+    void UpdateVignetteFilter()
+    {
+        _vignette.intensity.value = (Mathf.Abs(_balance) * 0.5f);
+    }
+
+    //Updates post processing white balance filter based on the meter balance values
+    void UpdateWhiteBalanceFilter()
+    {
+        _whiteBalance.temperature.value = (((Mathf.Sign(_balance))*Mathf.Abs(_balance - Mathf.Sign(_balance) * 0.02f)) * 48) -8*Mathf.Sign(_balance);
+    }
+
+    void UpdateUI()
+    {
+        //Remaining Time
+        TimeSpan time = TimeSpan.FromSeconds(remainingTimeSeconds);
+        remainingTimeText.text = time.ToString(@"mm\:ss");
+        
+        //score
+        scoreValueText.text = _score.ToString();
+        
+        //Balance Meter
+        _balanceMeter.value = _balance;
     }
 }

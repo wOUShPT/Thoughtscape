@@ -75,7 +75,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
@@ -101,10 +101,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7760f3dd80fcc734eb1c61d7a41e5a33, type: 2}
   Speed: 2.5
   SpeedComboIncrement: 0
-  minHorizontalForceValue: 0
-  maxHorizontalForceValue: 0
-  minHorizontalForceTriggerTimeInterval: 0
-  maxHorizontalForceTriggerTimeInterval: 0
+  minHorizontalForceValue: 0.1
+  maxHorizontalForceValue: 0.2
+  minHorizontalForceTriggerTimeInterval: 0.4
+  maxHorizontalForceTriggerTimeInterval: 1.2
   category: 
   value: 0
   color: {r: 0, g: 0, b: 0, a: 0}
@@ -214,7 +214,7 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10
+  m_SortingOrder: 20
 --- !u!114 &3131082147999968430
 MonoBehaviour:
   m_ObjectHideFlags: 0
