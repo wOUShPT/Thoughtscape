@@ -5,6 +5,8 @@ using Random = UnityEngine.Random;
 
 public class SpawnManager : MonoBehaviour
 {
+    private GameManager _gameManager;
+    
     [Space(30, order = 0)]
     [Header("Thought Prefab Asset and object pool capacity", order = 1)]
     [Space(15, order = 2)]
@@ -30,17 +32,12 @@ public class SpawnManager : MonoBehaviour
     private float _randomTimeInterval;
     private float _timer;
     
-    private Camera _mainCamera;
-    private Vector3 _screenBordersCoords;
     
     
     void Awake()
     {
-        
-        _mainCamera = FindObjectOfType<Camera>();
-        
-        //Get screen size width and height in pixels and convert to world units
-        _screenBordersCoords = _mainCamera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
+        //Assign GameManager
+        _gameManager = FindObjectOfType<GameManager>();
         
         //Instantiate thoughts and create a pool based on a pre-established capacity
         _thoughtsPool = new List<ThoughtBehaviour>();
@@ -97,7 +94,7 @@ public class SpawnManager : MonoBehaviour
     {
         thought.gameObject.SetActive(true);
         thought.ResetBehaviour();
-        thought.transform.position = new Vector3(Random.Range(-_screenBordersCoords.x+0.5f, _screenBordersCoords.x-0.5f),_screenBordersCoords.y+2,0);
+        thought.transform.position = new Vector3(Random.Range(-_gameManager.ScreenBordersCoords.x+0.5f, _gameManager.ScreenBordersCoords.x-0.5f),_gameManager.ScreenBordersCoords.y+2,0);
     }
 
     //Generates a random time frame between two given values

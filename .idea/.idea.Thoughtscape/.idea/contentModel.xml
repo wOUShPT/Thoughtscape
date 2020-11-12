@@ -16,6 +16,7 @@
           <e p="SpawnManager.cs" t="Include" />
           <e p="ThoughtBehaviour.cs" t="Include" />
           <e p="ThoughtsAttributesScriptableObject.cs" t="Include" />
+          <e p="WaveBehaviour.cs" t="Include" />
         </e>
         <e p="TextMesh Pro" t="Include">
           <e p="Fonts" t="Include">

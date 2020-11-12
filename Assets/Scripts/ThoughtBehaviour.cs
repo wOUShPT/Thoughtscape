@@ -68,8 +68,8 @@ public class ThoughtBehaviour : MonoBehaviour
         //Adds an event listener that executes the score method on invoke of the ScoreEvent
         _score = new ScoreEvent();
         _miss = new UnityEvent();
-        _score.AddListener(_gameManager.Score);
-        _miss.AddListener(_gameManager.OnMissChangeDropSpeed);
+        _score.AddListener(_gameManager.OnScoreEvent);
+        _miss.AddListener(_gameManager.OnMissEvent);
         
         //......I think its obvious what it does :-)
         ResetBehaviour();

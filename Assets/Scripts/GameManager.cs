@@ -22,35 +22,54 @@ public class GameManager : MonoBehaviour
 
     [Tooltip("UI balance meter slider component")]
     public Slider _balanceMeter;
-
-    public Volume postProcessingVolume;
-
-    private WhiteBalance _whiteBalance;
-    private Vignette _vignette;
-
     [Tooltip("Mood balance increase/decrease default speed in units/second")]
     public float defaultBalanceMoveSpeed;
-
-    private Color _scoreIncrementTextColor;
-    private float _timerSeconds;
-    private int _score;
+    
     private float _balance;
     private float _balanceComboTimer;
     private int _balanceComboMultiplier;
     private float _balanceMoveSpeed;
     private float _balanceMoveSpeedMultiplier;
     private int _balanceMoveSpeedComboMultiplier;
-    private float _balanceSign;
-    private float _lastBalanceSign;
+
+   
+    [Tooltip("Transform component of water wave gameobject")]
+    public Transform waveTransform;
+
+    public float waterLevelSpeed;
+    
+   
+    
+    private Color _scoreIncrementTextColor;
+    private int _score;
+    
     private float _scoreIncrementValue;
     private int _scoreIncrementCombo;
     private int _onMissDropSpeedMultiplier;
+    private bool _canWaterRise;
+    private bool _canWaterLow;
     
+    [Tooltip("PostProcessing Volume component")]
+    public Volume postProcessingVolume;
+    private WhiteBalance _whiteBalance;
+    private Vignette _vignette;
+    
+    private Camera _mainCamera;
+    private Vector3 screenBordersCoords;
+    
+    public Vector3 ScreenBordersCoords  // property
+    {
+        get { return screenBordersCoords; } 
+        private set { screenBordersCoords = Vector3.zero; } 
+    }
+
     void Awake()
     {
-        //Set timer to default (zero)
-        _timerSeconds = 0;
-
+        _mainCamera = FindObjectOfType<Camera>();
+        
+        //Get screen size width and height in pixels and convert to world units
+        screenBordersCoords = _mainCamera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
+        
         //Sets score to default (zero)
         _score = 0;
         _scoreIncrementValue = 0;
@@ -58,10 +77,10 @@ public class GameManager : MonoBehaviour
         scoreValueText.text = 0.ToString();
 
         //Sets initial mood balance sign, speed, and balance
-        _balanceSign = -1;
         _balanceMoveSpeed = defaultBalanceMoveSpeed;
         _balanceMoveSpeedMultiplier = 3f;
         _balance = 0;
+        _canWaterLow = false;
 
         _balanceMeter.value = 0;
         
@@ -84,10 +103,15 @@ public class GameManager : MonoBehaviour
         _vignette.intensity.max = 0.5f;
     }
 
+    private void Start()
+    {
+        
+        StartCoroutine(UpdateWaterLevel());
+    }
+
     void Update()
     {
         //Remaining time values update
-        _timerSeconds += Time.deltaTime;
         remainingTimeSeconds = Mathf.Clamp(remainingTimeSeconds - Time.deltaTime, 0, Mathf.Infinity);
 
         //Sets balance value 
@@ -130,16 +154,16 @@ public class GameManager : MonoBehaviour
     }
 
     //sets the score based on increment or decrement passed through 
-    public void Score(float value)
+    public void OnScoreEvent(float value)
     {
         _onMissDropSpeedMultiplier = 0;
+        _canWaterRise = false;
         if (value == _scoreIncrementValue)
         {
             _scoreIncrementCombo = Mathf.Clamp(_scoreIncrementCombo + 1, 1, 5);
         }
         else
         {
-            _balanceSign = Mathf.Sign(value);
             _scoreIncrementCombo = 1;
         }
         _scoreIncrementValue = value;
@@ -147,12 +171,17 @@ public class GameManager : MonoBehaviour
 
     
     //Change Speed based on the number of missed thoughts
-    public void OnMissChangeDropSpeed()
+    public void OnMissEvent()
     {
         _onMissDropSpeedMultiplier = Mathf.Clamp(_onMissDropSpeedMultiplier - 1,-4, 1);
+        _canWaterRise = true;
         Debug.Log(_onMissDropSpeedMultiplier.ToString());
     }
 
+    
+    
+    //----------------PostProcessing Effects and UI------------------------------------
+    
     //Updates post processing vignette filter based on the meter balance values
     void UpdateVignetteFilter()
     {
@@ -176,5 +205,23 @@ public class GameManager : MonoBehaviour
         
         //Balance Meter
         _balanceMeter.value = _balance;
+    }
+
+    IEnumerator UpdateWaterLevel()
+    {
+        waveTransform.position = new Vector3(waveTransform.position.x, -screenBordersCoords.y - 4, waveTransform.position.z);
+        while (true)
+        {
+            if (_canWaterLow)
+            {
+                
+            }
+            if (_canWaterRise)
+            {
+                waveTransform.position = new Vector3(waveTransform.position.x, Mathf.Clamp(waveTransform.position.y + waterLevelSpeed * Time.deltaTime, -ScreenBordersCoords.y - 4, -ScreenBordersCoords.y + 0.8f)
+                    , waveTransform.position.z);
+            }
+            yield return null;
+        }
     }
 }
