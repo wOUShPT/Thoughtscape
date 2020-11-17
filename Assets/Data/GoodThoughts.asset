@@ -12,12 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ac8ee5a11782e1428285521099857cb, type: 3}
   m_Name: GoodThoughts
   m_EditorClassIdentifier: 
-  category: Courage
+  category: Good
+  spawnRatePercentage: 35
   value: 0.03
-  color: {r: 1, g: 0.8682527, b: 0.31132078, a: 1}
+  textColor: {r: 0, g: 0, b: 0, a: 1}
+  outerColor: {r: 1, g: 0.87790793, b: 0, a: 1}
   thoughts:
-  - Good
-  - Good
-  - Good
-  - Good
   - Good

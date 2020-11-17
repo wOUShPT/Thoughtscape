@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
@@ -12,213 +13,243 @@ public class GameManager : MonoBehaviour
     public SpawnManager _spawnManager;
 
     [Tooltip("UI remaining time text component")]
-    public Text remainingTimeText;
+    public Text timerUI;
+    
+    private float _timer;
+    
+    //-------------------------------------------------------------------------------------------------------------
 
-    [Tooltip("UI score text component")] public Text scoreValueText;
-    [Tooltip("UI combo text component")] public Text scoreIncrementText;
+    [Tooltip("UI score text component")] 
+    public Text scoreUI;
 
-    [Tooltip("Initial remaining time in seconds")]
-    public float remainingTimeSeconds;
-
+    private int _score;
+    private float _meterIncrementValue;
+    private float _lastMeterIncrementValue;
+    private float _scoreIncrementCombo;
+    
+    //-------------------------------------------------------------------------------------------------------------
+    
     [Tooltip("UI balance meter slider component")]
-    public Slider _balanceMeter;
+    public Slider meterUI;
+    
     [Tooltip("Mood balance increase/decrease default speed in units/second")]
     public float defaultBalanceMoveSpeed;
     
-    private float _balance;
-    private float _balanceComboTimer;
-    private int _balanceComboMultiplier;
-    private float _balanceMoveSpeed;
-    private float _balanceMoveSpeedMultiplier;
-    private int _balanceMoveSpeedComboMultiplier;
+    private float _meterValue;
+    private bool _isMovingUp;
+    private float _meterComboTimer;
+    private int _meterComboMultiplier;
+    private float _meterMoveSpeed;
+    private float _meterMoveSpeedMultiplier;
+    private int _meterMoveSpeedComboMultiplier;
 
+    //-------------------------------------------------------------------------------------------------------------
    
     [Tooltip("Transform component of water wave gameobject")]
     public Transform waveTransform;
 
-    public float waterLevelSpeed;
+    [Tooltip("Water level rise speed in units/second")]
+    public float waterLevelRiseSpeed;
     
-   
+    [Tooltip("Water level drop speed in units/second")]
+    public float waterLevelDropSpeed;
     
-    private Color _scoreIncrementTextColor;
-    private int _score;
-    
-    private float _scoreIncrementValue;
-    private int _scoreIncrementCombo;
-    private int _onMissDropSpeedMultiplier;
     private bool _canWaterRise;
     private bool _canWaterLow;
     
+    //-------------------------------------------------------------------------------------------------------------
+    
     [Tooltip("PostProcessing Volume component")]
     public Volume postProcessingVolume;
+    
     private WhiteBalance _whiteBalance;
     private Vignette _vignette;
+
+    //-------------------------------------------------------------------------------------------------------------
     
     private Camera _mainCamera;
-    private Vector3 screenBordersCoords;
-    
-    public Vector3 ScreenBordersCoords  // property
+    private Vector3 _screenBordersCoords;
+    public Vector3 ScreenBordersCoords
     {
-        get { return screenBordersCoords; } 
-        private set { screenBordersCoords = Vector3.zero; } 
+        get { return _screenBordersCoords; } 
+        private set { _screenBordersCoords = Vector3.zero; } 
     }
+    
+    //-------------------------------------------------------------------------------------------------------------
 
     void Awake()
     {
         _mainCamera = FindObjectOfType<Camera>();
         
         //Get screen size width and height in pixels and convert to world units
-        screenBordersCoords = _mainCamera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
-        
-        //Sets score to default (zero)
+        _screenBordersCoords = _mainCamera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
+
+        //Sets timer and score related default values
+        _timer = 0;
         _score = 0;
-        _scoreIncrementValue = 0;
+        _meterIncrementValue = 0;
+        _lastMeterIncrementValue = 0;
         _scoreIncrementCombo = 1;
-        scoreValueText.text = 0.ToString();
+        _isMovingUp = false;
+        scoreUI.text = 0.ToString();
 
-        //Sets initial mood balance sign, speed, and balance
-        _balanceMoveSpeed = defaultBalanceMoveSpeed;
-        _balanceMoveSpeedMultiplier = 3f;
-        _balance = 0;
-        _canWaterLow = false;
+        //Sets start meter speed, multiplier, internal value and UI value
+        _meterMoveSpeed = defaultBalanceMoveSpeed;
+        _meterMoveSpeedMultiplier = 3f;
+        _meterValue = 0;
+        meterUI.value = 0;
 
-        _balanceMeter.value = 0;
-        
-        _onMissDropSpeedMultiplier = 1;
-
-        _scoreIncrementTextColor = scoreIncrementText.color;
-        scoreIncrementText.color = new Color(scoreIncrementText.color.r,scoreIncrementText.color.g, scoreIncrementText.color.b, 0);
-        
         //Sets the "Managers" gameobject on hierarchy as a parent (this matters if you load the game from _preload scene)
         if (GameObject.FindGameObjectWithTag("Managers"))
         {
             transform.SetParent(GameObject.FindGameObjectWithTag("Managers").transform);
         }
 
+        //Get postprocessing filters and set base values
         postProcessingVolume.profile.TryGet(out _whiteBalance);
         postProcessingVolume.profile.TryGet(out _vignette);
         _whiteBalance.temperature.min = -40;
         _whiteBalance.temperature.max = 40;
         _vignette.intensity.min = 0;
         _vignette.intensity.max = 0.5f;
-    }
-
-    private void Start()
-    {
         
+        //Start Water Update Loop
+        _canWaterLow = false;
+        _canWaterRise = false;
         StartCoroutine(UpdateWaterLevel());
     }
 
     void Update()
     {
-        //Remaining time values update
-        remainingTimeSeconds = Mathf.Clamp(remainingTimeSeconds - Time.deltaTime, 0, Mathf.Infinity);
+        //Timer Update
+        _timer += Time.deltaTime;
 
         //Sets balance value 
-        if (_balance < 0.20f && _balance > -0.20f)
+        if (_meterValue < 0.20f && _meterValue > -0.20f)
         {
-            _balanceComboTimer += Time.deltaTime;
-            if (_balanceComboTimer > 5)
+            _canWaterRise = false;
+            _canWaterLow = true;
+            _meterMoveSpeedMultiplier = 1.5f * _scoreIncrementCombo;
+            _meterComboTimer += Time.deltaTime;
+            if (_meterComboTimer > 5)
             {
-                remainingTimeSeconds += 10;
                 _score += 10;
-                _balanceComboTimer = 0;
-                _balanceComboMultiplier++;
-                _spawnManager.SetDropSpeed(_balanceComboMultiplier);
-
-                
+                _meterComboTimer = 0;
+                _meterComboMultiplier++;
+                _spawnManager.SetHorizontalForceIncrement(_meterComboMultiplier*0.1f);
+                _spawnManager.SetDropSpeed(_meterComboMultiplier);
             }
-
-            _balanceMoveSpeedMultiplier = 1.5f * _scoreIncrementCombo;
-            _onMissDropSpeedMultiplier = 0;
         }
         else
         {
-            _balanceComboTimer = 0;
-            _balanceMoveSpeedMultiplier = (1 - Mathf.Abs(_balance))  * _scoreIncrementCombo;
-            _balanceComboMultiplier = 1;
-            _spawnManager.SetDropSpeed(_balanceComboMultiplier);
-            _spawnManager.SetDropSpeed(_onMissDropSpeedMultiplier);
+            _canWaterRise = true;
+            _canWaterLow = false;
+            _meterComboTimer = 0;
+            if (_isMovingUp && Mathf.Sign(_meterValue) == -1 || !_isMovingUp && Mathf.Sign(_meterValue) == 1)
+            {
+                _meterMoveSpeedMultiplier = Mathf.Abs(_meterValue) * 3f * _scoreIncrementCombo;
+            }
+            else
+            {
+                _meterMoveSpeedMultiplier = (1 - Mathf.Abs(_meterValue)) * 3f * _scoreIncrementCombo;
+            }
+            _meterComboMultiplier = 1;
+            _spawnManager.SetDropSpeed(_meterComboMultiplier);
+            _spawnManager.SetHorizontalForceIncrement(0);
             UpdateWhiteBalanceFilter();
-            
         }
-        
-        _balance = Mathf.Lerp(_balance, _scoreIncrementValue + _balance, _balanceMoveSpeed * _balanceMoveSpeedMultiplier * Time.deltaTime);
-        
-        //_balance += _balanceSign * _balanceMoveSpeed * _balanceMoveSpeedMultiplier * Time.deltaTime;
+
+        //_meterValue = Mathf.Lerp(_meterValue, _scoreIncrementValue + _meterValue, _meterMoveSpeed * _meterMoveSpeedMultiplier * Time.deltaTime);
+        _meterValue +=  _meterIncrementValue *_meterMoveSpeed * _meterMoveSpeedMultiplier * Time.deltaTime;
 
         UpdateVignetteFilter();
         
+        if (Mathf.Approximately(waveTransform.position.y, -ScreenBordersCoords.y + 0.8f))
+        {
+            SceneManager.LoadGameScene();
+        }
         //UI Update
         UpdateUI();
     }
 
-    //sets the score based on increment or decrement passed through 
+    //sets the meter multipliers and score combos based on increment or decrement passed through 
     public void OnScoreEvent(float value)
     {
-        _onMissDropSpeedMultiplier = 0;
-        _canWaterRise = false;
-        if (value == _scoreIncrementValue)
+        if (value == -10)
         {
-            _scoreIncrementCombo = Mathf.Clamp(_scoreIncrementCombo + 1, 1, 5);
+            SceneManager.LoadGameScene();
+        }
+        _isMovingUp = Mathf.Sign(value) == 1;
+
+        if (Mathf.Sign(_lastMeterIncrementValue) == Mathf.Sign(value))
+        {
+            if (Mathf.Abs(value) > Mathf.Abs(_meterIncrementValue))
+            {
+                _meterIncrementValue = _lastMeterIncrementValue;
+            }
+            
+            if (value == _lastMeterIncrementValue)
+            {
+                _scoreIncrementCombo = Mathf.Clamp(_scoreIncrementCombo + 0.5f, 1, 10);
+                _meterIncrementValue = value;
+            }
         }
         else
         {
+            _meterIncrementValue = value;
             _scoreIncrementCombo = 1;
         }
-        _scoreIncrementValue = value;
+        _lastMeterIncrementValue = value;
     }
-
     
     //Change Speed based on the number of missed thoughts
     public void OnMissEvent()
     {
-        _onMissDropSpeedMultiplier = Mathf.Clamp(_onMissDropSpeedMultiplier - 1,-4, 1);
-        _canWaterRise = true;
-        Debug.Log(_onMissDropSpeedMultiplier.ToString());
+        
     }
-
     
-    
-    //----------------PostProcessing Effects and UI------------------------------------
+    //---------------- PostProcessing, Visual Effects and UI Related Functions ------------------------------------
     
     //Updates post processing vignette filter based on the meter balance values
     void UpdateVignetteFilter()
     {
-        _vignette.intensity.value = (Mathf.Abs(_balance) * 0.5f);
+        _vignette.intensity.value = (Mathf.Abs(_meterValue) * 0.5f);
     }
 
     //Updates post processing white balance filter based on the meter balance values
     void UpdateWhiteBalanceFilter()
     {
-        _whiteBalance.temperature.value = (((Mathf.Sign(_balance))*Mathf.Abs(_balance - Mathf.Sign(_balance) * 0.02f)) * 48) -8*Mathf.Sign(_balance);
+        _whiteBalance.temperature.value = (((Mathf.Sign(_meterValue))*Mathf.Abs(_meterValue - Mathf.Sign(_meterValue) * 0.02f)) * 48) -8*Mathf.Sign(_meterValue);
     }
 
     void UpdateUI()
     {
-        //Remaining Time
-        TimeSpan time = TimeSpan.FromSeconds(remainingTimeSeconds);
-        remainingTimeText.text = time.ToString(@"mm\:ss");
+        //Timer UI
+        TimeSpan time = TimeSpan.FromSeconds(_timer);
+        timerUI.text = time.ToString(@"mm\:ss");
         
-        //score
-        scoreValueText.text = _score.ToString();
+        //Score UI
+        scoreUI.text = _score.ToString();
         
-        //Balance Meter
-        _balanceMeter.value = _balance;
+        //Meter UI
+        meterUI.value = _meterValue;
     }
 
+    //Water level Update loop
     IEnumerator UpdateWaterLevel()
     {
-        waveTransform.position = new Vector3(waveTransform.position.x, -screenBordersCoords.y - 4, waveTransform.position.z);
+        waveTransform.position = new Vector3(waveTransform.position.x, -_screenBordersCoords.y - 4, waveTransform.position.z);
         while (true)
         {
             if (_canWaterLow)
             {
-                
+                waveTransform.position = new Vector3(waveTransform.position.x, Mathf.Clamp(waveTransform.position.y - waterLevelDropSpeed * Time.deltaTime, -ScreenBordersCoords.y - 4, -ScreenBordersCoords.y + 0.8f)
+                    , waveTransform.position.z);
+                yield return null;
             }
             if (_canWaterRise)
             {
-                waveTransform.position = new Vector3(waveTransform.position.x, Mathf.Clamp(waveTransform.position.y + waterLevelSpeed * Time.deltaTime, -ScreenBordersCoords.y - 4, -ScreenBordersCoords.y + 0.8f)
+                waveTransform.position = new Vector3(waveTransform.position.x, Mathf.Clamp(waveTransform.position.y + waterLevelRiseSpeed * Time.deltaTime, -ScreenBordersCoords.y - 4, -ScreenBordersCoords.y + 0.8f)
                     , waveTransform.position.z);
             }
             yield return null;

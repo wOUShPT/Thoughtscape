@@ -13,11 +13,9 @@ MonoBehaviour:
   m_Name: BadThoughts
   m_EditorClassIdentifier: 
   category: Bad
+  spawnRatePercentage: 35
   value: -0.03
-  color: {r: 0.3019608, g: 0.7882353, b: 0.94509804, a: 1}
+  textColor: {r: 0, g: 0, b: 0, a: 1}
+  outerColor: {r: 0, g: 0.632287, b: 1, a: 1}
   thoughts:
-  - Bad
-  - Bad
-  - Bad
-  - Bad
   - Bad

@@ -5,19 +5,23 @@ using Random = UnityEngine.Random;
 
 public class SpawnManager : MonoBehaviour
 {
-    private GameManager _gameManager;
-    
     [Space(30, order = 0)]
     [Header("Thought Prefab Asset and object pool capacity", order = 1)]
     [Space(15, order = 2)]
-    
+
     [Tooltip("ThoughtPrefab asset in project")]
     public ThoughtBehaviour thoughtPrefab;
-    
-    [Tooltip("Thoughts object pool maximum capacity (InstantiatedOnLoad)")]
-    
-    public int thoughtsPoolCapacity;
+    private List<ThoughtBehaviour> _thoughtsPool;
 
+    [Tooltip("List of thoughts attributes data containers")]
+    public List<ThoughtsAttributesScriptableObject> thoughtsAttributesList;
+    private List<float> _thoughtsAttributesListSpawnRates;
+
+    [Tooltip("Thoughts object pool maximum capacity (InstantiatedOnLoad)")]
+    public int thoughtsPoolCapacity;
+    
+    //-------------------------------------------------------------------------------------------------------------
+    
     [Space(30, order = 0)] 
     [Header("Spawn Settings", order = 1)] 
     [Space(15, order = 2)]
@@ -27,7 +31,9 @@ public class SpawnManager : MonoBehaviour
     [Tooltip("Maximum time between spawns in seconds")]
     public float maxTimeBetweenSpawns;
     
-    private List<ThoughtBehaviour> _thoughtsPool;
+    //-------------------------------------------------------------------------------------------------------------
+    
+    private GameManager _gameManager;
 
     private float _randomTimeInterval;
     private float _timer;
@@ -44,6 +50,13 @@ public class SpawnManager : MonoBehaviour
         for (int i = 0; i < thoughtsPoolCapacity; i++)
         {
             InstantiateThought();
+        }
+
+        //Set the Thought attributes spawn rate percentages List
+        _thoughtsAttributesListSpawnRates = new List<float>();
+        foreach (var thoughAttribute in thoughtsAttributesList)
+        {
+            _thoughtsAttributesListSpawnRates.Add(thoughAttribute.spawnRatePercentage);
         }
         
         //Set the drop combo velocity increment
@@ -82,7 +95,7 @@ public class SpawnManager : MonoBehaviour
     }
 
     //Instantiate a new thought on the scene
-    void InstantiateThought()
+    public void InstantiateThought()
     {
         ThoughtBehaviour thought = Instantiate(thoughtPrefab);
         _thoughtsPool.Add(thought);
@@ -90,10 +103,11 @@ public class SpawnManager : MonoBehaviour
     }
 
     //It passes a thought as an argument, activates it, resets the behaviour component and sets his spawn position using the screen borders as reference
-    void ReSpawnThought(ThoughtBehaviour thought)
+    public void ReSpawnThought(ThoughtBehaviour thought)
     {
         thought.gameObject.SetActive(true);
-        thought.ResetBehaviour();
+        int randomIndex = selectRandomIndex(_thoughtsAttributesListSpawnRates);
+        thought.ResetBehaviour(randomIndex);
         thought.transform.position = new Vector3(Random.Range(-_gameManager.ScreenBordersCoords.x+0.5f, _gameManager.ScreenBordersCoords.x-0.5f),_gameManager.ScreenBordersCoords.y+2,0);
     }
 
@@ -107,8 +121,32 @@ public class SpawnManager : MonoBehaviour
     {
         foreach (var thought in _thoughtsPool)
         {
-            thought.SpeedComboIncrement = dropSpeedIncrementValue * 0.3f;
+            thought.dropSpeedComboIncrement = dropSpeedIncrementValue * 0.3f;
         }   
+    }
+
+    public void SetHorizontalForceIncrement(float forceIncrement)
+    {
+        foreach (var thought in _thoughtsPool)
+        {
+            thought.horizontalForceIncrementValue = forceIncrement;
+        }
+    }
+
+    // Receives a list of probabilities (percentages) and returns a random index of it based on the percentages
+    public int selectRandomIndex(List<float> spawnRateList)
+    {
+        float randomPercentage = Random.Range(0f, 100f);
+        float sum = 0;
+        for (int index = 0; index < spawnRateList.Count; index++)
+        {
+            sum += spawnRateList[index];
+            if (sum > randomPercentage)
+            {
+                return index;
+            }
+        }
+        return 0;
     }
 }
 

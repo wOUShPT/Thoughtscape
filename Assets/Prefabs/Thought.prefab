@@ -78,10 +78,10 @@ Rigidbody2D:
   m_AngularDrag: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &6071474114341930165
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94,21 +94,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0556f6590323fbf4098d3e952ad1c838, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thoughtsAttributes:
+  thoughtsAttributesList:
   - {fileID: 11400000, guid: 5d7a8d54ae74ecc489724874997c8f81, type: 2}
-  - {fileID: 11400000, guid: 05624a09b5578ce41aa1a6101a0fc5d8, type: 2}
   - {fileID: 11400000, guid: d4028124973ac3545afcefd8a80593e5, type: 2}
+  - {fileID: 11400000, guid: 05624a09b5578ce41aa1a6101a0fc5d8, type: 2}
   - {fileID: 11400000, guid: 7760f3dd80fcc734eb1c61d7a41e5a33, type: 2}
-  Speed: 2.5
-  SpeedComboIncrement: 0
+  - {fileID: 11400000, guid: 49a3f18add9f2364bafec1e3fe096c57, type: 2}
+  dropSpeed: 2
+  dropSpeedComboIncrement: 0
   minHorizontalForceValue: 0.1
   maxHorizontalForceValue: 0.2
   minHorizontalForceTriggerTimeInterval: 0.4
   maxHorizontalForceTriggerTimeInterval: 1.2
   category: 
-  value: 0
+  scoreValue: 0
   color: {r: 0, g: 0, b: 0, a: 0}
-  thought: 
+  thoughtString: 
 --- !u!114 &7957804484150047276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,7 +124,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text: {fileID: 3131082147999968430}
   colorPulseTime: 4
-  animate: 1
+  animate: 0
 --- !u!1 &4483025073640033733
 GameObject:
   m_ObjectHideFlags: 0

@@ -930,6 +930,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bodySprite: {fileID: 0}
+  inputAction:
+    m_Name: Input
+    m_Type: 0
+    m_ExpectedControlType: Touch
+    m_Id: c2e97db8-5614-4424-a6eb-bfcfa5026d34
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 4fb1fae3-2aa3-4294-b6b6-646675171b0c
+      m_Path: <Touchscreen>/primaryTouch
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Input
+      m_Flags: 0
 --- !u!1 &8417203739059913822
 GameObject:
   m_ObjectHideFlags: 0
