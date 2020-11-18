@@ -65,13 +65,16 @@ public class SpawnManager : MonoBehaviour
         //ResetSpawnTimer;
         _timer = 0;
         
-        //Sets the "Managers" gameobject on hierarchy as a parent (this matters if you load the game from _preload scene)
+    }
+
+    private void Start()
+    {
         if (GameObject.FindGameObjectWithTag("Managers"))
         {
             transform.SetParent(GameObject.FindGameObjectWithTag("Managers").transform);
         }
     }
-    
+
     void Update()
     {
         

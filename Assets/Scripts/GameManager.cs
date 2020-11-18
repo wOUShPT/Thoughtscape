@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Resources;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.Analytics;
 using UnityEngine.Rendering;
@@ -16,6 +19,8 @@ public class GameManager : MonoBehaviour
     public Text timerUI;
     
     private float _timer;
+    private bool _canStartGame;
+    private bool _hasScored;
     
     //-------------------------------------------------------------------------------------------------------------
 
@@ -85,12 +90,12 @@ public class GameManager : MonoBehaviour
         _screenBordersCoords = _mainCamera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
 
         //Sets timer and score related default values
+        _canStartGame = false;
         _timer = 0;
         _score = 0;
         _meterIncrementValue = 0;
         _lastMeterIncrementValue = 0;
         _scoreIncrementCombo = 1;
-        _isMovingUp = false;
         scoreUI.text = 0.ToString();
 
         //Sets start meter speed, multiplier, internal value and UI value
@@ -98,12 +103,6 @@ public class GameManager : MonoBehaviour
         _meterMoveSpeedMultiplier = 3f;
         _meterValue = 0;
         meterUI.value = 0;
-
-        //Sets the "Managers" gameobject on hierarchy as a parent (this matters if you load the game from _preload scene)
-        if (GameObject.FindGameObjectWithTag("Managers"))
-        {
-            transform.SetParent(GameObject.FindGameObjectWithTag("Managers").transform);
-        }
 
         //Get postprocessing filters and set base values
         postProcessingVolume.profile.TryGet(out _whiteBalance);
@@ -121,74 +120,98 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        //Timer Update
-        _timer += Time.deltaTime;
+        if (_canStartGame)
+        {
+            //Timer Update
+            _timer += Time.deltaTime;
 
-        //Sets balance value 
-        if (_meterValue < 0.20f && _meterValue > -0.20f)
-        {
-            _canWaterRise = false;
-            _canWaterLow = true;
-            _meterMoveSpeedMultiplier = 1.5f * _scoreIncrementCombo;
-            _meterComboTimer += Time.deltaTime;
-            if (_meterComboTimer > 5)
+            //Sets balance value 
+            if (_meterValue < 0.20f && _meterValue > -0.20f)
             {
-                _score += 10;
-                _meterComboTimer = 0;
-                _meterComboMultiplier++;
-                _spawnManager.SetHorizontalForceIncrement(_meterComboMultiplier*0.1f);
-                _spawnManager.SetDropSpeed(_meterComboMultiplier);
-            }
-        }
-        else
-        {
-            _canWaterRise = true;
-            _canWaterLow = false;
-            _meterComboTimer = 0;
-            if (_isMovingUp && Mathf.Sign(_meterValue) == -1 || !_isMovingUp && Mathf.Sign(_meterValue) == 1)
-            {
-                _meterMoveSpeedMultiplier = Mathf.Abs(_meterValue) * 3f * _scoreIncrementCombo;
+                _canWaterRise = false;
+                _canWaterLow = true;
+                _meterComboTimer += Time.deltaTime;
+                if (_meterComboTimer > 5)
+                {
+                    _score += 10;
+                    _meterComboTimer = 0;
+                    _meterComboMultiplier++;
+                    //_meterMoveSpeedMultiplier = 1.5f * _scoreIncrementCombo;
+                    _spawnManager.SetHorizontalForceIncrement(_meterComboMultiplier*0.1f);
+                    _spawnManager.SetDropSpeed(_meterComboMultiplier);
+                }
+                
+                _meterMoveSpeedMultiplier = (1f - Mathf.Abs(_meterValue)*0.4f) * 1.5f * _scoreIncrementCombo;
             }
             else
             {
-                _meterMoveSpeedMultiplier = (1 - Mathf.Abs(_meterValue)) * 3f * _scoreIncrementCombo;
+                _canWaterRise = true;
+                _canWaterLow = false;
+                _meterComboTimer = 0;
+                if (_isMovingUp && Mathf.Sign(_meterValue) == -1 || !_isMovingUp && Mathf.Sign(_meterValue) == 1)
+                {
+                    _meterMoveSpeedMultiplier = Mathf.Abs(_meterValue) * 3f * _scoreIncrementCombo;
+                }
+                else
+                {
+                    _meterMoveSpeedMultiplier = (1 - Mathf.Abs(_meterValue)) * 3f * _scoreIncrementCombo;
+                }
+                _meterComboMultiplier = 1;
+                _spawnManager.SetDropSpeed(_meterComboMultiplier);
+                _spawnManager.SetHorizontalForceIncrement(0);
+                UpdateWhiteBalanceFilter();
             }
-            _meterComboMultiplier = 1;
-            _spawnManager.SetDropSpeed(_meterComboMultiplier);
-            _spawnManager.SetHorizontalForceIncrement(0);
-            UpdateWhiteBalanceFilter();
+
+            //_meterValue = Mathf.Lerp(_meterValue, _scoreIncrementValue + _meterValue, _meterMoveSpeed * _meterMoveSpeedMultiplier * Time.deltaTime);
+            _meterValue +=  _meterIncrementValue *_meterMoveSpeed * _meterMoveSpeedMultiplier * Time.deltaTime;
+            _meterValue = Mathf.Clamp(_meterValue, -1f, 1f);
+
+            if (Mathf.Approximately(waveTransform.position.y, -ScreenBordersCoords.y + 0.8f) || Mathf.Abs(_meterValue) == 1 )
+            {
+                GameOver();
+            }
         }
-
-        //_meterValue = Mathf.Lerp(_meterValue, _scoreIncrementValue + _meterValue, _meterMoveSpeed * _meterMoveSpeedMultiplier * Time.deltaTime);
-        _meterValue +=  _meterIncrementValue *_meterMoveSpeed * _meterMoveSpeedMultiplier * Time.deltaTime;
-
+        
         UpdateVignetteFilter();
         
-        if (Mathf.Approximately(waveTransform.position.y, -ScreenBordersCoords.y + 0.8f))
-        {
-            SceneManager.LoadGameScene();
-        }
         //UI Update
         UpdateUI();
+    }
+
+    private void Start()
+    {
+        if (GameObject.FindGameObjectWithTag("Managers"))
+        {
+            transform.SetParent(GameObject.FindGameObjectWithTag("Managers").transform);
+        }
     }
 
     //sets the meter multipliers and score combos based on increment or decrement passed through 
     public void OnScoreEvent(float value)
     {
+        if (_lastMeterIncrementValue == 0)
+        {
+            _canStartGame = true;
+        }
+        
         if (value == -10)
         {
-            SceneManager.LoadGameScene();
+            GameOver();
         }
+
         _isMovingUp = Mathf.Sign(value) == 1;
 
         if (Mathf.Sign(_lastMeterIncrementValue) == Mathf.Sign(value))
         {
-            if (Mathf.Abs(value) > Mathf.Abs(_meterIncrementValue))
+            if (Mathf.Abs(value) < Mathf.Abs(_meterIncrementValue))
             {
                 _meterIncrementValue = _lastMeterIncrementValue;
             }
-            
-            if (value == _lastMeterIncrementValue)
+            else if (Mathf.Abs(value) > Mathf.Abs(_meterIncrementValue))
+            {
+                _meterIncrementValue = value;
+            }
+            else
             {
                 _scoreIncrementCombo = Mathf.Clamp(_scoreIncrementCombo + 0.5f, 1, 10);
                 _meterIncrementValue = value;
@@ -206,6 +229,11 @@ public class GameManager : MonoBehaviour
     public void OnMissEvent()
     {
         
+    }
+
+    private void GameOver()
+    {
+        SceneManager.LoadGameScene();
     }
     
     //---------------- PostProcessing, Visual Effects and UI Related Functions ------------------------------------
