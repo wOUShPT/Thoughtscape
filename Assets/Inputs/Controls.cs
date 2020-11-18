@@ -22,7 +22,7 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""name"": ""MoveGesture"",
                     ""type"": ""Value"",
                     ""id"": ""286d5757-9f33-4959-9e22-d2ba9ecafbfa"",
-                    ""expectedControlType"": ""Vector2"",
+                    ""expectedControlType"": ""Touch"",
                     ""processors"": """",
                     ""interactions"": """"
                 }
@@ -30,8 +30,8 @@ public class @Controls : IInputActionCollection, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""34ec1600-6879-441e-8fe7-b72ff431386e"",
-                    ""path"": ""<Touchscreen>/primaryTouch/position"",
+                    ""id"": ""090cdc04-a8c7-4cd9-9fab-e247cc3baee0"",
+                    ""path"": ""<Touchscreen>/primaryTouch"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Mobile"",

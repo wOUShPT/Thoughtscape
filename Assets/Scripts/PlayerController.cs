@@ -14,11 +14,11 @@ public class PlayerController : MonoBehaviour
     private Transform _playerTransform;
     private GameManager _gameManager;
     private Camera _mainCamera;
-    private Vector2 _touchPosition;
+    private TouchState _touch;
 
     void Start()
     {
-        _touchPosition = Vector2.zero;
+        _touch = new TouchState();
 
         _playerTransform = GetComponent<Transform>();
 
@@ -33,14 +33,14 @@ public class PlayerController : MonoBehaviour
     //OnMoveGesture input event called function
     public void OnMoveGesture(InputAction.CallbackContext context)
     {
-        _touchPosition = context.ReadValue<Vector2>();
+        _touch = context.ReadValue<TouchState>();
         MovePlayer();
     }
     
     void MovePlayer()
     {
         //Sets the touch position on pixels given by argument and moves player
-        Vector3 touchPositionOnScreen = new Vector3(_touchPosition.x, _touchPosition.y, 0);
+        Vector3 touchPositionOnScreen = new Vector3(_touch.position.x, _touch.position.y, 0);
         
         //Convert touch/mouse position from pixels coordinates to world coordinates
         Vector3 touchPositionOnWorld = _mainCamera.ScreenToWorldPoint(touchPositionOnScreen);
