@@ -59,7 +59,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 0.5}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!50 &5783952508966375940
 Rigidbody2D:
@@ -78,10 +78,10 @@ Rigidbody2D:
   m_AngularDrag: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 4
+  m_Constraints: 0
 --- !u!114 &6071474114341930165
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -100,15 +100,17 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 05624a09b5578ce41aa1a6101a0fc5d8, type: 2}
   - {fileID: 11400000, guid: 7760f3dd80fcc734eb1c61d7a41e5a33, type: 2}
   - {fileID: 11400000, guid: 49a3f18add9f2364bafec1e3fe096c57, type: 2}
-  dropSpeed: 2
+  dropSpeed: 3.5
   dropSpeedComboIncrement: 0
   minHorizontalForceValue: 0.1
   maxHorizontalForceValue: 0.2
+  horizontalForceIncrementValue: 0
   minHorizontalForceTriggerTimeInterval: 0.4
   maxHorizontalForceTriggerTimeInterval: 1.2
   category: 
   scoreValue: 0
-  color: {r: 0, g: 0, b: 0, a: 0}
+  textColor: {r: 0, g: 0, b: 0, a: 0}
+  outerColor: {r: 0, g: 0, b: 0, a: 0}
   thoughtString: 
 --- !u!114 &7957804484150047276
 MonoBehaviour:
@@ -123,8 +125,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 3131082147999968430}
-  colorPulseTime: 4
-  animate: 0
+  colorPulseTime: 1
+  animate: 1
 --- !u!1 &4483025073640033733
 GameObject:
   m_ObjectHideFlags: 0
@@ -161,7 +163,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1.3, y: 1}
+  m_SizeDelta: {x: 1, y: 0.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2516480822832320465
 MonoBehaviour:
@@ -263,24 +265,24 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 4
+  m_fontSize: 3
   m_fontSizeBase: 3
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 2
-  m_fontSizeMax: 4
+  m_fontSizeMin: 1
+  m_fontSizeMax: 3
   m_fontStyle: 8
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: -0.6
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
-  m_wordWrappingRatios: 0.4
+  m_wordWrappingRatios: 0.413
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
@@ -299,7 +301,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 1
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -0.5, y: -0.3, z: -0.5, w: -0.3}
+  m_margin: {x: 0, y: -0.3, z: 0, w: -0.3}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

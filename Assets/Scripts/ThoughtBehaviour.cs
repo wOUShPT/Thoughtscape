@@ -11,7 +11,7 @@ public class ThoughtBehaviour : MonoBehaviour
     [Header("Thoughts attributes data containers", order = 1)]
     [Space(15, order = 2)]
     
-    [Tooltip("List of Thoughts attributes data containers (ScriptableObjects)")]
+    [Tooltip("List of Thoughts attributes data containers (Scriptable objects)")]
     public List<ThoughtsAttributesScriptableObject> thoughtsAttributesList;
 
     [Space(30, order = 3)]
@@ -48,7 +48,7 @@ public class ThoughtBehaviour : MonoBehaviour
     [Tooltip("Current thought visual text")]
     public string thoughtString;
     
-    private ScoreEvent _scoreEvent;
+    private CatchEvent _catchEvent;
     private UnityEvent _missEvent;
     private GameManager _gameManager;
     private TextMeshPro _text;
@@ -70,9 +70,9 @@ public class ThoughtBehaviour : MonoBehaviour
         _collider = GetComponent<BoxCollider2D>();
 
         //Adds an event listener that executes the score method on invoke of the ScoreEvent
-        _scoreEvent = new ScoreEvent();
+        _catchEvent = new CatchEvent();
         _missEvent = new UnityEvent();
-        _scoreEvent.AddListener(_gameManager.OnScoreEvent);
+        _catchEvent.AddListener(_gameManager.OnScoreEvent);
         _missEvent.AddListener(_gameManager.OnMissEvent);
     }
 
@@ -109,7 +109,7 @@ public class ThoughtBehaviour : MonoBehaviour
         //Tests if it collides with the player and if its true invoke the ScoreEvent and deactivates this object
         if (other.CompareTag("Player"))
         {
-            _scoreEvent.Invoke(scoreValue);
+            _catchEvent.Invoke(scoreValue);
             gameObject.SetActive(false);
         }
 
@@ -141,8 +141,9 @@ public class ThoughtBehaviour : MonoBehaviour
         _randomIndex = Random.Range(0, thoughtsAttributesList[index].thoughts.Count);
         thoughtString = thoughtsAttributesList[index].thoughts[_randomIndex];
         _text.text = thoughtString;
+        _text.ForceMeshUpdate();
         _collider.offset = Vector2.zero;
-        _collider.size = new Vector2(_text.GetPreferredValues().x, _text.GetPreferredValues().y);
+        _collider.size = new Vector2(_text.GetRenderedValues(true).x, _text.GetRenderedValues(true).y);
         _timer = 0;
         _randomTimeInterval = Random.Range(minHorizontalForceTriggerTimeInterval, maxHorizontalForceTriggerTimeInterval);
         _currentTransform.rotation = Quaternion.Euler(0,0,0);
@@ -154,7 +155,7 @@ public class ThoughtBehaviour : MonoBehaviour
 
 
 //Custom UnityEvent ScoreEvent that can pass the score value
-public class ScoreEvent : UnityEvent<float>
+public class CatchEvent : UnityEvent<float>
 {
     
 }

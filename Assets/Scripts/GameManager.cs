@@ -1,41 +1,49 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using UnityEngine;
 using UnityEngine.Analytics;
+using UnityEngine.Events;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    [Tooltip("SpawnManager script component")]
-    public SpawnManager _spawnManager;
+    [FormerlySerializedAs("_spawnManager")] [Tooltip("SpawnManager script component")]
+    public SpawnManager spawnManager;
+
+    [FormerlySerializedAs("_levelsManager")]
+    public LevelsManager levelsManager;
+    
+    public List<>
 
     [Tooltip("UI remaining time text component")]
     public Text timerUI;
-    
+
     private float _timer;
     private bool _canStartGame;
-    
+    private ScoreEvent _scoreEvent;
+
     //-------------------------------------------------------------------------------------------------------------
 
-    [Tooltip("UI score text component")] 
-    public Text scoreUI;
+    [Tooltip("UI score text component")] public Text scoreUI;
 
     private int _score;
     private float _meterIncrementValue;
     private float _lastMeterIncrementValue;
     private float _scoreIncrementCombo;
-    
+
     //-------------------------------------------------------------------------------------------------------------
-    
+
     [Tooltip("UI balance meter slider component")]
     public Slider meterUI;
-    
-    [Tooltip("Mood balance increase/decrease default speed in units/second")]
-    public float defaultBalanceMoveSpeed;
-    
+
+    [FormerlySerializedAs("defaultBalanceMoveSpeed")] [Tooltip("Mood balance increase/decrease default speed in units/second")]
+    public float defaultMeterMoveSpeed;
+
     private float _meterValue;
     private bool _isMovingUp;
     private float _meterComboTimer;
@@ -43,45 +51,47 @@ public class GameManager : MonoBehaviour
     private float _meterMoveSpeed;
     private float _meterMoveSpeedMultiplier;
     private int _meterMoveSpeedComboMultiplier;
+    private float _edgeTimer;
 
     //-------------------------------------------------------------------------------------------------------------
-   
+
     [Tooltip("Transform component of water wave gameobject")]
     public Transform waveTransform;
 
     [Tooltip("Water level rise speed in units/second")]
     public float waterLevelRiseSpeed;
-    
+
     [Tooltip("Water level drop speed in units/second")]
     public float waterLevelDropSpeed;
-    
+
     private bool _canWaterRise;
     private bool _canWaterLow;
-    
+
     //-------------------------------------------------------------------------------------------------------------
-    
+
     [Tooltip("PostProcessing Volume component")]
     public Volume postProcessingVolume;
-    
+
     private WhiteBalance _whiteBalance;
     private Vignette _vignette;
 
     //-------------------------------------------------------------------------------------------------------------
-    
+
     private Camera _mainCamera;
     private Vector3 _screenBordersCoords;
+
     public Vector3 ScreenBordersCoords
     {
-        get { return _screenBordersCoords; } 
-        private set { _screenBordersCoords = Vector3.zero; } 
+        get { return _screenBordersCoords; }
+        private set { _screenBordersCoords = Vector3.zero; }
     }
-    
+
     //-------------------------------------------------------------------------------------------------------------
 
     void Awake()
     {
         _mainCamera = FindObjectOfType<Camera>();
-        
+
         //Get screen size width and height in pixels and convert to world units
         _screenBordersCoords = _mainCamera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
 
@@ -89,15 +99,18 @@ public class GameManager : MonoBehaviour
         _canStartGame = false;
         _timer = 0;
         _score = 0;
+        _scoreEvent = new ScoreEvent();
+        _scoreEvent.AddListener(levelsManager.LevelUp);
         _meterIncrementValue = 0;
         _lastMeterIncrementValue = 0;
         _scoreIncrementCombo = 1;
         scoreUI.text = 0.ToString();
 
         //Sets start meter speed, multiplier, internal value and UI value
-        _meterMoveSpeed = defaultBalanceMoveSpeed;
+        _meterMoveSpeed = defaultMeterMoveSpeed;
         _meterMoveSpeedMultiplier = 3f;
         _meterValue = 0;
+        _edgeTimer = 0;
         meterUI.value = 0;
 
         //Get postprocessing filters and set base values
@@ -107,13 +120,13 @@ public class GameManager : MonoBehaviour
         _whiteBalance.temperature.max = 40;
         _vignette.intensity.min = 0;
         _vignette.intensity.max = 0.5f;
-        
+
         //Start Water Update Loop
         _canWaterLow = false;
         _canWaterRise = false;
         StartCoroutine(UpdateWaterLevel());
     }
-    
+
     private void Start()
     {
         //Sets the "Managers" gameobject on hierarchy as a parent (this matters if you load the game from _preload scene)
@@ -142,11 +155,12 @@ public class GameManager : MonoBehaviour
                     _score += 10;
                     _meterComboTimer = 0;
                     _meterComboMultiplier++;
-                    _spawnManager.SetHorizontalForceIncrement(_meterComboMultiplier*0.1f);
-                    _spawnManager.SetDropSpeed(_meterComboMultiplier);
+                    spawnManager.SetHorizontalForceIncrement(_meterComboMultiplier * 0.1f);
+                    spawnManager.SetDropSpeed(_meterComboMultiplier);
+                    _scoreEvent.Invoke(_score);
                 }
-                
-                _meterMoveSpeedMultiplier = (1f - Mathf.Abs(_meterValue)*0.4f) * 1.5f * _scoreIncrementCombo;
+
+                _meterMoveSpeedMultiplier = (1f - Mathf.Abs(_meterValue) * 0.4f) * 1.5f * _scoreIncrementCombo;
             }
             else
             {
@@ -159,26 +173,41 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    _meterMoveSpeedMultiplier = (1 - Mathf.Abs(_meterValue)) * 3f * _scoreIncrementCombo;
+                    _meterMoveSpeedMultiplier = (1.1f - Mathf.Abs(_meterValue)) * 3f * _scoreIncrementCombo;
                 }
+
                 _meterComboMultiplier = 1;
-                _spawnManager.SetDropSpeed(_meterComboMultiplier);
-                _spawnManager.SetHorizontalForceIncrement(0);
+                spawnManager.SetDropSpeed(_meterComboMultiplier);
+                spawnManager.SetHorizontalForceIncrement(0);
                 UpdateWhiteBalanceFilter();
             }
 
         }
-        
+
         //_meterValue = Mathf.Lerp(_meterValue, _scoreIncrementValue + _meterValue, _meterMoveSpeed * _meterMoveSpeedMultiplier * Time.deltaTime);
-        _meterValue +=  _meterIncrementValue *_meterMoveSpeed * _meterMoveSpeedMultiplier * Time.deltaTime;
+        _meterValue += _meterIncrementValue * _meterMoveSpeed * _meterMoveSpeedMultiplier * Time.deltaTime;
         _meterValue = Mathf.Clamp(_meterValue, -1f, 1f);
 
-        UpdateVignetteFilter();
-        
-        if (Mathf.Approximately(waveTransform.position.y, -ScreenBordersCoords.y + 0.8f) || Mathf.Approximately(Mathf.Abs(_meterValue), 1) )
+        if (Mathf.Approximately(waveTransform.position.y, -ScreenBordersCoords.y + 0.8f))
         {
             GameOver();
         }
+
+        if (Mathf.Abs(_meterValue) == 1)
+        {
+            _edgeTimer += Time.deltaTime;
+            UpdateVignetteFilter();
+            if (_edgeTimer > 5)
+            {
+                GameOver();
+            }
+        }
+        else
+        {
+            _edgeTimer = 0;
+        }
+
+
         //UI Update
         UpdateUI();
     }
@@ -190,22 +219,22 @@ public class GameManager : MonoBehaviour
         {
             _canStartGame = true;
         }
-        
+
         if (value == -10)
         {
             GameOver();
         }
-        
+
         _isMovingUp = Mathf.Sign(value) == 1;
 
         if (Mathf.Sign(_lastMeterIncrementValue) == Mathf.Sign(value))
         {
             if (Mathf.Abs(value) < Mathf.Abs(_meterIncrementValue))
-            { 
+            {
                 _meterIncrementValue = _lastMeterIncrementValue;
             }
             else if (Mathf.Abs(value) > Mathf.Abs(_meterIncrementValue))
-            { 
+            {
                 _meterIncrementValue = value;
             }
             else //if value == _meterIncrementValue
@@ -219,22 +248,23 @@ public class GameManager : MonoBehaviour
             _meterIncrementValue = value;
             _scoreIncrementCombo = 1;
         }
+
         _lastMeterIncrementValue = value;
     }
-    
+
     //Change Speed based on the number of missed thoughts
     public void OnMissEvent()
     {
-        
+
     }
-    
+
     private void GameOver()
     {
         SceneManager.LoadGameScene();
     }
-    
+
     //---------------- PostProcessing, Visual Effects and UI Related Functions ------------------------------------
-    
+
     //Updates post processing vignette filter based on the meter balance values
     void UpdateVignetteFilter()
     {
@@ -244,7 +274,8 @@ public class GameManager : MonoBehaviour
     //Updates post processing white balance filter based on the meter balance values
     void UpdateWhiteBalanceFilter()
     {
-        _whiteBalance.temperature.value = (((Mathf.Sign(_meterValue))*Mathf.Abs(_meterValue - Mathf.Sign(_meterValue) * 0.02f)) * 48) -8*Mathf.Sign(_meterValue);
+        _whiteBalance.temperature.value += Mathf.Sign(_meterValue) * 4 * Time.deltaTime;
+        //_whiteBalance.temperature.value = (((Mathf.Sign(_meterValue))*Mathf.Abs(_meterValue - Mathf.Sign(_meterValue) * 0.02f)) * 48) -8*Mathf.Sign(_meterValue);
     }
 
     void UpdateUI()
@@ -252,10 +283,10 @@ public class GameManager : MonoBehaviour
         //Timer UI
         TimeSpan time = TimeSpan.FromSeconds(_timer);
         timerUI.text = time.ToString(@"mm\:ss");
-        
+
         //Score UI
         scoreUI.text = _score.ToString();
-        
+
         //Meter UI
         meterUI.value = _meterValue;
     }
@@ -263,21 +294,56 @@ public class GameManager : MonoBehaviour
     //Water level Update loop
     IEnumerator UpdateWaterLevel()
     {
-        waveTransform.position = new Vector3(waveTransform.position.x, -_screenBordersCoords.y - 4, waveTransform.position.z);
+        waveTransform.position =
+            new Vector3(waveTransform.position.x, -_screenBordersCoords.y - 4, waveTransform.position.z);
         while (true)
         {
             if (_canWaterLow)
             {
-                waveTransform.position = new Vector3(waveTransform.position.x, Mathf.Clamp(waveTransform.position.y - waterLevelDropSpeed * Time.deltaTime, -ScreenBordersCoords.y - 4, -ScreenBordersCoords.y + 0.8f)
+                waveTransform.position = new Vector3(waveTransform.position.x,
+                    Mathf.Clamp(waveTransform.position.y - waterLevelDropSpeed * Time.deltaTime,
+                        -ScreenBordersCoords.y - 4, -ScreenBordersCoords.y + 0.8f)
                     , waveTransform.position.z);
                 yield return null;
             }
+
             if (_canWaterRise)
             {
-                waveTransform.position = new Vector3(waveTransform.position.x, Mathf.Clamp(waveTransform.position.y + waterLevelRiseSpeed * Time.deltaTime, -ScreenBordersCoords.y - 4, -ScreenBordersCoords.y + 0.8f)
+                waveTransform.position = new Vector3(waveTransform.position.x,
+                    Mathf.Clamp(waveTransform.position.y + waterLevelRiseSpeed * Time.deltaTime,
+                        -ScreenBordersCoords.y - 4, -ScreenBordersCoords.y + 0.8f)
                     , waveTransform.position.z);
             }
+
             yield return null;
         }
     }
+
+    public void SetValues(int levelIndex)
+    {
+        switch (levelIndex)
+        {
+            case 1:
+                
+                break;
+
+            case 2:
+
+                break;
+
+            case 3:
+
+                break;
+
+            case 4:
+
+                break;
+        }
+    }
+
+    public class ScoreEvent : UnityEvent<int>
+    {
+        
+    }
 }
+
