@@ -10,16 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ac8ee5a11782e1428285521099857cb, type: 3}
-  m_Name: ExtraGoodThoughts
+  m_Name: BadThoughts
   m_EditorClassIdentifier: 
-  category: Extra Good
-  spawnRatePercentage: 12.5
-  value: 0.06
+  category: Bad
+  spawnRatePercentage: 35
+  value: -0.03
   textColor: {r: 0, g: 0, b: 0, a: 1}
-  outerColor: {r: 1, g: 0.62428284, b: 0.254902, a: 1}
+  outerColor: {r: 0, g: 0.632287, b: 1, a: 1}
+  animate: 0
+  animationCycleTime: 0
   thoughts:
-  - The Witcher 3
-  - The Last of Us
-  - Assassin's Creed 2
-  - Bioshock Infinite
-  - Ori and The Blind Forest
+  - I'm useless
+  - nobody cares about me
+  - no one understands me
+  - I can't do it
+  - nobody loves me

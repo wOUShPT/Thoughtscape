@@ -10,14 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ac8ee5a11782e1428285521099857cb, type: 3}
-  m_Name: ForbiddenThoughts
+  m_Name: ExtraBadThoughts
   m_EditorClassIdentifier: 
-  category: Forbidden
-  spawnRatePercentage: 5
-  value: -10
-  textColor: {r: 0.5471698, g: 0, b: 0, a: 1}
-  outerColor: {r: 0, g: 0, b: 0, a: 1}
+  category: Extra Bad
+  spawnRatePercentage: 10
+  value: -0.06
+  textColor: {r: 0, g: 0, b: 0, a: 1}
+  outerColor: {r: 0, g: 0.4077053, b: 1, a: 1}
+  animate: 0
+  animationCycleTime: 0
   thoughts:
-  - Guaxinim Empacotado
-  - Ark Survival Evolved
-  - Fallout 76
+  - there's no way out
+  - I fail all the time
+  - I'm a failure
+  - I'm better alone
+  - wish I did the other way

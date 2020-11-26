@@ -21,14 +21,11 @@ public class ThoughtBehaviour : MonoBehaviour
     [Tooltip("Drop velocity in units/second")]
     public float dropSpeed;
 
-    [Tooltip("Drop velocity combo increment in units/second")]
-    public float dropSpeedComboIncrement;
-
     [Tooltip("Horizontal minimum force value")]
     public float minHorizontalForceValue;
     [Tooltip("Horizontal maximum force value")]
     public float maxHorizontalForceValue;
-    public float horizontalForceIncrementValue;
+    public float horizontalForceComboIncrementValue;
 
     public float minHorizontalForceTriggerTimeInterval;
     public float maxHorizontalForceTriggerTimeInterval;
@@ -49,7 +46,6 @@ public class ThoughtBehaviour : MonoBehaviour
     public string thoughtString;
     
     private CatchEvent _catchEvent;
-    private UnityEvent _missEvent;
     private GameManager _gameManager;
     private TextMeshPro _text;
     private Transform _currentTransform;
@@ -57,9 +53,12 @@ public class ThoughtBehaviour : MonoBehaviour
     private Rigidbody2D _rb;
     private BoxCollider2D _collider;
     private int _randomIndex;
-    private float _timer;
+    private float _horizontalForceTimer;
     private float _randomTimeInterval;
     private bool _canAddHorizontalForce;
+
+    private PulseAnimation _pulseAnimation;
+    private FadeAnimation fadeAnimation;
 
     void Awake()
     {
@@ -68,24 +67,27 @@ public class ThoughtBehaviour : MonoBehaviour
         _currentTransform = GetComponent<Transform>();
         _rb = GetComponent<Rigidbody2D>();
         _collider = GetComponent<BoxCollider2D>();
+        _pulseAnimation = GetComponent<PulseAnimation>();
+        fadeAnimation = GetComponent<FadeAnimation>();
+    }
 
+    private void Start()
+    {
         //Adds an event listener that executes the score method on invoke of the ScoreEvent
         _catchEvent = new CatchEvent();
-        _missEvent = new UnityEvent();
-        _catchEvent.AddListener(_gameManager.OnScoreEvent);
-        _missEvent.AddListener(_gameManager.OnMissEvent);
+        _catchEvent.AddListener(_gameManager.OnCatchEvent);
     }
 
     private void Update()
     {
         //Drop movement
         _currentPosition = _currentTransform.position;
-        _currentPosition = new Vector3(_currentPosition.x, _currentPosition.y - ((dropSpeed + dropSpeedComboIncrement)*Time.deltaTime), _currentPosition.z);
+        _currentPosition = new Vector3(_currentPosition.x, _currentPosition.y - ((dropSpeed)*Time.deltaTime), _currentPosition.z);
         _currentTransform.position = _currentPosition;
         
         //Add horizontal force timer
-        _timer += Time.deltaTime;
-        if (_timer >= _randomTimeInterval)
+        _horizontalForceTimer += Time.deltaTime;
+        if (_horizontalForceTimer >= _randomTimeInterval)
         {
             _canAddHorizontalForce = true;
         }
@@ -97,8 +99,10 @@ public class ThoughtBehaviour : MonoBehaviour
         //Add horizontal force
         if (_canAddHorizontalForce)
         {
-            _rb.AddForce((Random.Range(0, 2) * 2 - 1) * Vector2.right * Random.Range(minHorizontalForceValue + horizontalForceIncrementValue ,maxHorizontalForceValue + horizontalForceIncrementValue), ForceMode2D.Impulse);
-            _timer = 0;
+            float randomSign = Random.Range(0, 2) * 2 - 1;
+            Vector2 randomForce = Vector2.right * (Random.Range(minHorizontalForceValue, maxHorizontalForceValue) * randomSign);
+            _rb.AddForce(randomForce, ForceMode2D.Impulse);
+            _horizontalForceTimer = 0;
             _randomTimeInterval = Random.Range(minHorizontalForceTriggerTimeInterval, maxHorizontalForceTriggerTimeInterval);
             _canAddHorizontalForce = false;
         }
@@ -110,13 +114,12 @@ public class ThoughtBehaviour : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             _catchEvent.Invoke(scoreValue);
-            gameObject.SetActive(false);
+            Fade();
         }
 
         //Tests if it collides with the kill/despawn trigger out of level bounds and if it's true deactivates this object
         if (other.CompareTag("Despawn Trigger"))
         {
-            _missEvent.Invoke();
             gameObject.SetActive(false);
         }
     }
@@ -141,18 +144,24 @@ public class ThoughtBehaviour : MonoBehaviour
         _randomIndex = Random.Range(0, thoughtsAttributesList[index].thoughts.Count);
         thoughtString = thoughtsAttributesList[index].thoughts[_randomIndex];
         _text.text = thoughtString;
+        _pulseAnimation.animate = thoughtsAttributesList[index].animate;
+        _pulseAnimation.colorPulseTime = thoughtsAttributesList[index].animationCycleTime;
         _text.ForceMeshUpdate();
         _collider.offset = Vector2.zero;
         _collider.size = new Vector2(_text.GetRenderedValues(true).x, _text.GetRenderedValues(true).y);
-        _timer = 0;
+        _horizontalForceTimer = 0;
         _randomTimeInterval = Random.Range(minHorizontalForceTriggerTimeInterval, maxHorizontalForceTriggerTimeInterval);
-        _currentTransform.rotation = Quaternion.Euler(0,0,0);
+        _currentTransform.localRotation = Quaternion.identity;
         _rb.velocity = Vector2.zero;
         _rb.angularVelocity = 0;
         _canAddHorizontalForce = false;
     }
+    
+    public void Fade()
+    {
+        StartCoroutine(fadeAnimation.AnimateFade(textColor, outerColor));
+    }
 }
-
 
 //Custom UnityEvent ScoreEvent that can pass the score value
 public class CatchEvent : UnityEvent<float>

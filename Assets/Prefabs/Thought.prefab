@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5783952508966375940}
   - component: {fileID: 6071474114341930165}
   - component: {fileID: 7957804484150047276}
+  - component: {fileID: 76581627068349460}
   m_Layer: 9
   m_Name: Thought
   m_TagString: Thoughts
@@ -78,7 +79,7 @@ Rigidbody2D:
   m_AngularDrag: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
@@ -100,11 +101,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 05624a09b5578ce41aa1a6101a0fc5d8, type: 2}
   - {fileID: 11400000, guid: 7760f3dd80fcc734eb1c61d7a41e5a33, type: 2}
   - {fileID: 11400000, guid: 49a3f18add9f2364bafec1e3fe096c57, type: 2}
+  - {fileID: 11400000, guid: aa7e83c61a41323449f42fb89c2b3fc8, type: 2}
   dropSpeed: 3.5
-  dropSpeedComboIncrement: 0
   minHorizontalForceValue: 0.1
   maxHorizontalForceValue: 0.2
-  horizontalForceIncrementValue: 0
+  horizontalForceComboIncrementValue: 0
   minHorizontalForceTriggerTimeInterval: 0.4
   maxHorizontalForceTriggerTimeInterval: 1.2
   category: 
@@ -127,6 +128,19 @@ MonoBehaviour:
   text: {fileID: 3131082147999968430}
   colorPulseTime: 1
   animate: 1
+--- !u!114 &76581627068349460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1254615031707853509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05f1692c46705ca43b663f95a5b88df0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeTimeDuration: 0.3
 --- !u!1 &4483025073640033733
 GameObject:
   m_ObjectHideFlags: 0
@@ -217,7 +231,7 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 20
+  m_SortingOrder: 8
 --- !u!114 &3131082147999968430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -271,7 +285,7 @@ MonoBehaviour:
   m_enableAutoSizing: 1
   m_fontSizeMin: 1
   m_fontSizeMax: 3
-  m_fontStyle: 8
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535

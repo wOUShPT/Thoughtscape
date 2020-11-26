@@ -10,14 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ac8ee5a11782e1428285521099857cb, type: 3}
-  m_Name: ExtraBadThoughts
+  m_Name: ForbiddenThoughts
   m_EditorClassIdentifier: 
-  category: Extra Bad
-  spawnRatePercentage: 12.5
-  value: -0.06
-  textColor: {r: 0, g: 0, b: 0, a: 1}
-  outerColor: {r: 0, g: 0.4077053, b: 1, a: 1}
+  category: Forbidden
+  spawnRatePercentage: 5
+  value: -10
+  textColor: {r: 0.5471698, g: 0, b: 0, a: 1}
+  outerColor: {r: 0, g: 0, b: 0, a: 1}
+  animate: 1
+  animationCycleTime: 0.5
   thoughts:
-  - Resident Evil 5
-  - Unearthed Trail of the Ibn Battuta
-  - Assassin's Creed Odyssey
+  - if I'm gone...
+  - there's no way back...
+  - "can\xB4t handle anymore..."

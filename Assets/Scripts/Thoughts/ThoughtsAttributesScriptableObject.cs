@@ -10,5 +10,7 @@ public class ThoughtsAttributesScriptableObject : ScriptableObject
     public float value = 0;
     public Color textColor = Color.black;
     public Color outerColor = Color.black;
+    public bool animate;
+    public float animationCycleTime;
     public List<string> thoughts;
 }

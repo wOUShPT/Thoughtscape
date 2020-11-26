@@ -9,9 +9,10 @@ using UnityEngine.InputSystem.LowLevel;
 public class PlayerController : MonoBehaviour
 {
     [Tooltip("SpriteRenderer component of the body sprite section")]
-    public SpriteRenderer bodySprite;
+    public BoxCollider2D touchDragCollider;
     private Controls _playerControls;
     private Transform _playerTransform;
+    private PauseMenu _pauseMenu;
     private GameManager _gameManager;
     private Camera _mainCamera;
     private Vector2 _touchPosition;
@@ -24,6 +25,8 @@ public class PlayerController : MonoBehaviour
 
         _gameManager = FindObjectOfType<GameManager>();
 
+        _pauseMenu = FindObjectOfType<PauseMenu>();
+
         _mainCamera = FindObjectOfType<Camera>();
         
         //Sets the player yAxis position based on the screen size
@@ -34,7 +37,10 @@ public class PlayerController : MonoBehaviour
     public void OnMoveGesture(InputAction.CallbackContext context)
     {
         _touchPosition = context.ReadValue<Vector2>();
-        MovePlayer();
+        if (!_pauseMenu.isPaused)
+        {
+            MovePlayer();
+        }
     }
     
     void MovePlayer()
@@ -47,7 +53,7 @@ public class PlayerController : MonoBehaviour
         touchPositionOnWorld = new Vector3(touchPositionOnWorld.x, touchPositionOnWorld.y, 0);
         
         //Check if the touch/mouse position is inside the player body sprite bounds and if it's true move the player to the touch/mouse position on the X axis within the screen borders
-        if (bodySprite.bounds.Contains(touchPositionOnWorld))
+        if (touchDragCollider.bounds.Contains(touchPositionOnWorld))
         {
             _playerTransform.position = new Vector3(Mathf.Clamp(touchPositionOnWorld.x,-_gameManager.ScreenBordersCoords.x+0.5f,_gameManager.ScreenBordersCoords.x-0.5f), -_gameManager.ScreenBordersCoords.y-0.7f, _playerTransform.position.z);
         }

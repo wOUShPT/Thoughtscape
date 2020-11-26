@@ -1,22 +1,31 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SceneManager : MonoBehaviour
 {
     void Awake()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+        LoadMainMenu();
     }
     
-    //Load main loop scene 
-    public static void LoadGameScene()
+    //Load Main Menu screen
+    public void LoadMainMenu()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene(1);
-        if (GameObject.FindGameObjectWithTag("Managers"))
+    }
+
+    //Load Main Loop scene 
+    public void LoadGameScene()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(2);
+        
+        //Delete another existing Game Manager to prevent duplication
+        if (GameObject.FindGameObjectWithTag("Managers").GetComponentInChildren<GameManager>())
         {
             Destroy(GameObject.FindGameObjectWithTag("Managers").GetComponentInChildren<GameManager>().gameObject);
-            Destroy(GameObject.FindGameObjectWithTag("Managers").GetComponentInChildren<SpawnManager>().gameObject);
         }
     }
 }

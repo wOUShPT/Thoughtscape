@@ -10,14 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ac8ee5a11782e1428285521099857cb, type: 3}
-  m_Name: BadThoughts
+  m_Name: PowerUp
   m_EditorClassIdentifier: 
-  category: Bad
-  spawnRatePercentage: 35
-  value: -0.03
+  category: PowerUp
+  spawnRatePercentage: 5
+  value: 10
   textColor: {r: 0, g: 0, b: 0, a: 1}
-  outerColor: {r: 0, g: 0.632287, b: 1, a: 1}
+  outerColor: {r: 0.32497695, g: 0.9339623, b: 0.2995728, a: 1}
+  animate: 1
+  animationCycleTime: 0.3
   thoughts:
-  - Assassin's Creed Odyssey
-  - Fortnite
-  - PUBG
+  - KEEP YOUR HEAD UP!
+  - YOU'RE NOT ALONE!
+  - DON'T GIVE UP!

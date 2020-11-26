@@ -8,6 +8,7 @@ TagManager:
   - Managers
   - LevelLimits
   - Despawn Trigger
+  - UI
   layers:
   - Default
   - TransparentFX

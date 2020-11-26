@@ -17,9 +17,13 @@ MonoBehaviour:
   value: 0.03
   textColor: {r: 0, g: 0, b: 0, a: 1}
   outerColor: {r: 1, g: 0.87790793, b: 0, a: 1}
+  animate: 0
+  animationCycleTime: 0
   thoughts:
-  - Mirror's Edge
-  - Call of Duty Modern Warfare 2
-  - God of War
-  - Uncharted
-  - Bloodborne
+  - I'm a valuable person
+  - maybe I can do it
+  - maybe I'm capable
+  - I can trust other people
+  - someday will be better
+  - it's okay feeling sad
+  - I have qualities too

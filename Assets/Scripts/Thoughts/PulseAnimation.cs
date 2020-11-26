@@ -47,6 +47,7 @@ public class PulseAnimation : MonoBehaviour
         else
         {
             _currentDilatationValue = 1;
+            text.fontMaterial.SetFloat(ShaderUtilities.ID_UnderlayDilate, _currentDilatationValue);
         }
     }
     
