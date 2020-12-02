@@ -55,7 +55,7 @@ public class ThoughtBehaviour : MonoBehaviour
     private int _randomIndex;
     private float _horizontalForceTimer;
     private float _randomTimeInterval;
-    private bool _canAddHorizontalForce;
+    private bool _hasHorizontalMovement;
 
     private PulseAnimation _pulseAnimation;
     private FadeAnimation fadeAnimation;
@@ -85,29 +85,18 @@ public class ThoughtBehaviour : MonoBehaviour
         _currentPosition = new Vector3(_currentPosition.x, _currentPosition.y - ((dropSpeed)*Time.deltaTime), _currentPosition.z);
         _currentTransform.position = _currentPosition;
         
-        //Add horizontal force timer
+        //if it has horizontal force, add it based on a timer
         _horizontalForceTimer += Time.deltaTime;
-        if (_horizontalForceTimer >= _randomTimeInterval)
-        {
-            _canAddHorizontalForce = true;
-        }
-    }
-
-    void FixedUpdate()
-    {
-        
-        //Add horizontal force
-        if (_canAddHorizontalForce)
+        if (_horizontalForceTimer >= _randomTimeInterval && _hasHorizontalMovement)
         {
             float randomSign = Random.Range(0, 2) * 2 - 1;
             Vector2 randomForce = Vector2.right * (Random.Range(minHorizontalForceValue, maxHorizontalForceValue) * randomSign);
             _rb.AddForce(randomForce, ForceMode2D.Impulse);
             _horizontalForceTimer = 0;
             _randomTimeInterval = Random.Range(minHorizontalForceTriggerTimeInterval, maxHorizontalForceTriggerTimeInterval);
-            _canAddHorizontalForce = false;
         }
     }
-    
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         //Tests if it collides with the player and if its true invoke the ScoreEvent and deactivates this object
@@ -136,17 +125,20 @@ public class ThoughtBehaviour : MonoBehaviour
     public void ResetBehaviour(int index)
     {
         category = thoughtsAttributesList[index].category;
-        scoreValue = thoughtsAttributesList[index].value;
+        scoreValue = thoughtsAttributesList[index].defaultValue;
         textColor = thoughtsAttributesList[index].textColor;
         outerColor = thoughtsAttributesList[index].outerColor;
+        fadeAnimation.ResetFadeState();
         _text.fontMaterial.SetColor(ShaderUtilities.ID_FaceColor, textColor);
         _text.fontMaterial.SetColor(ShaderUtilities.ID_UnderlayColor, outerColor);
+        _text.fontMaterial.SetColor("_DissolveEdgeColor", outerColor);
         _randomIndex = Random.Range(0, thoughtsAttributesList[index].thoughts.Count);
         thoughtString = thoughtsAttributesList[index].thoughts[_randomIndex];
         _text.text = thoughtString;
         _pulseAnimation.animate = thoughtsAttributesList[index].animate;
         _pulseAnimation.colorPulseTime = thoughtsAttributesList[index].animationCycleTime;
         _text.ForceMeshUpdate();
+        _collider.enabled = true;
         _collider.offset = Vector2.zero;
         _collider.size = new Vector2(_text.GetRenderedValues(true).x, _text.GetRenderedValues(true).y);
         _horizontalForceTimer = 0;
@@ -154,11 +146,12 @@ public class ThoughtBehaviour : MonoBehaviour
         _currentTransform.localRotation = Quaternion.identity;
         _rb.velocity = Vector2.zero;
         _rb.angularVelocity = 0;
-        _canAddHorizontalForce = false;
+        _hasHorizontalMovement = true;
     }
     
     public void Fade()
     {
+        _collider.enabled = false;
         StartCoroutine(fadeAnimation.AnimateFade(textColor, outerColor));
     }
 }

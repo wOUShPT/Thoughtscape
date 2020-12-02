@@ -4,6 +4,7 @@
     <e p="C:\Users\gusta\AppData\local\JetBrains\Rider2020.2\extResources" t="IncludeRecursive" />
     <e p="C:\Users\gusta\AppData\local\JetBrains\Rider2020.2\resharper-host\local\Transient\Rider\v202\SolutionCaches\_Thoughtscape.1366204263.00" t="ExcludeRecursive" />
     <e p="E:\Users\Gustavo\Documents\GitHub\Thoughtscape" t="IncludeRecursive">
+      <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
         <e p="InputS" t="Include">
@@ -28,7 +29,9 @@
             <e p="ThoughtsAttributesScriptableObject.cs" t="Include" />
           </e>
           <e p="UI" t="Include">
+            <e p="BlurUIRenderer.cs" t="Include" />
             <e p="MainMenu.cs" t="Include" />
+            <e p="MeterUI.cs" t="Include" />
             <e p="PauseMenu.cs" t="Include" />
           </e>
         </e>
@@ -61,6 +64,179 @@
           </e>
           <e p="Sprites" t="Include">
             <e p="EmojiOne Attribution.txt" t="Include" />
+          </e>
+        </e>
+        <e p="VacuumShaders" t="Include">
+          <e p="Advanced Dissolve" t="Include">
+            <e p="Editor" t="Include">
+              <e p="CustomEditors" t="Include">
+                <e p="Basic" t="Include">
+                  <e p="BakedLitShader.cs" t="Include" />
+                  <e p="LitShader.cs" t="Include" />
+                  <e p="SimpleLitShader.cs" t="Include" />
+                  <e p="UnlitShader.cs" t="Include" />
+                </e>
+                <e p="MaterialProperties.cs" t="Include" />
+                <e p="Nature" t="Include">
+                  <e p="DetailLit.cs" t="Include" />
+                  <e p="SpeedTree.cs" t="Include" />
+                  <e p="WavingGrass.cs" t="Include" />
+                </e>
+                <e p="Particle" t="Include">
+                  <e p="ParticlesLitShader.cs" t="Include" />
+                  <e p="ParticlesSimpleLitShader.cs" t="Include" />
+                  <e p="ParticlesUnlitShader.cs" t="Include" />
+                </e>
+                <e p="ShaderGraph" t="Include">
+                  <e p="DefaultShaderGUI.cs" t="Include" />
+                  <e p="PBRMasterGUI.cs" t="Include" />
+                  <e p="UnlitMasterGUI.cs" t="Include" />
+                </e>
+                <e p="Terrain" t="Include">
+                  <e p="TerrainLitShaderGUI.cs" t="Include" />
+                </e>
+                <e p="TextMesh Pro" t="Include">
+                  <e p="TMP_BitmapShaderGUI.cs" t="Include" />
+                  <e p="TMP_SDFShaderGUI.cs" t="Include" />
+                  <e p="TMP_SpriteGUI.cs" t="Include" />
+                </e>
+              </e>
+              <e p="IntegrateAdvancedDissolve.cs" t="Include" />
+              <e p="PropertyDrawers" t="Include">
+                <e p="CutoutDrawer.cs" t="Include" />
+                <e p="PositiveFloatDrawer.cs" t="Include" />
+                <e p="UVScrollDrawer.cs" t="Include" />
+                <e p="V3Drawer.cs" t="Include" />
+              </e>
+            </e>
+            <e p="Scenes" t="Include">
+              <e p="Example Scenes" t="Include">
+                <e p="Files" t="Include">
+                  <e p="Custom Shaders" t="Include">
+                    <e p="Particle Add (Emissive).shader" t="Include" />
+                    <e p="Particle Add.shader" t="Include" />
+                  </e>
+                  <e p="Other Assets" t="Include">
+                    <e p="CactusPack" t="Include">
+                      <e p="Copyright.txt" t="Include" />
+                    </e>
+                    <e p="Free_SpeedTrees" t="Include">
+                      <e p="Copyright.txt" t="Include" />
+                    </e>
+                    <e p="Nightmare" t="Include">
+                      <e p="Copyright.txt" t="Include" />
+                    </e>
+                    <e p="Viking Village" t="Include">
+                      <e p="Copyright.txt" t="Include" />
+                    </e>
+                  </e>
+                  <e p="Scripts" t="Include">
+                    <e p="Example" t="Include">
+                      <e p="AnimateCutout.cs" t="Include" />
+                      <e p="BunnyMove.cs" t="Include" />
+                      <e p="LookAt.cs" t="Include" />
+                      <e p="ObjectRandomMove.cs" t="Include" />
+                      <e p="ObjectSceneMove.cs" t="Include" />
+                      <e p="SpotLight_LineRenderer.cs" t="Include" />
+                      <e p="SpotLightMeshScale.cs" t="Include" />
+                      <e p="UIEventReciever_Cutout_And_Edge.cs" t="Include" />
+                      <e p="UIEventReciever_ExampleScene_Mask_Box.cs" t="Include" />
+                      <e p="UIEventReciever_ExampleScene_Mask_Cone.cs" t="Include" />
+                      <e p="UIEventReciever_ExampleScene_Mask_Cylinder.cs" t="Include" />
+                      <e p="UIEventReciever_ExampleScene_Mask_Plane.cs" t="Include" />
+                      <e p="UIEventReciever_ExampleScene_Mask_Spere.cs" t="Include" />
+                      <e p="UIEventReciever_ExampleScene_Mask_XYZ_Axis.cs" t="Include" />
+                      <e p="UpdateWorldPos.cs" t="Include" />
+                    </e>
+                    <e p="Tutorial_PlaneMask_Controller.cs" t="Include" />
+                  </e>
+                </e>
+              </e>
+            </e>
+            <e p="Scripts" t="Include">
+              <e p="Controller_Cutout.cs" t="Include" />
+              <e p="Controller_Edge.cs" t="Include" />
+              <e p="Controller_Mask_Box.cs" t="Include" />
+              <e p="Controller_Mask_Cone.cs" t="Include" />
+              <e p="Controller_Mask_Cylinder.cs" t="Include" />
+              <e p="Controller_Mask_Cylinder_Alt.cs" t="Include" />
+              <e p="Controller_Mask_Plane.cs" t="Include" />
+              <e p="Controller_Mask_Sphere.cs" t="Include" />
+              <e p="Controller_Mask_XYZ_Axis.cs" t="Include" />
+            </e>
+            <e p="Shaders" t="Include">
+              <e p="Basic" t="Include">
+                <e p="BakedLit.shader" t="Include" />
+                <e p="BakedLitMetaPass.hlsl" t="Include" />
+                <e p="DepthOnlyPass.hlsl" t="Include" />
+                <e p="Lit.shader" t="Include" />
+                <e p="LitForwardPass.hlsl" t="Include" />
+                <e p="LitMetaPass.hlsl" t="Include" />
+                <e p="ShadowCasterPass.hlsl" t="Include" />
+                <e p="SimpleLit.shader" t="Include" />
+                <e p="SimpleLitForwardPass.hlsl" t="Include" />
+                <e p="SimpleLitMetaPass.hlsl" t="Include" />
+                <e p="Unlit.shader" t="Include" />
+                <e p="UnlitMetaPass.hlsl" t="Include" />
+              </e>
+              <e p="cginc" t="Include">
+                <e p="AdvancedDissolve.cginc" t="Include" />
+                <e p="Variables.cginc" t="Include" />
+              </e>
+              <e p="Nature" t="Include">
+                <e p="SpeedTree7.shader" t="Include" />
+                <e p="SpeedTree7Billboard.shader" t="Include" />
+                <e p="SpeedTree7BillboardInput.hlsl" t="Include" />
+                <e p="SpeedTree7BillboardPasses.hlsl" t="Include" />
+                <e p="SpeedTree7CommonInput.hlsl" t="Include" />
+                <e p="SpeedTree7CommonPasses.hlsl" t="Include" />
+                <e p="SpeedTree7Input.hlsl" t="Include" />
+                <e p="SpeedTree7Passes.hlsl" t="Include" />
+                <e p="SpeedTree8.shader" t="Include" />
+                <e p="SpeedTree8Input.hlsl" t="Include" />
+                <e p="SpeedTree8Passes.hlsl" t="Include" />
+              </e>
+              <e p="Particles" t="Include">
+                <e p="ParticlesLit.shader" t="Include" />
+                <e p="ParticlesLitForwardPass.hlsl" t="Include" />
+                <e p="ParticlesSimpleLit.shader" t="Include" />
+                <e p="ParticlesSimpleLitForwardPass.hlsl" t="Include" />
+                <e p="ParticlesUnlit.shader" t="Include" />
+                <e p="ParticlesUnlitForwardPass.hlsl" t="Include" />
+              </e>
+              <e p="Terrain" t="Include">
+                <e p="DepthOnlyPass.hlsl" t="Include" />
+                <e p="TerrainDetailLit.shader" t="Include" />
+                <e p="TerrainLit.shader" t="Include" />
+                <e p="TerrainLitAdd.shader" t="Include" />
+                <e p="TerrainLitBase.shader" t="Include" />
+                <e p="TerrainLitPasses.hlsl" t="Include" />
+                <e p="WavingGrass.shader" t="Include" />
+                <e p="WavingGrassBillboard.shader" t="Include" />
+                <e p="WavingGrassPasses.hlsl" t="Include" />
+              </e>
+              <e p="TextMesh Pro" t="Include">
+                <e p="TMP_Bitmap-Custom-Atlas.shader" t="Include" />
+                <e p="TMP_Bitmap-Mobile.shader" t="Include" />
+                <e p="TMP_Bitmap.shader" t="Include" />
+                <e p="TMP_SDF Overlay.shader" t="Include" />
+                <e p="TMP_SDF-Mobile Masking.shader" t="Include" />
+                <e p="TMP_SDF-Mobile Overlay.shader" t="Include" />
+                <e p="TMP_SDF-Mobile.shader" t="Include" />
+                <e p="TMP_SDF.shader" t="Include" />
+                <e p="TMP_Sprite.shader" t="Include" />
+                <e p="TMPro.cginc" t="Include" />
+                <e p="TMPro_Properties.cginc" t="Include" />
+                <e p="TMPro_Surface.cginc" t="Include" />
+              </e>
+              <e p="URP" t="Include">
+                <e p="DepthOnlyPass.hlsl" t="Include" />
+                <e p="LightingMetaPass.hlsl" t="Include" />
+                <e p="PBRForwardPass.hlsl" t="Include" />
+                <e p="ShadowCasterPass.hlsl" t="Include" />
+                <e p="UnlitPass.hlsl" t="Include" />
+              </e>
+            </e>
           </e>
         </e>
       </e>

@@ -906,7 +906,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8417203738998054643}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: b0f117e3193b6bb4bb18ed8fba2e364f, type: 2}
   m_CullingMode: 0
@@ -929,23 +929,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6bab511f3e5a774abe338a4f43ec18f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bodySprite: {fileID: 0}
-  inputAction:
-    m_Name: Input
-    m_Type: 0
-    m_ExpectedControlType: Touch
-    m_Id: c2e97db8-5614-4424-a6eb-bfcfa5026d34
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 4fb1fae3-2aa3-4294-b6b6-646675171b0c
-      m_Path: <Touchscreen>/primaryTouch
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Input
-      m_Flags: 0
+  touchDragCollider: {fileID: 0}
 --- !u!1 &8417203739059913822
 GameObject:
   m_ObjectHideFlags: 0

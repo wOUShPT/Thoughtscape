@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +7,8 @@ using UnityEngine;
 public class LevelParametersScriptableObject : ScriptableObject
 {
     public string day;
+    public float scoreBaseTime;
+    public float meterCenterSpreadValue;
     public float dropSpeed = 3.5f;
     public float horizontalForceTriggerTime;
     public float horizontalForceIncrement;
@@ -13,4 +16,15 @@ public class LevelParametersScriptableObject : ScriptableObject
     public float meterLimitsTimeToDeath;
     public float waterLevelRiseSpeed;
     public float waterLevelDropSpeed;
+    public List<ThoughtSpawnRate> thoughtSpawnRatesList;
+
+    [Serializable]
+    public  struct ThoughtSpawnRate
+    {
+        public string category;
+        public float centerMeterZoneSpawnRatePercentage;
+        public float positiveZoneMeterSpawnRatePercentage;
+        public float negativeZoneMeterSpawnRatePercentage;
+        public float limitZoneMeterSpawnRatePercentage;
+    }
 }

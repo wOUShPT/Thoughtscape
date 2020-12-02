@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using AdvancedDissolve_Example;
 using TMPro;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ public class FadeAnimation : MonoBehaviour
     public float fadeTimeDuration;
     private float _fadeSpeed;
     private TextMeshPro _text;
+    private Controller_Cutout _controllerCutout;
     
     void Awake()
     {
@@ -17,12 +19,11 @@ public class FadeAnimation : MonoBehaviour
 
     public IEnumerator AnimateFade(Color textcolor, Color outerColor)
     {
-        float colorStep = 1f;
-        while (colorStep > 0)
+        float cutOutStep = 0f;
+        while (cutOutStep < 1)
         {
-            colorStep -= _fadeSpeed * Time.deltaTime;
-            _text.fontMaterial.SetColor(ShaderUtilities.ID_FaceColor, new Color(textcolor.r, textcolor.g, textcolor.b, colorStep));
-            _text.fontMaterial.SetColor(ShaderUtilities.ID_UnderlayColor, new Color(outerColor.r, outerColor.g, outerColor.b, colorStep));
+            cutOutStep += _fadeSpeed * Time.deltaTime;
+            _text.fontMaterial.SetFloat("_DissolveCutoff", cutOutStep);
             yield return null;
         }
         gameObject.SetActive(false);
@@ -32,6 +33,7 @@ public class FadeAnimation : MonoBehaviour
     {
         for (int i = 0; i < _text.mesh.colors.Length; i++)
         {
+            _text.fontMaterial.SetFloat("_DissolveCutoff",0);
             _text.mesh.colors[i] = Color.white;
         }
     }

@@ -43,7 +43,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1254615031707853509}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -79,7 +79,7 @@ Rigidbody2D:
   m_AngularDrag: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
@@ -96,10 +96,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thoughtsAttributesList:
-  - {fileID: 11400000, guid: 5d7a8d54ae74ecc489724874997c8f81, type: 2}
-  - {fileID: 11400000, guid: d4028124973ac3545afcefd8a80593e5, type: 2}
   - {fileID: 11400000, guid: 05624a09b5578ce41aa1a6101a0fc5d8, type: 2}
+  - {fileID: 11400000, guid: 5d7a8d54ae74ecc489724874997c8f81, type: 2}
   - {fileID: 11400000, guid: 7760f3dd80fcc734eb1c61d7a41e5a33, type: 2}
+  - {fileID: 11400000, guid: d4028124973ac3545afcefd8a80593e5, type: 2}
   - {fileID: 11400000, guid: 49a3f18add9f2364bafec1e3fe096c57, type: 2}
   - {fileID: 11400000, guid: aa7e83c61a41323449f42fb89c2b3fc8, type: 2}
   dropSpeed: 3.5

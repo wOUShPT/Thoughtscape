@@ -13,8 +13,12 @@ MonoBehaviour:
   m_Name: GoodThoughts
   m_EditorClassIdentifier: 
   category: Good
-  spawnRatePercentage: 35
-  value: 0.03
+  centerMeterZoneSpawnRatePercentage: 0
+  goodZoneMeterSpawnRatePercentage: 0
+  badZoneMeterSpawnRatePercentage: 0
+  limitZoneMeterSpawnRatePercentage: 0
+  canSpawn: 1
+  defaultValue: 0.03
   textColor: {r: 0, g: 0, b: 0, a: 1}
   outerColor: {r: 1, g: 0.87790793, b: 0, a: 1}
   animate: 0

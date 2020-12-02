@@ -13,8 +13,12 @@ MonoBehaviour:
   m_Name: ExtraBadThoughts
   m_EditorClassIdentifier: 
   category: Extra Bad
-  spawnRatePercentage: 10
-  value: -0.06
+  centerMeterZoneSpawnRatePercentage: 0
+  goodZoneMeterSpawnRatePercentage: 0
+  badZoneMeterSpawnRatePercentage: 0
+  limitZoneMeterSpawnRatePercentage: 0
+  canSpawn: 1
+  defaultValue: -0.06
   textColor: {r: 0, g: 0, b: 0, a: 1}
   outerColor: {r: 0, g: 0.4077053, b: 1, a: 1}
   animate: 0

@@ -13,10 +13,43 @@ MonoBehaviour:
   m_Name: Level_1_Parameters
   m_EditorClassIdentifier: 
   day: tuesday
+  scoreBaseTime: 5
+  meterCenterSpreadValue: 0.18
   dropSpeed: 4.5
   horizontalForceTriggerTime: 0
   horizontalForceIncrement: 0
   meterBaseMoveSpeed: 1.5
   meterLimitsTimeToDeath: 5
-  waterLevelRiseSpeed: 0.2
-  waterLevelDropSpeed: 0.4
+  waterLevelRiseSpeed: 0.15
+  waterLevelDropSpeed: 0.3
+  thoughtSpawnRatesList:
+  - category: Good
+    centerMeterZoneSpawnRatePercentage: 50
+    positiveZoneMeterSpawnRatePercentage: 10
+    negativeZoneMeterSpawnRatePercentage: 50
+    limitZoneMeterSpawnRatePercentage: 0
+  - category: Bad
+    centerMeterZoneSpawnRatePercentage: 50
+    positiveZoneMeterSpawnRatePercentage: 50
+    negativeZoneMeterSpawnRatePercentage: 10
+    limitZoneMeterSpawnRatePercentage: 0
+  - category: Extra Good
+    centerMeterZoneSpawnRatePercentage: 25
+    positiveZoneMeterSpawnRatePercentage: 5
+    negativeZoneMeterSpawnRatePercentage: 25
+    limitZoneMeterSpawnRatePercentage: 0
+  - category: Extra Bad
+    centerMeterZoneSpawnRatePercentage: 25
+    positiveZoneMeterSpawnRatePercentage: 25
+    negativeZoneMeterSpawnRatePercentage: 5
+    limitZoneMeterSpawnRatePercentage: 0
+  - category: Forbidden
+    centerMeterZoneSpawnRatePercentage: 15
+    positiveZoneMeterSpawnRatePercentage: 15
+    negativeZoneMeterSpawnRatePercentage: 15
+    limitZoneMeterSpawnRatePercentage: 0
+  - category: PowerUp
+    centerMeterZoneSpawnRatePercentage: 0
+    positiveZoneMeterSpawnRatePercentage: 0
+    negativeZoneMeterSpawnRatePercentage: 0
+    limitZoneMeterSpawnRatePercentage: 30

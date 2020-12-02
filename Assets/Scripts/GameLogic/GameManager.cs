@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.PlayerLoop;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
@@ -44,7 +45,7 @@ public class GameManager : MonoBehaviour
     [Space(15, order = 0)]
     [Tooltip("List of thoughts attributes data containers")]
     public List<ThoughtsAttributesScriptableObject> thoughtsAttributesList;
-    private List<float> _thoughtsAttributesListSpawnRates;
+    private List<float> _thoughtCurrentSpawnRatesList;
 
     [Space(15, order = 0)]
     [Tooltip("Thoughts object pool maximum capacity (InstantiatedOnLoad)")]
@@ -60,8 +61,7 @@ public class GameManager : MonoBehaviour
     public float maxTimeBetweenSpawns;
     
     private float _randomTimeInterval;
-    private float _spawnTimer;
-    
+
     #endregion
     
     //-------------------------------------------------------------------------------------------------------------
@@ -78,10 +78,14 @@ public class GameManager : MonoBehaviour
     private float _timer;
     private bool _canStartGame;
     private int _scoreValue;
+    private float _scoreComboTimer;
+    private float _scoreTimeInterval;
+    private int _scoreComboMultiplier;
     private float _meterIncrementValue;
     private float _lastMeterIncrementValue;
     private float _scoreIncrementCombo;
 
+    private float _currentMeterSpreadValue;
     private float _meterValue;
     private bool _isMovingUp;
     private float _meterComboTimer;
@@ -121,9 +125,13 @@ public class GameManager : MonoBehaviour
     
     [Tooltip("UI score text component")] 
     public Text scoreUI;
+
+    [Tooltip("UI score increment text component")]
+    public Text scoreIncrementUI;
     
     [Tooltip("UI balance meter slider component")]
-    public Slider meterUI;
+    public Slider meterSlider;
+    private MeterUI _meterUI;
 
     [Tooltip("UI day text component")]
     public Text dayUI;
@@ -142,6 +150,9 @@ public class GameManager : MonoBehaviour
     public Volume postProcessingVolume;
     private WhiteBalance _whiteBalance;
     private Vignette _vignette;
+    private ChromaticAberration _chromaticAberration;
+    public float chromaticAberrationFeedbackEffectTime;
+    private int _chromaticAberrationSign;
 
     public ParticleSystem showerParticleSystem;
     public bool canSpawnParticles;
@@ -160,21 +171,14 @@ public class GameManager : MonoBehaviour
     }
 
     //-------------------------------------------------------------------------------------------------------------
-
-    private void Start()
-    {
-        //Sets the "Managers" gameobject on hierarchy as a parent (this matters if you load the game from _preload scene)
-        if (GameObject.FindGameObjectWithTag("Managers"))
-        {
-            transform.SetParent(GameObject.FindGameObjectWithTag("Managers").transform);
-        }
-    }
-
+    
     void Awake()
     {
         _sceneManager = FindObjectOfType<SceneManager>();
         
         _mainCamera = FindObjectOfType<Camera>();
+        
+        _meterUI = meterSlider.gameObject.GetComponent<MeterUI>();
 
         //Get screen size width and height in pixels and convert to world units
         _screenBordersCoords = _mainCamera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
@@ -185,86 +189,106 @@ public class GameManager : MonoBehaviour
         {
             InstantiateThought();
         }
-        
-        //Set the Thought attributes spawn rate percentages List
-        _thoughtsAttributesListSpawnRates = new List<float>();
-        foreach (var thoughAttribute in thoughtsAttributesList)
+
+        _thoughtCurrentSpawnRatesList = new List<float>();
+        for (int i = 0; i < thoughtsAttributesList.Count; i++)
         {
-            _thoughtsAttributesListSpawnRates.Add(thoughAttribute.spawnRatePercentage);
+            _thoughtCurrentSpawnRatesList.Add(0);
         }
 
         canSpawn = false;
-        
+
         //Initialize the first level
         _levelIndex = 0;
         SetLevelParameters();
         StartCoroutine(LevelTransition());
-        
+
         //Get postprocessing filters and set base values
         postProcessingVolume.profile.TryGet(out _whiteBalance);
         postProcessingVolume.profile.TryGet(out _vignette);
+        postProcessingVolume.profile.TryGet(out _chromaticAberration);
         _whiteBalance.temperature.min = -40;
         _whiteBalance.temperature.max = 40;
         _vignette.intensity.min = 0.2f;
         _vignette.intensity.max = 0.5f;
+        _chromaticAberration.intensity.min = 0f;
+        _chromaticAberration.intensity.max = 1f;
+        _chromaticAberrationSign = 1;
 
         //Start Water Update Loop
         _canWaterLow = false;
         _canWaterRise = false;
         _waterLevelDefaultPosition = waterWaveTransform.position;
         StartCoroutine(UpdateWaterLevel());
+        
+        //Set score and game timer to zero
+        _timer = 0;
+        _scoreValue = 0;
+    }
+    
+    private void Start()
+    {
+        //Sets the "Managers" gameobject on hierarchy as a parent (this matters if you load the game from _preload scene)
+        if (GameObject.FindGameObjectWithTag("Managers"))
+        {
+            transform.SetParent(GameObject.FindGameObjectWithTag("Managers").transform);
+        }
     }
 
     void Update()
     {
-        if (canSpawn)
-        {
-            //when the timer surpasses a random generated time frame, search through the pool for an available thought to reuse and spawn it
-            if (_spawnTimer > _randomTimeInterval)
-            {
-                GenerateRandomTimeInterval();
-                _spawnTimer = 0;
-                for (int i = 0; i < _thoughtsPool.Count; i++)
-                {
-                    if (!_thoughtsPool[i].gameObject.activeSelf)
-                    {
-                        ReSpawnThought(_thoughtsPool[i]);
-                        return;
-                    }
-                }
-            }
-            _spawnTimer += Time.deltaTime;
-        }
-
         //Check if the player caught a thought and if it's true begins the timer, score and meter logic
         if (_canStartGame)
         {
             //Timer Update
             _timer += Time.deltaTime;
 
-            //Sets balance value 
-            if (_meterValue < 0.20f && _meterValue > -0.20f)
+            //Checks if the player it's in the center zone of the meter
+            if (_meterValue < _currentMeterSpreadValue && _meterValue > -_currentMeterSpreadValue)
             {
                 _canWaterRise = false;
                 _canWaterLow = true;
                 _meterComboTimer += Time.deltaTime;
+                _scoreComboTimer += Time.deltaTime;
+
+                if (_scoreComboTimer > Mathf.Clamp(_scoreTimeInterval - (_scoreComboMultiplier), 1f, 5f))
+                {
+                    _scoreComboMultiplier++;
+                    _scoreValue += 10;
+                    _scoreComboTimer = 0;
+                    StartCoroutine(UpdateScoreIncrementUI());
+                    CheckIfLevelUp();
+                }
+                
                 if (_meterComboTimer > 5)
                 {
-                    _scoreValue += 10;
                     _meterComboTimer = 0;
                     _meterComboMultiplier++;
                     SetHorizontalForceComboIncrement(_meterComboMultiplier * 0.1f);
-                    SetDropSpeed(levelParametersDataList[_levelIndex].dropSpeed + 0.1f*_meterComboMultiplier);
-                    CanLevelUp();
+                    SetDropSpeed(levelParametersDataList[_levelIndex].dropSpeed + 0.1f * _meterComboMultiplier);
+                }
+                
+                //Set Spawn Rates based on meter position (zone)
+                for (int i = 0; i < levelParametersDataList[_levelIndex].thoughtSpawnRatesList.Count; i++)
+                {
+                    _thoughtCurrentSpawnRatesList[i] = levelParametersDataList[_levelIndex]
+                            .thoughtSpawnRatesList[i].centerMeterZoneSpawnRatePercentage;
                 }
 
-                _meterMoveSpeedMultiplier = (1f - Mathf.Abs(_meterValue) * 0.4f) * 1.5f * _scoreIncrementCombo;
+                _meterMoveSpeedMultiplier = (1f - Mathf.Abs(_meterValue) * _currentMeterSpreadValue*2) * 1.2f * _scoreIncrementCombo;
             }
             else
             {
                 _canWaterRise = true;
                 _canWaterLow = false;
                 _meterComboTimer = 0;
+                _scoreComboTimer = 0;
+                _scoreComboMultiplier = 0;
+                _meterComboMultiplier = 0;
+                
+                SetDropSpeed(levelParametersDataList[_levelIndex].dropSpeed);
+                SetHorizontalForceComboIncrement(0);
+                
                 if (_isMovingUp && Mathf.Sign(_meterValue) == -1 || !_isMovingUp && Mathf.Sign(_meterValue) == 1)
                 {
                     _meterMoveSpeedMultiplier = Mathf.Abs(_meterValue) * 3f * _scoreIncrementCombo;
@@ -273,12 +297,40 @@ public class GameManager : MonoBehaviour
                 {
                     _meterMoveSpeedMultiplier = (1.1f - Mathf.Abs(_meterValue)) * 3f * _scoreIncrementCombo;
                 }
+                
+                //Set Spawn Rates based on meter position (zone)
+                for (int i = 0; i < levelParametersDataList[_levelIndex].thoughtSpawnRatesList.Count; i++)
+                {
+                    if (_meterValue <= -0.2f)
+                            _thoughtCurrentSpawnRatesList[i] = levelParametersDataList[_levelIndex]
+                                .thoughtSpawnRatesList[i].negativeZoneMeterSpawnRatePercentage;
+                    else
+                    {
+                            _thoughtCurrentSpawnRatesList[i] = levelParametersDataList[_levelIndex]
+                                .thoughtSpawnRatesList[i].positiveZoneMeterSpawnRatePercentage;
+                    }
+                }
 
-                _meterComboMultiplier = 0;
-                SetDropSpeed(levelParametersDataList[_levelIndex].dropSpeed);
-                SetHorizontalForceComboIncrement(0);
+                if (Mathf.Abs(_meterValue) == 1)
+                {
+                    _meterLimitsTimer += Time.deltaTime;
+                    if (_meterLimitsTimer > _meterLimitsTimeToDeath)
+                    {
+                        GameOver();
+                    }
+                    
+                    //Set Spawn Rates based on meter position (zone)
+                    for (int i = 0; i < levelParametersDataList[_levelIndex].thoughtSpawnRatesList.Count; i++)
+                    { 
+                            _thoughtCurrentSpawnRatesList[i] = levelParametersDataList[_levelIndex]
+                                .thoughtSpawnRatesList[i].limitZoneMeterSpawnRatePercentage;
+                    }
+                }
+
+                _meterLimitsTimer = 0;
+                
+                UpdateWhiteBalanceFilter();
             }
-
         }
         else
         {
@@ -289,7 +341,6 @@ public class GameManager : MonoBehaviour
             _meterComboMultiplier = 0;
         }
 
-        //_meterValue = Mathf.Lerp(_meterValue, _scoreIncrementValue + _meterValue, _meterMoveSpeed * _meterMoveSpeedMultiplier * Time.deltaTime);
         _meterValue += _meterIncrementValue * _meterMoveSpeed * _meterMoveSpeedMultiplier * Time.deltaTime;
         _meterValue = Mathf.Clamp(_meterValue, -1f, 1f);
 
@@ -297,23 +348,9 @@ public class GameManager : MonoBehaviour
         {
             GameOver();
         }
-
-        if (Mathf.Abs(_meterValue) == 1)
-        {
-            _meterLimitsTimer += Time.deltaTime;
-            if (_meterLimitsTimer > _meterLimitsTimeToDeath)
-            {
-                GameOver();
-            }
-        }
-        else
-        {
-            _meterLimitsTimer = 0;
-        }
-
-        UpdateWhiteBalanceFilter();
-        UpdateVignetteFilter();
         
+        UpdateVignetteFilter();
+
         //UI Update
         UpdateUI();
     }
@@ -326,11 +363,29 @@ public class GameManager : MonoBehaviour
         thought.gameObject.SetActive(false);
     }
 
+    IEnumerator SpawnThoughts()
+    {
+        while (canSpawn)
+        {
+            for (int i = 0; i < _thoughtsPool.Count; i++)
+            {
+                if (!_thoughtsPool[i].gameObject.activeSelf)
+                {
+                    ReUseThought(_thoughtsPool[i]);
+                    break;
+                }
+            }
+            GenerateRandomTimeInterval();
+            yield return new WaitForSeconds(_randomTimeInterval);
+            yield return null;
+        }
+    }
+
     //It passes a thought as an argument, activates it, resets the behaviour component and sets his spawn position using the screen borders as reference
-    public void ReSpawnThought(ThoughtBehaviour thought)
+    public void ReUseThought(ThoughtBehaviour thought)
     {
         thought.gameObject.SetActive(true);
-        int randomIndex = selectRandomIndex(_thoughtsAttributesListSpawnRates);
+        int randomIndex = GetWeightedRandomIndex();
         thought.ResetBehaviour(randomIndex);
         thought.transform.position = new Vector3(UnityEngine.Random.Range(-ScreenBordersCoords.x+0.5f, ScreenBordersCoords.x-0.5f),ScreenBordersCoords.y+2,0);
     }
@@ -342,7 +397,7 @@ public class GameManager : MonoBehaviour
             thought.Fade();
         }
     }
-    
+
     //Generates a random time frame between two given values
     void GenerateRandomTimeInterval()
     {
@@ -364,26 +419,62 @@ public class GameManager : MonoBehaviour
             thought.horizontalForceComboIncrementValue = forceIncrement;
         }
     }
-
-    // Receives a list of probabilities (percentages) and returns a random index of it based on the percentages
-    public int selectRandomIndex(List<float> spawnRateList)
+    
+    void AllowThoughtSpawn(string category, bool canSpawn)
     {
-        float randomPercentage = UnityEngine.Random.Range(0f, 100f);
-        float sum = 0;
-        for (int index = 0; index < spawnRateList.Count; index++)
+        foreach (var though in thoughtsAttributesList)
         {
-            sum += spawnRateList[index];
-            if (sum > randomPercentage)
+            if (though.category == category)
             {
-                return index;
+                though.canSpawn = canSpawn;
             }
         }
-        return 0;
     }
 
+    // Receives a list of probabilities (percentages) and returns a random index of it based on the percentages
+    public int GetWeightedRandomIndex()
+    {
+        float sum = 0;
+        for (int i = 0; i < _thoughtCurrentSpawnRatesList.Count; i++)
+        {
+            if (thoughtsAttributesList[i].canSpawn)
+            {
+                sum += _thoughtCurrentSpawnRatesList[i];
+            }
+        }
+        float randomWeight = 0;
+        
+        do
+        {
+            if (sum == 0)
+            {
+                return 0;
+            }
+            
+            randomWeight = UnityEngine.Random.Range(0, sum);
+        } 
+        while (randomWeight == sum);
+            
+        for(int i = 0; i < thoughtsAttributesList.Count; i++)
+        {
+            if (thoughtsAttributesList[i].canSpawn)
+            {
+                if (randomWeight < _thoughtCurrentSpawnRatesList[i])
+                {
+                    return i;
+                }
+                randomWeight -= _thoughtCurrentSpawnRatesList[i];
+            }
+        }
+
+        return 0;
+    }
+    
+    
     //sets the meter multipliers and score combos based on increment or decrement passed through 
     public void OnCatchEvent(float value)
     {
+        StartCoroutine(ChromaticAberrationFeedback());
         if (_lastMeterIncrementValue == 0)
         {
             _canStartGame = true;
@@ -451,14 +542,35 @@ public class GameManager : MonoBehaviour
     //Updates post processing white balance filter based on the meter balance values
     void UpdateWhiteBalanceFilter()
     {
-        if (_meterValue < -0.2f || _meterValue > 0.2f)
+        if (_meterValue < -_currentMeterSpreadValue || _meterValue > _currentMeterSpreadValue)
         {
             //_whiteBalance.temperature.value += Mathf.Sign(_meterValue) * 4 * Time.deltaTime;
-            _whiteBalance.temperature.value = (((Mathf.Sign(_meterValue))*Mathf.Abs(_meterValue - Mathf.Sign(_meterValue) * 0.02f)) * 48) -8*Mathf.Sign(_meterValue);
+            _whiteBalance.temperature.value = (((Mathf.Sign(_meterValue))*Mathf.Abs(_meterValue - Mathf.Sign(_meterValue) * _currentMeterSpreadValue)) * 48) -8*Mathf.Sign(_meterValue);
         }
         else
         {
             _whiteBalance.temperature.value = 0;
+        }
+    }
+
+    public IEnumerator ChromaticAberrationFeedback()
+    {
+        float speed = (_chromaticAberration.intensity.max - _chromaticAberration.intensity.min) / (chromaticAberrationFeedbackEffectTime/2);
+        while (_chromaticAberration.intensity.value <= _chromaticAberration.intensity.max)
+        {
+            _chromaticAberration.intensity.value += _chromaticAberrationSign * speed * Time.deltaTime;
+            _chromaticAberration.intensity.value = Mathf.Clamp(_chromaticAberration.intensity.value, _chromaticAberration.intensity.min, _chromaticAberration.intensity.max);
+            if (_chromaticAberration.intensity.value == _chromaticAberration.intensity.max)
+            {
+                _chromaticAberrationSign = -_chromaticAberrationSign;
+            }
+
+            if (_chromaticAberration.intensity.value == _chromaticAberration.intensity.min)
+            {
+                _chromaticAberrationSign = -_chromaticAberrationSign;
+                break;
+            }
+            yield return null;
         }
     }
 
@@ -470,9 +582,18 @@ public class GameManager : MonoBehaviour
 
         //Score UI
         scoreUI.text = _scoreValue.ToString();
-
+        scoreIncrementUI.text = "+ 10";
+        
         //Meter UI
-        meterUI.value = _meterValue;
+        meterSlider.value = _meterValue;
+    }
+
+    IEnumerator UpdateScoreIncrementUI()
+    {
+        scoreIncrementUI.gameObject.SetActive(true);
+        yield return new WaitForSeconds((_scoreTimeInterval - (_scoreComboMultiplier))/1.1f);
+        scoreIncrementUI.gameObject.SetActive(false);
+        yield return null;
     }
 
     //Water level Update loop
@@ -504,12 +625,11 @@ public class GameManager : MonoBehaviour
     }
     
     //Check if can level up
-    public void CanLevelUp()
+    public void CheckIfLevelUp()
     {
         if (_scoreValue == scoreGoalsToLevelUp[_levelIndex] && _levelIndex < levelParametersDataList.Count)
         {
             _levelIndex++;
-            SetLevelParameters();
             StartCoroutine(LevelTransition());
         }
     }
@@ -523,11 +643,13 @@ public class GameManager : MonoBehaviour
         {
             DeSpawnThought(thought);
         }
+        SetLevelParameters();
         showerParticleSystem.Stop();
         yield return new WaitForSeconds(levelTransitionTimeDuration);
         dayUI.gameObject.SetActive(false);
         showerParticleSystem.Play();
         canSpawn = true;
+        StartCoroutine(SpawnThoughts());
         _canStartGame = true;
     }
 
@@ -538,16 +660,16 @@ public class GameManager : MonoBehaviour
         {
             case 0:
 
-                _spawnTimer = 0;
-                
                 //Sets timer and score related default values
                 _canStartGame = false;
-                _timer = 0;
-                _scoreValue = 0;
+                _scoreComboTimer = 0;
+                _scoreComboMultiplier = 0;
+                _scoreTimeInterval = levelParametersDataList[_levelIndex].scoreBaseTime;
                 _scoreIncrementCombo = 1;
-                scoreUI.text = 0.ToString();
 
                 //Sets start meter speed, multiplier, internal value and UI value
+                _currentMeterSpreadValue = levelParametersDataList[_levelIndex].meterCenterSpreadValue;
+                _meterUI.SetMeterUI(_currentMeterSpreadValue);
                 _meterMoveSpeed = levelParametersDataList[_levelIndex].meterBaseMoveSpeed;
                 _meterMoveSpeedMultiplier = 0;
                 _meterValue = 0;
@@ -561,14 +683,17 @@ public class GameManager : MonoBehaviour
                 break;
             
             case 1:
-                
-                _spawnTimer = 0;
-                
+
                 //Sets timer and score related default value
                  _canStartGame = false;
+                _scoreComboTimer = 0;
+                _scoreComboMultiplier = 0;
+                _scoreTimeInterval = levelParametersDataList[_levelIndex].scoreBaseTime;
                 _scoreIncrementCombo = 1;
 
                 //Sets start meter speed, multiplier, internal value and UI value
+                _currentMeterSpreadValue = levelParametersDataList[_levelIndex].meterCenterSpreadValue;
+                _meterUI.SetMeterUI(_currentMeterSpreadValue);
                 _meterMoveSpeed = levelParametersDataList[_levelIndex].meterBaseMoveSpeed;
                 _meterMoveSpeedMultiplier = 0;
                 _meterValue = 0;
@@ -582,13 +707,17 @@ public class GameManager : MonoBehaviour
                 break;
 
             case 2:
-                _spawnTimer = 0;
-                
+
                 //Sets timer and score related default value
                 _canStartGame = false;
+                _scoreComboTimer = 0;
+                _scoreComboMultiplier = 0;
+                _scoreTimeInterval = levelParametersDataList[_levelIndex].scoreBaseTime;
                 _scoreIncrementCombo = 1;
 
                 //Sets start meter speed, multiplier, internal value and UI value
+                _currentMeterSpreadValue = levelParametersDataList[_levelIndex].meterCenterSpreadValue;
+                _meterUI.SetMeterUI(_currentMeterSpreadValue);
                 _meterMoveSpeed = levelParametersDataList[_levelIndex].meterBaseMoveSpeed;
                 _meterMoveSpeedMultiplier = 0;
                 _meterValue = 0;
