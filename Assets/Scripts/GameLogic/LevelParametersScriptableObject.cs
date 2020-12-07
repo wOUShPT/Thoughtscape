@@ -9,19 +9,20 @@ public class LevelParametersScriptableObject : ScriptableObject
     public string day;
     public float scoreBaseTime;
     public float meterCenterSpreadValue;
-    public float dropSpeed = 3.5f;
     public float horizontalForceTriggerTime;
     public float horizontalForceIncrement;
     public float meterBaseMoveSpeed;
     public float meterLimitsTimeToDeath;
     public float waterLevelRiseSpeed;
     public float waterLevelDropSpeed;
-    public List<ThoughtSpawnRate> thoughtSpawnRatesList;
+    public List<ThoughtSpawnRate> thoughtSpawnPropertiesList;
 
     [Serializable]
     public  struct ThoughtSpawnRate
     {
         public string category;
+        public bool hasHorizontalForce;
+        public float dropSpeed;
         public float centerMeterZoneSpawnRatePercentage;
         public float positiveZoneMeterSpawnRatePercentage;
         public float negativeZoneMeterSpawnRatePercentage;

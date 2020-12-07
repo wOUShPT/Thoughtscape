@@ -12,6 +12,7 @@
         </e>
         <e p="Scripts" t="Include">
           <e p="DDOL.cs" t="Include" />
+          <e p="DebugFPS.cs" t="Include" />
           <e p="GameLogic" t="Include">
             <e p="GameManager.cs" t="Include" />
             <e p="LevelParametersScriptableObject.cs" t="Include" />
@@ -22,10 +23,12 @@
             <e p="PlayerController.cs" t="Include" />
           </e>
           <e p="SceneManager.cs" t="Include" />
+          <e p="ScreenProperties.cs" t="Include" />
           <e p="Thoughts" t="Include">
             <e p="FadeAnimation.cs" t="Include" />
             <e p="PulseAnimation.cs" t="Include" />
             <e p="ThoughtBehaviour.cs" t="Include" />
+            <e p="ThoughtDoubtBehaviour.cs" t="Include" />
             <e p="ThoughtsAttributesScriptableObject.cs" t="Include" />
           </e>
           <e p="UI" t="Include">
@@ -34,6 +37,7 @@
             <e p="MeterUI.cs" t="Include" />
             <e p="PauseMenu.cs" t="Include" />
           </e>
+          <e p="Vibration.cs" t="Include" />
         </e>
         <e p="TextMesh Pro" t="Include">
           <e p="Fonts" t="Include">

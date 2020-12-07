@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using AdvancedDissolve_Example;
 using TMPro;
@@ -27,6 +28,11 @@ public class FadeAnimation : MonoBehaviour
             yield return null;
         }
         gameObject.SetActive(false);
+    }
+
+    private void OnEnable()
+    {
+        ResetFadeState();
     }
 
     public void ResetFadeState()

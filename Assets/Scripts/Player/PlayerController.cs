@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
         _mainCamera = FindObjectOfType<Camera>();
         
         //Sets the player yAxis position based on the screen size
-        _playerTransform.position = new Vector3(_playerTransform.position.x, -_gameManager.ScreenBordersCoords.y-0.7f, _playerTransform.position.z);
+        _playerTransform.position = new Vector3(_playerTransform.position.x, ScreenProperties.currentScreenCoords.yMin, _playerTransform.position.z);
     }
 
     //OnMoveGesture input event called function
@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour
         //Check if the touch/mouse position is inside the player body sprite bounds and if it's true move the player to the touch/mouse position on the X axis within the screen borders
         if (touchDragCollider.bounds.Contains(touchPositionOnWorld))
         {
-            _playerTransform.position = new Vector3(Mathf.Clamp(touchPositionOnWorld.x,-_gameManager.ScreenBordersCoords.x+0.5f,_gameManager.ScreenBordersCoords.x-0.5f), -_gameManager.ScreenBordersCoords.y-0.7f, _playerTransform.position.z);
+            _playerTransform.position = new Vector3(Mathf.Clamp(touchPositionOnWorld.x,ScreenProperties.currentScreenCoords.xMin+0.5f,ScreenProperties.currentScreenCoords.xMax-0.5f), ScreenProperties.currentScreenCoords.yMin, _playerTransform.position.z);
         }
     }
     

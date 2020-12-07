@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ac8ee5a11782e1428285521099857cb, type: 3}
-  m_Name: ExtraBadThoughts
+  m_Name: DoubtThoughts
   m_EditorClassIdentifier: 
-  category: Extra Bad
+  category: Doubt
   dropSpeed: 0
   centerMeterZoneSpawnRatePercentage: 0
   goodZoneMeterSpawnRatePercentage: 0
@@ -20,15 +20,9 @@ MonoBehaviour:
   limitZoneMeterSpawnRatePercentage: 0
   canSpawn: 1
   hasHorizontalForce: 0
-  defaultValue: -0.06
+  defaultValue: 0
   textColor: {r: 0, g: 0, b: 0, a: 1}
-  outerColor: {r: 0, g: 0.16862746, b: 1, a: 1}
-  animate: 0
-  animationCycleTime: 0
-  thoughts:
-  - there's no way out
-  - I fail all the time
-  - I'm a failure
-  - I'm better alone
-  - wish I did the other way
-  - wish I did the other way
+  outerColor: {r: 0, g: 0, b: 0, a: 1}
+  animate: 1
+  animationCycleTime: 0.25
+  thoughts: []

@@ -6,6 +6,7 @@ using UnityEngine;
 public class ThoughtsAttributesScriptableObject : ScriptableObject
 {
     public string category = "Default";
+    public float dropSpeed;
     public float centerMeterZoneSpawnRatePercentage;
     public float goodZoneMeterSpawnRatePercentage;
     public float badZoneMeterSpawnRatePercentage;

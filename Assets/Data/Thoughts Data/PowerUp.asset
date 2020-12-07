@@ -18,9 +18,10 @@ MonoBehaviour:
   badZoneMeterSpawnRatePercentage: 0
   limitZoneMeterSpawnRatePercentage: 0
   canSpawn: 1
+  hasHorizontalForce: 0
   defaultValue: 10
   textColor: {r: 0, g: 0, b: 0, a: 1}
-  outerColor: {r: 0.32497695, g: 0.9339623, b: 0.2995728, a: 1}
+  outerColor: {r: 1, g: 1, b: 1, a: 1}
   animate: 1
   animationCycleTime: 0.3
   thoughts:

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: BadThoughts
   m_EditorClassIdentifier: 
   category: Bad
+  dropSpeed: 0
   centerMeterZoneSpawnRatePercentage: 0
   goodZoneMeterSpawnRatePercentage: 0
   badZoneMeterSpawnRatePercentage: 0
@@ -21,7 +22,7 @@ MonoBehaviour:
   hasHorizontalForce: 0
   defaultValue: -0.03
   textColor: {r: 0, g: 0, b: 0, a: 1}
-  outerColor: {r: 0, g: 0.632287, b: 1, a: 1}
+  outerColor: {r: 0, g: 0.6039216, b: 1, a: 1}
   animate: 0
   animationCycleTime: 0
   thoughts:

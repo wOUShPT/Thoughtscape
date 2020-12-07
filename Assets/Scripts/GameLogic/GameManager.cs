@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.PlayerLoop;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
-using Random = Unity.Mathematics.Random;
+using RDG;
+using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
@@ -89,7 +87,7 @@ public class GameManager : MonoBehaviour
     private float _meterValue;
     private bool _isMovingUp;
     private float _meterComboTimer;
-    private int _meterComboMultiplier;
+    private float _meterComboMultiplier;
     private float _meterMoveSpeed;
     private float _meterMoveSpeedMultiplier;
     private float _meterLimitsTimer;
@@ -161,14 +159,18 @@ public class GameManager : MonoBehaviour
     
     //-------------------------------------------------------------------------------------------------------------
 
+    public GameObject neutralBackground;
+    public GameObject positiveBackground;
+    public GameObject negativeBackground;
+    
     private Camera _mainCamera;
     private Vector3 _screenBordersCoords;
 
-    public Vector3 ScreenBordersCoords
+    /*public Vector3 ScreenBordersCoords
     {
         get { return _screenBordersCoords; }
         private set { _screenBordersCoords = Vector3.zero; }
-    }
+    }*/
 
     //-------------------------------------------------------------------------------------------------------------
     
@@ -181,7 +183,7 @@ public class GameManager : MonoBehaviour
         _meterUI = meterSlider.gameObject.GetComponent<MeterUI>();
 
         //Get screen size width and height in pixels and convert to world units
-        _screenBordersCoords = _mainCamera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
+        //_screenBordersCoords = _mainCamera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
 
         //Instantiate thoughts and create a pool based on a pre-established capacity
         _thoughtsPool = new List<ThoughtBehaviour>();
@@ -196,6 +198,7 @@ public class GameManager : MonoBehaviour
             _thoughtCurrentSpawnRatesList.Add(0);
         }
 
+        Physics2D.IgnoreLayerCollision(9, 9);
         canSpawn = false;
 
         //Initialize the first level
@@ -246,6 +249,10 @@ public class GameManager : MonoBehaviour
             //Checks if the player it's in the center zone of the meter
             if (_meterValue < _currentMeterSpreadValue && _meterValue > -_currentMeterSpreadValue)
             {
+                negativeBackground.SetActive(false);
+                positiveBackground.SetActive(false);
+                neutralBackground.SetActive(true);
+                
                 _canWaterRise = false;
                 _canWaterLow = true;
                 _meterComboTimer += Time.deltaTime;
@@ -263,51 +270,68 @@ public class GameManager : MonoBehaviour
                 if (_meterComboTimer > 5)
                 {
                     _meterComboTimer = 0;
-                    _meterComboMultiplier++;
-                    SetHorizontalForceComboIncrement(_meterComboMultiplier * 0.1f);
-                    SetDropSpeed(levelParametersDataList[_levelIndex].dropSpeed + 0.1f * _meterComboMultiplier);
+                    _meterComboMultiplier += 0.1f;
+                    SetHorizontalForce(_meterComboMultiplier);
+                    SetDropSpeed(_meterComboMultiplier);
                 }
                 
                 //Set Spawn Rates based on meter position (zone)
-                for (int i = 0; i < levelParametersDataList[_levelIndex].thoughtSpawnRatesList.Count; i++)
+                for (int i = 0; i < levelParametersDataList[_levelIndex].thoughtSpawnPropertiesList.Count; i++)
                 {
                     _thoughtCurrentSpawnRatesList[i] = levelParametersDataList[_levelIndex]
-                            .thoughtSpawnRatesList[i].centerMeterZoneSpawnRatePercentage;
+                            .thoughtSpawnPropertiesList[i].centerMeterZoneSpawnRatePercentage;
                 }
 
-                _meterMoveSpeedMultiplier = (1f - Mathf.Abs(_meterValue) * _currentMeterSpreadValue*2) * 1.2f * _scoreIncrementCombo;
+                _meterMoveSpeedMultiplier =
+                    Mathf.Abs(Mathf.Abs(_meterValue)-_currentMeterSpreadValue*6) * 3 * _scoreIncrementCombo;
+                Debug.Log(_meterMoveSpeedMultiplier.ToString());
+                //_meterMoveSpeedMultiplier = (1f - Mathf.Abs(_meterValue) * _currentMeterSpreadValue*2) * 1.2f * _scoreIncrementCombo;
             }
             else
             {
+                if (_meterValue >= _currentMeterSpreadValue)
+                {
+                    negativeBackground.SetActive(false);
+                    positiveBackground.SetActive(true);
+                    neutralBackground.SetActive(false);
+                }
+
+                if (_meterValue <= _currentMeterSpreadValue)
+                {
+                    negativeBackground.SetActive(true);
+                    positiveBackground.SetActive(false);
+                    neutralBackground.SetActive(false);
+                }
+                
                 _canWaterRise = true;
                 _canWaterLow = false;
                 _meterComboTimer = 0;
                 _scoreComboTimer = 0;
                 _scoreComboMultiplier = 0;
-                _meterComboMultiplier = 0;
+                _meterComboMultiplier = 1;
                 
-                SetDropSpeed(levelParametersDataList[_levelIndex].dropSpeed);
-                SetHorizontalForceComboIncrement(0);
+                SetDropSpeed(1f);
+                SetHorizontalForce(0);
                 
                 if (_isMovingUp && Mathf.Sign(_meterValue) == -1 || !_isMovingUp && Mathf.Sign(_meterValue) == 1)
                 {
-                    _meterMoveSpeedMultiplier = Mathf.Abs(_meterValue) * 3f * _scoreIncrementCombo;
+                    _meterMoveSpeedMultiplier = Mathf.Abs(_meterValue) * 6f * _scoreIncrementCombo;
                 }
                 else
                 {
-                    _meterMoveSpeedMultiplier = (1.1f - Mathf.Abs(_meterValue)) * 3f * _scoreIncrementCombo;
+                    _meterMoveSpeedMultiplier = ((1-_currentMeterSpreadValue) - Mathf.Abs(_meterValue)) * 6f * _scoreIncrementCombo;
                 }
                 
                 //Set Spawn Rates based on meter position (zone)
-                for (int i = 0; i < levelParametersDataList[_levelIndex].thoughtSpawnRatesList.Count; i++)
+                for (int i = 0; i < levelParametersDataList[_levelIndex].thoughtSpawnPropertiesList.Count; i++)
                 {
                     if (_meterValue <= -0.2f)
                             _thoughtCurrentSpawnRatesList[i] = levelParametersDataList[_levelIndex]
-                                .thoughtSpawnRatesList[i].negativeZoneMeterSpawnRatePercentage;
+                                .thoughtSpawnPropertiesList[i].negativeZoneMeterSpawnRatePercentage;
                     else
                     {
                             _thoughtCurrentSpawnRatesList[i] = levelParametersDataList[_levelIndex]
-                                .thoughtSpawnRatesList[i].positiveZoneMeterSpawnRatePercentage;
+                                .thoughtSpawnPropertiesList[i].positiveZoneMeterSpawnRatePercentage;
                     }
                 }
 
@@ -320,10 +344,10 @@ public class GameManager : MonoBehaviour
                     }
                     
                     //Set Spawn Rates based on meter position (zone)
-                    for (int i = 0; i < levelParametersDataList[_levelIndex].thoughtSpawnRatesList.Count; i++)
+                    for (int i = 0; i < levelParametersDataList[_levelIndex].thoughtSpawnPropertiesList.Count; i++)
                     { 
                             _thoughtCurrentSpawnRatesList[i] = levelParametersDataList[_levelIndex]
-                                .thoughtSpawnRatesList[i].limitZoneMeterSpawnRatePercentage;
+                                .thoughtSpawnPropertiesList[i].limitZoneMeterSpawnRatePercentage;
                     }
                 }
 
@@ -338,13 +362,13 @@ public class GameManager : MonoBehaviour
             _meterIncrementValue = 0;
             _meterMoveSpeedMultiplier = 0;
             _lastMeterIncrementValue = 0;
-            _meterComboMultiplier = 0;
+            _meterComboMultiplier = 1;
         }
 
         _meterValue += _meterIncrementValue * _meterMoveSpeed * _meterMoveSpeedMultiplier * Time.deltaTime;
         _meterValue = Mathf.Clamp(_meterValue, -1f, 1f);
 
-        if (Mathf.Approximately(waterWaveTransform.position.y, -ScreenBordersCoords.y + 0.8f))
+        if (Mathf.Approximately(waterWaveTransform.position.y, ScreenProperties.currentScreenCoords.yMin + 0.8f))
         {
             GameOver();
         }
@@ -359,8 +383,8 @@ public class GameManager : MonoBehaviour
     public void InstantiateThought()
     {
         ThoughtBehaviour thought = Instantiate(thoughtPrefab);
-        _thoughtsPool.Add(thought);
         thought.gameObject.SetActive(false);
+        _thoughtsPool.Add(thought);
     }
 
     IEnumerator SpawnThoughts()
@@ -375,7 +399,7 @@ public class GameManager : MonoBehaviour
                     break;
                 }
             }
-            GenerateRandomTimeInterval();
+            _randomTimeInterval = Random.Range(minTimeBetweenSpawns, maxTimeBetweenSpawns);
             yield return new WaitForSeconds(_randomTimeInterval);
             yield return null;
         }
@@ -384,10 +408,13 @@ public class GameManager : MonoBehaviour
     //It passes a thought as an argument, activates it, resets the behaviour component and sets his spawn position using the screen borders as reference
     public void ReUseThought(ThoughtBehaviour thought)
     {
-        thought.gameObject.SetActive(true);
         int randomIndex = GetWeightedRandomIndex();
-        thought.ResetBehaviour(randomIndex);
-        thought.transform.position = new Vector3(UnityEngine.Random.Range(-ScreenBordersCoords.x+0.5f, ScreenBordersCoords.x-0.5f),ScreenBordersCoords.y+2,0);
+        thought.currentIndex = randomIndex;
+        thought.gameObject.SetActive(true);
+        thought.ResetBehaviour();
+        thought.transform.position = new Vector3(Random.Range(ScreenProperties.currentScreenCoords.xMin+0.5f, ScreenProperties.currentScreenCoords.xMax-0.5f),ScreenProperties.currentScreenCoords.yMax+2,0);
+        SetDropSpeed(thought);
+        SetHorizontalForce(thought);
     }
 
     public void DeSpawnThought(ThoughtBehaviour thought)
@@ -397,22 +424,41 @@ public class GameManager : MonoBehaviour
             thought.Fade();
         }
     }
-
-    //Generates a random time frame between two given values
-    void GenerateRandomTimeInterval()
-    {
-        _randomTimeInterval = UnityEngine.Random.Range(minTimeBetweenSpawns, maxTimeBetweenSpawns);
-    }
-
-    public void SetDropSpeed(float dropSpeedValue)
+    
+    public void SetDropSpeed(float dropSpeedMultiplier)
     {
         foreach (var thought in _thoughtsPool)
         {
-            thought.dropSpeed = dropSpeedValue;
-        }   
+            thought.dropSpeedMultiplier = dropSpeedMultiplier;
+        }
+    }
+    
+    
+    public void SetDropSpeed(ThoughtBehaviour thought)
+    {
+        for (int i = 0; i < levelParametersDataList[_levelIndex].thoughtSpawnPropertiesList.Count; i++)
+        {
+            if (thought.category == levelParametersDataList[_levelIndex].thoughtSpawnPropertiesList[i].category)
+            {
+                thought.dropSpeed = levelParametersDataList[_levelIndex].thoughtSpawnPropertiesList[i].dropSpeed;
+            }
+        }
+    }
+    
+
+    public void SetHorizontalForce(ThoughtBehaviour thought)
+    {
+        for (int i = 0; i < levelParametersDataList[_levelIndex].thoughtSpawnPropertiesList.Count; i++)
+        {
+            if (thought.category == levelParametersDataList[_levelIndex].thoughtSpawnPropertiesList[i].category)
+            {
+                thought.hasHorizontalMovement = levelParametersDataList[_levelIndex].thoughtSpawnPropertiesList[i]
+                    .hasHorizontalForce;
+            }
+        }
     }
 
-    public void SetHorizontalForceComboIncrement(float forceIncrement)
+    public void SetHorizontalForce(float forceIncrement)
     {
         foreach (var thought in _thoughtsPool)
         {
@@ -451,7 +497,7 @@ public class GameManager : MonoBehaviour
                 return 0;
             }
             
-            randomWeight = UnityEngine.Random.Range(0, sum);
+            randomWeight = Random.Range(0, sum);
         } 
         while (randomWeight == sum);
             
@@ -499,7 +545,7 @@ public class GameManager : MonoBehaviour
             }
             else //if value == _meterIncrementValue
             {
-                _scoreIncrementCombo = Mathf.Clamp(_scoreIncrementCombo + 0.5f, 1, 10);
+                _scoreIncrementCombo = Mathf.Clamp(_scoreIncrementCombo + _scoreIncrementCombo, 1, 10);
                 _meterIncrementValue = value;
             }
             _lastMeterIncrementValue = value;
@@ -600,14 +646,14 @@ public class GameManager : MonoBehaviour
     IEnumerator UpdateWaterLevel()
     {
         waterWaveTransform.position =
-            new Vector3(waterWaveTransform.position.x, -_screenBordersCoords.y - 4, waterWaveTransform.position.z);
+            new Vector3(waterWaveTransform.position.x, ScreenProperties.currentScreenCoords.yMin - 4, waterWaveTransform.position.z);
         while (true)
         {
             if (_canWaterLow)
             {
                 waterWaveTransform.position = new Vector3(waterWaveTransform.position.x,
                     Mathf.Clamp(waterWaveTransform.position.y - waterLevelDropSpeed * Time.deltaTime,
-                        -ScreenBordersCoords.y - 4, -ScreenBordersCoords.y + 0.8f)
+                        ScreenProperties.currentScreenCoords.yMin - 4, ScreenProperties.currentScreenCoords.yMin+ 0.8f)
                     , waterWaveTransform.position.z);
                 yield return null;
             }
@@ -616,7 +662,7 @@ public class GameManager : MonoBehaviour
             {
                 waterWaveTransform.position = new Vector3(waterWaveTransform.position.x,
                     Mathf.Clamp(waterWaveTransform.position.y + waterLevelRiseSpeed * Time.deltaTime,
-                        -ScreenBordersCoords.y - 4, -ScreenBordersCoords.y + 0.8f)
+                        ScreenProperties.currentScreenCoords.yMin - 4, ScreenProperties.currentScreenCoords.yMin + 0.8f)
                     , waterWaveTransform.position.z);
             }
 
@@ -664,6 +710,7 @@ public class GameManager : MonoBehaviour
                 _canStartGame = false;
                 _scoreComboTimer = 0;
                 _scoreComboMultiplier = 0;
+                _meterComboMultiplier = 1;
                 _scoreTimeInterval = levelParametersDataList[_levelIndex].scoreBaseTime;
                 _scoreIncrementCombo = 1;
 
@@ -679,7 +726,6 @@ public class GameManager : MonoBehaviour
                 _meterLimitsTimeToDeath = levelParametersDataList[_levelIndex].meterLimitsTimeToDeath;
                 waterLevelDropSpeed = levelParametersDataList[_levelIndex].waterLevelDropSpeed;
                 waterLevelRiseSpeed = levelParametersDataList[_levelIndex].waterLevelRiseSpeed;
-                SetDropSpeed(levelParametersDataList[_levelIndex].dropSpeed);
                 break;
             
             case 1:
@@ -688,6 +734,7 @@ public class GameManager : MonoBehaviour
                  _canStartGame = false;
                 _scoreComboTimer = 0;
                 _scoreComboMultiplier = 0;
+                _meterComboMultiplier = 1;
                 _scoreTimeInterval = levelParametersDataList[_levelIndex].scoreBaseTime;
                 _scoreIncrementCombo = 1;
 
@@ -703,7 +750,6 @@ public class GameManager : MonoBehaviour
                 _meterLimitsTimeToDeath = levelParametersDataList[_levelIndex].meterLimitsTimeToDeath;
                 waterLevelDropSpeed = levelParametersDataList[_levelIndex].waterLevelDropSpeed;
                 waterLevelRiseSpeed = levelParametersDataList[_levelIndex].waterLevelRiseSpeed;
-                SetDropSpeed(levelParametersDataList[_levelIndex].dropSpeed);
                 break;
 
             case 2:
@@ -712,6 +758,7 @@ public class GameManager : MonoBehaviour
                 _canStartGame = false;
                 _scoreComboTimer = 0;
                 _scoreComboMultiplier = 0;
+                _meterComboMultiplier = 1;
                 _scoreTimeInterval = levelParametersDataList[_levelIndex].scoreBaseTime;
                 _scoreIncrementCombo = 1;
 
@@ -727,7 +774,6 @@ public class GameManager : MonoBehaviour
                 _meterLimitsTimeToDeath = levelParametersDataList[_levelIndex].meterLimitsTimeToDeath;
                 waterLevelDropSpeed = levelParametersDataList[_levelIndex].waterLevelDropSpeed;
                 waterLevelRiseSpeed = levelParametersDataList[_levelIndex].waterLevelRiseSpeed;
-                SetDropSpeed(levelParametersDataList[_levelIndex].dropSpeed);
                 break;
 
             case 3:

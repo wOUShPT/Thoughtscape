@@ -14,42 +14,60 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   day: wednesday
   scoreBaseTime: 5
-  meterCenterSpreadValue: 0.16
-  dropSpeed: 5
+  meterCenterSpreadValue: 0.15
   horizontalForceTriggerTime: 0
   horizontalForceIncrement: 0
-  meterBaseMoveSpeed: 1.5
+  meterBaseMoveSpeed: 1
   meterLimitsTimeToDeath: 5
   waterLevelRiseSpeed: 0.15
   waterLevelDropSpeed: 0.3
-  thoughtSpawnRatesList:
+  thoughtSpawnPropertiesList:
   - category: Good
-    centerMeterZoneSpawnRatePercentage: 40
-    positiveZoneMeterSpawnRatePercentage: 25
-    negativeZoneMeterSpawnRatePercentage: 40
-    limitZoneMeterSpawnRatePercentage: 10
+    hasHorizontalForce: 1
+    dropSpeed: 3.8
+    centerMeterZoneSpawnRatePercentage: 50
+    positiveZoneMeterSpawnRatePercentage: 0
+    negativeZoneMeterSpawnRatePercentage: 0
+    limitZoneMeterSpawnRatePercentage: 0
   - category: Bad
-    centerMeterZoneSpawnRatePercentage: 40
-    positiveZoneMeterSpawnRatePercentage: 50
-    negativeZoneMeterSpawnRatePercentage: 40
-    limitZoneMeterSpawnRatePercentage: 10
+    hasHorizontalForce: 1
+    dropSpeed: 3.8
+    centerMeterZoneSpawnRatePercentage: 50
+    positiveZoneMeterSpawnRatePercentage: 0
+    negativeZoneMeterSpawnRatePercentage: 0
+    limitZoneMeterSpawnRatePercentage: 0
   - category: Extra Good
-    centerMeterZoneSpawnRatePercentage: 30
-    positiveZoneMeterSpawnRatePercentage: 10
+    hasHorizontalForce: 1
+    dropSpeed: 4
+    centerMeterZoneSpawnRatePercentage: 15
+    positiveZoneMeterSpawnRatePercentage: 15
     negativeZoneMeterSpawnRatePercentage: 30
-    limitZoneMeterSpawnRatePercentage: 30
+    limitZoneMeterSpawnRatePercentage: 0
   - category: Extra Bad
-    centerMeterZoneSpawnRatePercentage: 30
+    hasHorizontalForce: 1
+    dropSpeed: 4
+    centerMeterZoneSpawnRatePercentage: 15
     positiveZoneMeterSpawnRatePercentage: 30
-    negativeZoneMeterSpawnRatePercentage: 10
-    limitZoneMeterSpawnRatePercentage: 30
+    negativeZoneMeterSpawnRatePercentage: 15
+    limitZoneMeterSpawnRatePercentage: 0
   - category: Forbidden
-    centerMeterZoneSpawnRatePercentage: 20
+    hasHorizontalForce: 0
+    dropSpeed: 4.5
+    centerMeterZoneSpawnRatePercentage: 25
     positiveZoneMeterSpawnRatePercentage: 20
     negativeZoneMeterSpawnRatePercentage: 20
     limitZoneMeterSpawnRatePercentage: 0
   - category: PowerUp
+    hasHorizontalForce: 1
+    dropSpeed: 4
     centerMeterZoneSpawnRatePercentage: 0
-    positiveZoneMeterSpawnRatePercentage: 0
-    negativeZoneMeterSpawnRatePercentage: 0
+    positiveZoneMeterSpawnRatePercentage: 10
+    negativeZoneMeterSpawnRatePercentage: 10
+    limitZoneMeterSpawnRatePercentage: 15
+  - category: Doubt
+    hasHorizontalForce: 0
+    dropSpeed: 4.5
+    centerMeterZoneSpawnRatePercentage: 20
+    positiveZoneMeterSpawnRatePercentage: 20
+    negativeZoneMeterSpawnRatePercentage: 20
     limitZoneMeterSpawnRatePercentage: 40
