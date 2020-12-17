@@ -109,6 +109,7 @@ MonoBehaviour:
     type: 2}
   dropSpeed: 1
   dropSpeedMultiplier: 1
+  hasHorizontalMovement: 0
   minHorizontalForceValue: 0.1
   maxHorizontalForceValue: 0.2
   horizontalForceComboIncrementValue: 0
@@ -218,7 +219,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 1328242269870610966, guid: 48fb72b9ed4e7ad49b18aa047f325f04, type: 2}
+  - {fileID: 9123694281952738493, guid: 240bc41de6c15cf4881b389f8499f905, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -260,8 +261,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: thought
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 48fb72b9ed4e7ad49b18aa047f325f04, type: 2}
-  m_sharedMaterial: {fileID: 1328242269870610966, guid: 48fb72b9ed4e7ad49b18aa047f325f04,
+  m_fontAsset: {fileID: 11400000, guid: 240bc41de6c15cf4881b389f8499f905, type: 2}
+  m_sharedMaterial: {fileID: 9123694281952738493, guid: 240bc41de6c15cf4881b389f8499f905,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -286,17 +287,17 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 3
+  m_fontSize: 3.55
   m_fontSizeBase: 3
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 1
-  m_fontSizeMax: 3
-  m_fontStyle: 0
+  m_fontSizeMax: 4
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: -0.6
+  m_characterSpacing: 2
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -308,7 +309,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
-  m_enableExtraPadding: 0
+  m_enableExtraPadding: 1
   checkPaddingRequired: 0
   m_isRichText: 1
   m_parseCtrlCharacters: 1

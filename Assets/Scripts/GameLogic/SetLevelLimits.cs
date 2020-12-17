@@ -13,16 +13,11 @@ public class SetLevelLimits : MonoBehaviour
     [Tooltip("Right limit BoxCollider2D Component")]
     public BoxCollider2D rightLimitCollider;
     
-    private Camera _mainCamera;
-    private Vector3 _screenBordersCoords;
     
     //Set the level limits left and right collider (thoughts collision control)
     void Awake()
     {
-        _mainCamera = FindObjectOfType<Camera>();
-        _screenBordersCoords = _mainCamera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
-
-        leftLimitCollider.offset = new Vector2(-_screenBordersCoords.x-1f, leftLimitCollider.offset.y);
-        rightLimitCollider.offset = new Vector2(_screenBordersCoords.x+1f, rightLimitCollider.offset.y);
+        leftLimitCollider.offset = new Vector2(ScreenProperties.currentScreenCoords.xMin-0.8f, leftLimitCollider.offset.y);
+        rightLimitCollider.offset = new Vector2(ScreenProperties.currentScreenCoords.xMax+0.8f, rightLimitCollider.offset.y);
     }
 }

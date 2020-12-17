@@ -185,7 +185,7 @@ public class ThoughtBehaviour : MonoBehaviour
     IEnumerator Intermittence()
     {
         _randomIndex = Random.Range(0, _positiveDoubtThoughtAttributes.thoughts.Count);
-        yield return new WaitForSeconds(Random.Range(0,thoughtsAttributesList[currentIndex].animationCycleTime));
+        yield return new WaitForSeconds(Random.Range(0,0.2f));
         while (true)
         {
             scoreValue = _positiveDoubtThoughtAttributes.defaultValue;

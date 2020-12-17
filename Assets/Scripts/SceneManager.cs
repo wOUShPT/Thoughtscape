@@ -2,30 +2,50 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SceneManager : MonoBehaviour
 {
-    void Awake()
+    public Animator sceneTransition;
+    private float _sceneTransitionTime;
+    void OnEnable()
     {
-        LoadMainMenu();
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += (arg0, mode) =>  OnSceneLoaded(arg0, mode);
+        LoadScene(1);
     }
-    
+
     //Load Main Menu screen
     public void LoadMainMenu()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+        LoadScene(1);
     }
 
     //Load Main Loop scene 
-    public void LoadGameScene()
+    public void LoadScene(int levelIndex)
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(2);
-        
+        StartCoroutine(TransitionScene(levelIndex));
         //Delete another existing Game Manager to prevent duplication
         if (GameObject.FindGameObjectWithTag("Managers").GetComponentInChildren<GameManager>())
         {
             Destroy(GameObject.FindGameObjectWithTag("Managers").GetComponentInChildren<GameManager>().gameObject);
         }
+    }
+
+    IEnumerator TransitionScene(int levelIndex)
+    {
+        sceneTransition.SetTrigger("Start");
+        yield return new WaitForSeconds(1f);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(levelIndex);
+    }
+
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (GameObject.FindGameObjectWithTag("SceneTransitionEffect"))
+        {
+            sceneTransition = GameObject.FindGameObjectWithTag("SceneTransitionEffect").GetComponent<Animator>();   
+        }
+        sceneTransition.SetTrigger("End");
     }
 }

@@ -28,7 +28,7 @@ public class MainMenu : MonoBehaviour
     IEnumerator FallAnimation()
     {
         playButtonRb.velocity = Vector2.down * 8;
-        yield return new WaitForSeconds(1.5f);
-        _sceneManager.LoadGameScene();
+        yield return new WaitForSeconds(0.5f);
+        _sceneManager.LoadScene(2);
     }
 }

@@ -15,6 +15,8 @@ public class LevelParametersScriptableObject : ScriptableObject
     public float meterLimitsTimeToDeath;
     public float waterLevelRiseSpeed;
     public float waterLevelDropSpeed;
+    public float minTimeBetweenSpawns;
+    public float maxTimeBetweenSpawns;
     public List<ThoughtSpawnRate> thoughtSpawnPropertiesList;
 
     [Serializable]

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace UnityEditor.Rendering.LWRP.ShaderGUI
+namespace UnityEditor.Rendering.Universal.ShaderGUI
 {
     internal class AdvancedDisolve_UnlitShader : BaseShaderGUI
     {

@@ -6,6 +6,7 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 using RDG;
+using TMPro;
 using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
@@ -53,10 +54,13 @@ public class GameManager : MonoBehaviour
     [Tooltip("Can spawn thoughts?")]
     public bool canSpawn;
 
+    [Tooltip("Center zone spread spawn change tolerance")]
+    public float centerZoneSpreadSpawnTolerance;
+
     [Tooltip("Minimum time between spawns in seconds")]
-    public float minTimeBetweenSpawns;
+    public float currentMinTimeBetweenSpawns;
     [Tooltip("Maximum time between spawns in seconds")]
-    public float maxTimeBetweenSpawns;
+    public float currentMaxTimeBetweenSpawns;
     
     private float _randomTimeInterval;
 
@@ -83,7 +87,7 @@ public class GameManager : MonoBehaviour
     private float _lastMeterIncrementValue;
     private float _scoreIncrementCombo;
 
-    private float _currentMeterSpreadValue;
+    public float currentMeterSpreadValue;
     private float _meterValue;
     private bool _isMovingUp;
     private float _meterComboTimer;
@@ -119,13 +123,13 @@ public class GameManager : MonoBehaviour
     [Space(15, order = 2)]
 
     [Tooltip("UI remaining time text component")]
-    public Text timerUI;
+    public TextMeshProUGUI timerUI;
     
     [Tooltip("UI score text component")] 
-    public Text scoreUI;
+    public TextMeshProUGUI scoreUI;
 
     [Tooltip("UI score increment text component")]
-    public Text scoreIncrementUI;
+    public TextMeshProUGUI scoreIncrementUI;
     
     [Tooltip("UI balance meter slider component")]
     public Slider meterSlider;
@@ -210,8 +214,8 @@ public class GameManager : MonoBehaviour
         postProcessingVolume.profile.TryGet(out _whiteBalance);
         postProcessingVolume.profile.TryGet(out _vignette);
         postProcessingVolume.profile.TryGet(out _chromaticAberration);
-        _whiteBalance.temperature.min = -40;
-        _whiteBalance.temperature.max = 40;
+        _whiteBalance.temperature.min = -60;
+        _whiteBalance.temperature.max = 60;
         _vignette.intensity.min = 0.2f;
         _vignette.intensity.max = 0.5f;
         _chromaticAberration.intensity.min = 0f;
@@ -247,11 +251,11 @@ public class GameManager : MonoBehaviour
             _timer += Time.deltaTime;
 
             //Checks if the player it's in the center zone of the meter
-            if (_meterValue < _currentMeterSpreadValue && _meterValue > -_currentMeterSpreadValue)
+            if (_meterValue < currentMeterSpreadValue && _meterValue > -currentMeterSpreadValue)
             {
-                negativeBackground.SetActive(false);
+                /*negativeBackground.SetActive(false);
                 positiveBackground.SetActive(false);
-                neutralBackground.SetActive(true);
+                neutralBackground.SetActive(true);*/
                 
                 _canWaterRise = false;
                 _canWaterLow = true;
@@ -283,24 +287,23 @@ public class GameManager : MonoBehaviour
                 }
 
                 _meterMoveSpeedMultiplier =
-                    Mathf.Abs(Mathf.Abs(_meterValue)-_currentMeterSpreadValue*6) * 3 * _scoreIncrementCombo;
-                Debug.Log(_meterMoveSpeedMultiplier.ToString());
+                    Mathf.Abs(Mathf.Abs(_meterValue)-(1*currentMeterSpreadValue*1.5f)) * _scoreIncrementCombo;
                 //_meterMoveSpeedMultiplier = (1f - Mathf.Abs(_meterValue) * _currentMeterSpreadValue*2) * 1.2f * _scoreIncrementCombo;
             }
             else
             {
-                if (_meterValue >= _currentMeterSpreadValue)
+                if (_meterValue >= currentMeterSpreadValue)
                 {
-                    negativeBackground.SetActive(false);
+                    /*negativeBackground.SetActive(false);
                     positiveBackground.SetActive(true);
-                    neutralBackground.SetActive(false);
+                    neutralBackground.SetActive(false);*/
                 }
 
-                if (_meterValue <= _currentMeterSpreadValue)
+                if (_meterValue <= currentMeterSpreadValue)
                 {
-                    negativeBackground.SetActive(true);
+                    /*negativeBackground.SetActive(true);
                     positiveBackground.SetActive(false);
-                    neutralBackground.SetActive(false);
+                    neutralBackground.SetActive(false);*/
                 }
                 
                 _canWaterRise = true;
@@ -315,25 +318,33 @@ public class GameManager : MonoBehaviour
                 
                 if (_isMovingUp && Mathf.Sign(_meterValue) == -1 || !_isMovingUp && Mathf.Sign(_meterValue) == 1)
                 {
-                    _meterMoveSpeedMultiplier = Mathf.Abs(_meterValue) * 6f * _scoreIncrementCombo;
+                    _meterMoveSpeedMultiplier = (Mathf.Abs(_meterValue)/1.5f) * _scoreIncrementCombo;
                 }
                 else
                 {
-                    _meterMoveSpeedMultiplier = ((1-_currentMeterSpreadValue) - Mathf.Abs(_meterValue)) * 6f * _scoreIncrementCombo;
+                    _meterMoveSpeedMultiplier = ((1 - Mathf.Abs(_meterValue))/1.5f) * _scoreIncrementCombo;
                 }
                 
                 //Set Spawn Rates based on meter position (zone)
-                for (int i = 0; i < levelParametersDataList[_levelIndex].thoughtSpawnPropertiesList.Count; i++)
+                if (_meterValue <= -currentMeterSpreadValue - centerZoneSpreadSpawnTolerance)
                 {
-                    if (_meterValue <= -0.2f)
-                            _thoughtCurrentSpawnRatesList[i] = levelParametersDataList[_levelIndex]
-                                .thoughtSpawnPropertiesList[i].negativeZoneMeterSpawnRatePercentage;
-                    else
+                    for (int i = 0; i < levelParametersDataList[_levelIndex].thoughtSpawnPropertiesList.Count; i++)
                     {
-                            _thoughtCurrentSpawnRatesList[i] = levelParametersDataList[_levelIndex]
-                                .thoughtSpawnPropertiesList[i].positiveZoneMeterSpawnRatePercentage;
+                        _thoughtCurrentSpawnRatesList[i] = levelParametersDataList[_levelIndex]
+                            .thoughtSpawnPropertiesList[i].negativeZoneMeterSpawnRatePercentage;
                     }
                 }
+                
+                if(_meterValue >= currentMeterSpreadValue + centerZoneSpreadSpawnTolerance)
+                {
+                    for (int i = 0; i < levelParametersDataList[_levelIndex].thoughtSpawnPropertiesList.Count; i++)
+                    {
+                        _thoughtCurrentSpawnRatesList[i] = levelParametersDataList[_levelIndex]
+                            .thoughtSpawnPropertiesList[i].positiveZoneMeterSpawnRatePercentage;
+                    }
+                }
+                
+                
 
                 if (Mathf.Abs(_meterValue) == 1)
                 {
@@ -343,7 +354,7 @@ public class GameManager : MonoBehaviour
                         GameOver();
                     }
                     
-                    //Set Spawn Rates based on meter position (zone)
+                    //Set Spawn Rates based on current meter position (negative, center, positive)
                     for (int i = 0; i < levelParametersDataList[_levelIndex].thoughtSpawnPropertiesList.Count; i++)
                     { 
                             _thoughtCurrentSpawnRatesList[i] = levelParametersDataList[_levelIndex]
@@ -352,28 +363,26 @@ public class GameManager : MonoBehaviour
                 }
 
                 _meterLimitsTimer = 0;
-                
-                UpdateWhiteBalanceFilter();
             }
         }
-        else
+        /*else
         {
             _meterValue = 0;
             _meterIncrementValue = 0;
             _meterMoveSpeedMultiplier = 0;
             _lastMeterIncrementValue = 0;
             _meterComboMultiplier = 1;
-        }
+        }*/
 
         _meterValue += _meterIncrementValue * _meterMoveSpeed * _meterMoveSpeedMultiplier * Time.deltaTime;
-        _meterValue = Mathf.Clamp(_meterValue, -1f, 1f);
+        _meterValue = Mathf.Clamp(_meterValue, meterSlider.minValue, meterSlider.maxValue);
 
         if (Mathf.Approximately(waterWaveTransform.position.y, ScreenProperties.currentScreenCoords.yMin + 0.8f))
         {
             GameOver();
         }
         
-        UpdateVignetteFilter();
+        UpdateWhiteBalanceFilter();
 
         //UI Update
         UpdateUI();
@@ -399,7 +408,7 @@ public class GameManager : MonoBehaviour
                     break;
                 }
             }
-            _randomTimeInterval = Random.Range(minTimeBetweenSpawns, maxTimeBetweenSpawns);
+            _randomTimeInterval = Random.Range(currentMinTimeBetweenSpawns, currentMaxTimeBetweenSpawns);
             yield return new WaitForSeconds(_randomTimeInterval);
             yield return null;
         }
@@ -412,7 +421,7 @@ public class GameManager : MonoBehaviour
         thought.currentIndex = randomIndex;
         thought.gameObject.SetActive(true);
         thought.ResetBehaviour();
-        thought.transform.position = new Vector3(Random.Range(ScreenProperties.currentScreenCoords.xMin+0.5f, ScreenProperties.currentScreenCoords.xMax-0.5f),ScreenProperties.currentScreenCoords.yMax+2,0);
+        thought.transform.position = new Vector3(Random.Range(ScreenProperties.currentScreenCoords.xMin+0.5f, ScreenProperties.currentScreenCoords.xMax-0.5f),ScreenProperties.currentScreenCoords.yMax+1,0);
         SetDropSpeed(thought);
         SetHorizontalForce(thought);
     }
@@ -545,7 +554,7 @@ public class GameManager : MonoBehaviour
             }
             else //if value == _meterIncrementValue
             {
-                _scoreIncrementCombo = Mathf.Clamp(_scoreIncrementCombo + _scoreIncrementCombo, 1, 10);
+                _scoreIncrementCombo = Mathf.Clamp(_scoreIncrementCombo + 0.1f, 1, 10);
                 _meterIncrementValue = value;
             }
             _lastMeterIncrementValue = value;
@@ -555,6 +564,7 @@ public class GameManager : MonoBehaviour
             if (value == 10)
             {
                 _meterValue = 0;
+                _meterMoveSpeedMultiplier = 2;
                 _scoreIncrementCombo = 1;
                 return;
             }
@@ -566,7 +576,7 @@ public class GameManager : MonoBehaviour
 
     private void GameOver()
     {
-        _sceneManager.LoadGameScene();
+        _sceneManager.LoadScene(2);
     }
 
     //---------------- PostProcessing, Visual Effects and UI Related Functions ------------------------------------
@@ -588,15 +598,16 @@ public class GameManager : MonoBehaviour
     //Updates post processing white balance filter based on the meter balance values
     void UpdateWhiteBalanceFilter()
     {
-        if (_meterValue < -_currentMeterSpreadValue || _meterValue > _currentMeterSpreadValue)
+        _whiteBalance.temperature.value = _meterValue*_whiteBalance.temperature.max;                                                                   
+        /*if (_meterValue < -currentMeterSpreadValue || _meterValue > currentMeterSpreadValue)
         {
-            //_whiteBalance.temperature.value += Mathf.Sign(_meterValue) * 4 * Time.deltaTime;
-            _whiteBalance.temperature.value = (((Mathf.Sign(_meterValue))*Mathf.Abs(_meterValue - Mathf.Sign(_meterValue) * _currentMeterSpreadValue)) * 48) -8*Mathf.Sign(_meterValue);
+            _whiteBalance.temperature.value = (Mathf.Sign(_meterValue))*_whiteBalance.temperature.max;
+            //_whiteBalance.temperature.value = (((Mathf.Sign(_meterValue))*Mathf.Abs(_meterValue - Mathf.Sign(_meterValue) * currentMeterSpreadValue)) * 48) -8*Mathf.Sign(_meterValue);
         }
         else
         {
             _whiteBalance.temperature.value = 0;
-        }
+        }*/
     }
 
     public IEnumerator ChromaticAberrationFeedback()
@@ -645,15 +656,13 @@ public class GameManager : MonoBehaviour
     //Water level Update loop
     IEnumerator UpdateWaterLevel()
     {
-        waterWaveTransform.position =
-            new Vector3(waterWaveTransform.position.x, ScreenProperties.currentScreenCoords.yMin - 4, waterWaveTransform.position.z);
         while (true)
         {
             if (_canWaterLow)
             {
                 waterWaveTransform.position = new Vector3(waterWaveTransform.position.x,
                     Mathf.Clamp(waterWaveTransform.position.y - waterLevelDropSpeed * Time.deltaTime,
-                        ScreenProperties.currentScreenCoords.yMin - 4, ScreenProperties.currentScreenCoords.yMin+ 0.8f)
+                        ScreenProperties.currentScreenCoords.yMin - 2.5f, ScreenProperties.currentScreenCoords.yMin+ 0.8f)
                     , waterWaveTransform.position.z);
                 yield return null;
             }
@@ -662,8 +671,14 @@ public class GameManager : MonoBehaviour
             {
                 waterWaveTransform.position = new Vector3(waterWaveTransform.position.x,
                     Mathf.Clamp(waterWaveTransform.position.y + waterLevelRiseSpeed * Time.deltaTime,
-                        ScreenProperties.currentScreenCoords.yMin - 4, ScreenProperties.currentScreenCoords.yMin + 0.8f)
+                        ScreenProperties.currentScreenCoords.yMin - 2.5f, ScreenProperties.currentScreenCoords.yMin + 0.8f)
                     , waterWaveTransform.position.z);
+            }
+
+            if (!_canStartGame)
+            {
+                waterWaveTransform.position =                                                                                                   
+                    new Vector3(waterWaveTransform.position.x, ScreenProperties.currentScreenCoords.yMin - 2.5f, waterWaveTransform.position.z);
             }
 
             yield return null;
@@ -683,14 +698,13 @@ public class GameManager : MonoBehaviour
     IEnumerator LevelTransition()
     {
         canSpawn = false;
-        dayUI.text = levelParametersDataList[_levelIndex].day;
-        dayUI.gameObject.SetActive(true);
         foreach (var thought in _thoughtsPool)
         {
             DeSpawnThought(thought);
         }
         SetLevelParameters();
         showerParticleSystem.Stop();
+        dayUI.gameObject.SetActive(true);
         yield return new WaitForSeconds(levelTransitionTimeDuration);
         dayUI.gameObject.SetActive(false);
         showerParticleSystem.Play();
@@ -708,6 +722,9 @@ public class GameManager : MonoBehaviour
 
                 //Sets timer and score related default values
                 _canStartGame = false;
+                dayUI.text = levelParametersDataList[_levelIndex].day;
+                currentMinTimeBetweenSpawns = levelParametersDataList[_levelIndex].minTimeBetweenSpawns;
+                currentMaxTimeBetweenSpawns = levelParametersDataList[_levelIndex].maxTimeBetweenSpawns;
                 _scoreComboTimer = 0;
                 _scoreComboMultiplier = 0;
                 _meterComboMultiplier = 1;
@@ -715,8 +732,8 @@ public class GameManager : MonoBehaviour
                 _scoreIncrementCombo = 1;
 
                 //Sets start meter speed, multiplier, internal value and UI value
-                _currentMeterSpreadValue = levelParametersDataList[_levelIndex].meterCenterSpreadValue;
-                _meterUI.SetMeterUI(_currentMeterSpreadValue);
+                currentMeterSpreadValue = levelParametersDataList[_levelIndex].meterCenterSpreadValue;
+                _meterUI.SetMeterUI(currentMeterSpreadValue);
                 _meterMoveSpeed = levelParametersDataList[_levelIndex].meterBaseMoveSpeed;
                 _meterMoveSpeedMultiplier = 0;
                 _meterValue = 0;
@@ -732,6 +749,9 @@ public class GameManager : MonoBehaviour
 
                 //Sets timer and score related default value
                  _canStartGame = false;
+                dayUI.text = levelParametersDataList[_levelIndex].day;
+                currentMinTimeBetweenSpawns = levelParametersDataList[_levelIndex].minTimeBetweenSpawns;
+                currentMaxTimeBetweenSpawns = levelParametersDataList[_levelIndex].maxTimeBetweenSpawns;
                 _scoreComboTimer = 0;
                 _scoreComboMultiplier = 0;
                 _meterComboMultiplier = 1;
@@ -739,11 +759,11 @@ public class GameManager : MonoBehaviour
                 _scoreIncrementCombo = 1;
 
                 //Sets start meter speed, multiplier, internal value and UI value
-                _currentMeterSpreadValue = levelParametersDataList[_levelIndex].meterCenterSpreadValue;
-                _meterUI.SetMeterUI(_currentMeterSpreadValue);
+                currentMeterSpreadValue = levelParametersDataList[_levelIndex].meterCenterSpreadValue;
+                _meterUI.SetMeterUI(currentMeterSpreadValue);
                 _meterMoveSpeed = levelParametersDataList[_levelIndex].meterBaseMoveSpeed;
                 _meterMoveSpeedMultiplier = 0;
-                _meterValue = 0;
+                _meterValue = 0.6f;
                 _meterIncrementValue = 0;
                 _lastMeterIncrementValue = 0;
                 _meterLimitsTimer = 0;
@@ -756,6 +776,9 @@ public class GameManager : MonoBehaviour
 
                 //Sets timer and score related default value
                 _canStartGame = false;
+                dayUI.text = levelParametersDataList[_levelIndex].day;
+                currentMinTimeBetweenSpawns = levelParametersDataList[_levelIndex].minTimeBetweenSpawns;
+                currentMaxTimeBetweenSpawns = levelParametersDataList[_levelIndex].maxTimeBetweenSpawns;
                 _scoreComboTimer = 0;
                 _scoreComboMultiplier = 0;
                 _meterComboMultiplier = 1;
@@ -763,11 +786,11 @@ public class GameManager : MonoBehaviour
                 _scoreIncrementCombo = 1;
 
                 //Sets start meter speed, multiplier, internal value and UI value
-                _currentMeterSpreadValue = levelParametersDataList[_levelIndex].meterCenterSpreadValue;
-                _meterUI.SetMeterUI(_currentMeterSpreadValue);
+                currentMeterSpreadValue = levelParametersDataList[_levelIndex].meterCenterSpreadValue;
+                _meterUI.SetMeterUI(currentMeterSpreadValue);
                 _meterMoveSpeed = levelParametersDataList[_levelIndex].meterBaseMoveSpeed;
                 _meterMoveSpeedMultiplier = 0;
-                _meterValue = 0;
+                _meterValue = -0.6f;
                 _meterIncrementValue = 0;
                 _lastMeterIncrementValue = 0;
                 _meterLimitsTimer = 0;
@@ -778,10 +801,115 @@ public class GameManager : MonoBehaviour
 
             case 3:
 
+                //Sets timer and score related default value
+                _canStartGame = false;
+                dayUI.text = levelParametersDataList[_levelIndex].day;
+                currentMinTimeBetweenSpawns = levelParametersDataList[_levelIndex].minTimeBetweenSpawns;
+                currentMaxTimeBetweenSpawns = levelParametersDataList[_levelIndex].maxTimeBetweenSpawns;
+                _scoreComboTimer = 0;
+                _scoreComboMultiplier = 0;
+                _meterComboMultiplier = 1;
+                _scoreTimeInterval = levelParametersDataList[_levelIndex].scoreBaseTime;
+                _scoreIncrementCombo = 1;
+
+                //Sets start meter speed, multiplier, internal value and UI value
+                currentMeterSpreadValue = levelParametersDataList[_levelIndex].meterCenterSpreadValue;
+                _meterUI.SetMeterUI(currentMeterSpreadValue);
+                _meterMoveSpeed = levelParametersDataList[_levelIndex].meterBaseMoveSpeed;
+                _meterMoveSpeedMultiplier = 0;
+                _meterValue = -0.8f;
+                _meterIncrementValue = 0;
+                _lastMeterIncrementValue = 0;
+                _meterLimitsTimer = 0;
+                _meterLimitsTimeToDeath = levelParametersDataList[_levelIndex].meterLimitsTimeToDeath;
+                waterLevelDropSpeed = levelParametersDataList[_levelIndex].waterLevelDropSpeed;
+                waterLevelRiseSpeed = levelParametersDataList[_levelIndex].waterLevelRiseSpeed;
                 break;
 
             case 4:
 
+                //Sets timer and score related default value
+                _canStartGame = false;
+                dayUI.text = levelParametersDataList[_levelIndex].day;
+                currentMinTimeBetweenSpawns = levelParametersDataList[_levelIndex].minTimeBetweenSpawns;
+                currentMaxTimeBetweenSpawns = levelParametersDataList[_levelIndex].maxTimeBetweenSpawns;
+                _scoreComboTimer = 0;
+                _scoreComboMultiplier = 0;
+                _meterComboMultiplier = 1;
+                _scoreTimeInterval = levelParametersDataList[_levelIndex].scoreBaseTime;
+                _scoreIncrementCombo = 1;
+
+                //Sets start meter speed, multiplier, internal value and UI value
+                currentMeterSpreadValue = levelParametersDataList[_levelIndex].meterCenterSpreadValue;
+                _meterUI.SetMeterUI(currentMeterSpreadValue);
+                _meterMoveSpeed = levelParametersDataList[_levelIndex].meterBaseMoveSpeed;
+                _meterMoveSpeedMultiplier = 0;
+                _meterValue = 0f;
+                _meterIncrementValue = 0;
+                _lastMeterIncrementValue = 0;
+                _meterLimitsTimer = 0;
+                _meterLimitsTimeToDeath = levelParametersDataList[_levelIndex].meterLimitsTimeToDeath;
+                waterLevelDropSpeed = levelParametersDataList[_levelIndex].waterLevelDropSpeed;
+                waterLevelRiseSpeed = levelParametersDataList[_levelIndex].waterLevelRiseSpeed;
+                break;
+            
+            case 5:
+
+                //Sets timer and score related default value
+                _canStartGame = false;
+                dayUI.text = levelParametersDataList[_levelIndex].day;
+                currentMinTimeBetweenSpawns = levelParametersDataList[_levelIndex].minTimeBetweenSpawns;
+                currentMaxTimeBetweenSpawns = levelParametersDataList[_levelIndex].maxTimeBetweenSpawns;
+                _scoreComboTimer = 0;
+                _scoreComboMultiplier = 0;
+                _meterComboMultiplier = 1;
+                _scoreTimeInterval = levelParametersDataList[_levelIndex].scoreBaseTime;
+                _scoreIncrementCombo = 1;
+
+                //Sets start meter speed, multiplier, internal value and UI value
+                currentMeterSpreadValue = levelParametersDataList[_levelIndex].meterCenterSpreadValue;
+                _meterUI.SetMeterUI(currentMeterSpreadValue);
+                _meterMoveSpeed = levelParametersDataList[_levelIndex].meterBaseMoveSpeed;
+                _meterMoveSpeedMultiplier = 0;
+                _meterValue = -0.6f;
+                _meterIncrementValue = 0;
+                _lastMeterIncrementValue = 0;
+                _meterLimitsTimer = 0;
+                _meterLimitsTimeToDeath = levelParametersDataList[_levelIndex].meterLimitsTimeToDeath;
+                waterLevelDropSpeed = levelParametersDataList[_levelIndex].waterLevelDropSpeed;
+                waterLevelRiseSpeed = levelParametersDataList[_levelIndex].waterLevelRiseSpeed;
+                break;
+            
+            case 6:
+
+                //Sets timer and score related default value
+                _canStartGame = false;
+                dayUI.text = levelParametersDataList[_levelIndex].day;
+                currentMinTimeBetweenSpawns = levelParametersDataList[_levelIndex].minTimeBetweenSpawns;
+                currentMaxTimeBetweenSpawns = levelParametersDataList[_levelIndex].maxTimeBetweenSpawns;
+                _scoreComboTimer = 0;
+                _scoreComboMultiplier = 0;
+                _meterComboMultiplier = 1;
+                _scoreTimeInterval = levelParametersDataList[_levelIndex].scoreBaseTime;
+                _scoreIncrementCombo = 1;
+
+                //Sets start meter speed, multiplier, internal value and UI value
+                currentMeterSpreadValue = levelParametersDataList[_levelIndex].meterCenterSpreadValue;
+                _meterUI.SetMeterUI(currentMeterSpreadValue);
+                _meterMoveSpeed = levelParametersDataList[_levelIndex].meterBaseMoveSpeed;
+                _meterMoveSpeedMultiplier = 0;
+                _meterValue = 0.8f;
+                _meterIncrementValue = 0;
+                _lastMeterIncrementValue = 0;
+                _meterLimitsTimer = 0;
+                _meterLimitsTimeToDeath = levelParametersDataList[_levelIndex].meterLimitsTimeToDeath;
+                waterLevelDropSpeed = levelParametersDataList[_levelIndex].waterLevelDropSpeed;
+                waterLevelRiseSpeed = levelParametersDataList[_levelIndex].waterLevelRiseSpeed;
+                break;
+
+            case 7:
+                _levelIndex = 0;
+                SetLevelParameters();
                 break;
         }
     }

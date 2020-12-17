@@ -42,7 +42,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - Vector1_8FE2A77A: 0.00138
-    - _BlurAmount: 1.73
+    - _BlurAmount: 1.4
     - _EnableExternalAlpha: 0
     - _Size: 2.54
     m_Colors:

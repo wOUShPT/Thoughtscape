@@ -11,6 +11,8 @@
           <e p="Controls.cs" t="Include" />
         </e>
         <e p="Scripts" t="Include">
+          <e p="AutomaticPlay.cs" t="Include" />
+          <e p="BackgroundTransition.cs" t="Include" />
           <e p="DDOL.cs" t="Include" />
           <e p="DebugFPS.cs" t="Include" />
           <e p="GameLogic" t="Include">

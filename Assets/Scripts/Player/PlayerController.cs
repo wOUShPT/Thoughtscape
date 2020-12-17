@@ -13,7 +13,6 @@ public class PlayerController : MonoBehaviour
     private Controls _playerControls;
     private Transform _playerTransform;
     private PauseMenu _pauseMenu;
-    private GameManager _gameManager;
     private Camera _mainCamera;
     private Vector2 _touchPosition;
 
@@ -23,14 +22,12 @@ public class PlayerController : MonoBehaviour
 
         _playerTransform = GetComponent<Transform>();
 
-        _gameManager = FindObjectOfType<GameManager>();
-
         _pauseMenu = FindObjectOfType<PauseMenu>();
 
         _mainCamera = FindObjectOfType<Camera>();
         
         //Sets the player yAxis position based on the screen size
-        _playerTransform.position = new Vector3(_playerTransform.position.x, ScreenProperties.currentScreenCoords.yMin, _playerTransform.position.z);
+        _playerTransform.position = new Vector3(_playerTransform.position.x, ScreenProperties.currentScreenCoords.yMin, 0);
     }
 
     //OnMoveGesture input event called function

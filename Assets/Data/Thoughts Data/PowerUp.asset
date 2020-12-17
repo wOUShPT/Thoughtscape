@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: PowerUp
   m_EditorClassIdentifier: 
   category: PowerUp
+  dropSpeed: 0
   centerMeterZoneSpawnRatePercentage: 0
   goodZoneMeterSpawnRatePercentage: 0
   badZoneMeterSpawnRatePercentage: 0
@@ -21,7 +22,7 @@ MonoBehaviour:
   hasHorizontalForce: 0
   defaultValue: 10
   textColor: {r: 0, g: 0, b: 0, a: 1}
-  outerColor: {r: 1, g: 1, b: 1, a: 1}
+  outerColor: {r: 0.28627452, g: 0.68235296, b: 0.2392157, a: 1}
   animate: 1
   animationCycleTime: 0.3
   thoughts:

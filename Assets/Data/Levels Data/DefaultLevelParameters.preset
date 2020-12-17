@@ -1,0 +1,271 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!181963792 &2655988077585873504
+Preset:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: DefaultLevelParameters
+  m_TargetType:
+    m_NativeTypeID: 114
+    m_ManagedTypePPtr: {fileID: 11500000, guid: 5ecda9848713bd04a96b9bb803b45454,
+      type: 3}
+    m_ManagedTypeFallback: 
+  m_Properties:
+  - target: {fileID: 0}
+    propertyPath: m_Enabled
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorHideFlags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorClassIdentifier
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: day
+    value: monday
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: scoreBaseTime
+    value: 6
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: meterCenterSpreadValue
+    value: 0.2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: horizontalForceTriggerTime
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: horizontalForceIncrement
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: meterBaseMoveSpeed
+    value: 8
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: meterLimitsTimeToDeath
+    value: 100000000
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: waterLevelRiseSpeed
+    value: 0.15
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: waterLevelDropSpeed
+    value: 0.3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: minTimeBetweenSpawns
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: maxTimeBetweenSpawns
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.size
+    value: 7
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[0].category
+    value: Good
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[0].hasHorizontalForce
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[0].dropSpeed
+    value: 3.8
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[0].centerMeterZoneSpawnRatePercentage
+    value: 50
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[0].positiveZoneMeterSpawnRatePercentage
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[0].negativeZoneMeterSpawnRatePercentage
+    value: 50
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[0].limitZoneMeterSpawnRatePercentage
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[1].category
+    value: Bad
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[1].hasHorizontalForce
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[1].dropSpeed
+    value: 3.8
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[1].centerMeterZoneSpawnRatePercentage
+    value: 50
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[1].positiveZoneMeterSpawnRatePercentage
+    value: 50
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[1].negativeZoneMeterSpawnRatePercentage
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[1].limitZoneMeterSpawnRatePercentage
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[2].category
+    value: Extra Good
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[2].hasHorizontalForce
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[2].dropSpeed
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[2].centerMeterZoneSpawnRatePercentage
+    value: 5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[2].positiveZoneMeterSpawnRatePercentage
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[2].negativeZoneMeterSpawnRatePercentage
+    value: 25
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[2].limitZoneMeterSpawnRatePercentage
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[3].category
+    value: Extra Bad
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[3].hasHorizontalForce
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[3].dropSpeed
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[3].centerMeterZoneSpawnRatePercentage
+    value: 5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[3].positiveZoneMeterSpawnRatePercentage
+    value: 25
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[3].negativeZoneMeterSpawnRatePercentage
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[3].limitZoneMeterSpawnRatePercentage
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[4].category
+    value: Forbidden
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[4].hasHorizontalForce
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[4].dropSpeed
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[4].centerMeterZoneSpawnRatePercentage
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[4].positiveZoneMeterSpawnRatePercentage
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[4].negativeZoneMeterSpawnRatePercentage
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[4].limitZoneMeterSpawnRatePercentage
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[5].category
+    value: PowerUp
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[5].hasHorizontalForce
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[5].dropSpeed
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[5].centerMeterZoneSpawnRatePercentage
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[5].positiveZoneMeterSpawnRatePercentage
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[5].negativeZoneMeterSpawnRatePercentage
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[5].limitZoneMeterSpawnRatePercentage
+    value: 100
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[6].category
+    value: Doubt
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[6].hasHorizontalForce
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[6].dropSpeed
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[6].centerMeterZoneSpawnRatePercentage
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[6].positiveZoneMeterSpawnRatePercentage
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[6].negativeZoneMeterSpawnRatePercentage
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: thoughtSpawnPropertiesList.Array.data[6].limitZoneMeterSpawnRatePercentage
+    value: 0
+    objectReference: {fileID: 0}

@@ -24,5 +24,5 @@ MonoBehaviour:
   textColor: {r: 0, g: 0, b: 0, a: 1}
   outerColor: {r: 0, g: 0, b: 0, a: 1}
   animate: 1
-  animationCycleTime: 0.25
+  animationCycleTime: 1
   thoughts: []

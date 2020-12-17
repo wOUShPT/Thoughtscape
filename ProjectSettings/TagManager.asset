@@ -9,6 +9,7 @@ TagManager:
   - LevelLimits
   - Despawn Trigger
   - UI
+  - SceneTransitionEffect
   layers:
   - Default
   - TransparentFX
