@@ -5,13 +5,14 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
-using RDG;
 using TMPro;
 using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
     private SceneManager _sceneManager;
+    private AudioManager _audioManager;
+    public Score scoreData;
 
     #region Level Progression Related Declaration
 
@@ -170,24 +171,17 @@ public class GameManager : MonoBehaviour
     private Camera _mainCamera;
     private Vector3 _screenBordersCoords;
 
-    /*public Vector3 ScreenBordersCoords
-    {
-        get { return _screenBordersCoords; }
-        private set { _screenBordersCoords = Vector3.zero; }
-    }*/
-
     //-------------------------------------------------------------------------------------------------------------
     
     void Awake()
     {
         _sceneManager = FindObjectOfType<SceneManager>();
         
+        _audioManager = FindObjectOfType<AudioManager>();
+        
         _mainCamera = FindObjectOfType<Camera>();
         
         _meterUI = meterSlider.gameObject.GetComponent<MeterUI>();
-
-        //Get screen size width and height in pixels and convert to world units
-        //_screenBordersCoords = _mainCamera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
 
         //Instantiate thoughts and create a pool based on a pre-established capacity
         _thoughtsPool = new List<ThoughtBehaviour>();
@@ -253,10 +247,6 @@ public class GameManager : MonoBehaviour
             //Checks if the player it's in the center zone of the meter
             if (_meterValue < currentMeterSpreadValue && _meterValue > -currentMeterSpreadValue)
             {
-                /*negativeBackground.SetActive(false);
-                positiveBackground.SetActive(false);
-                neutralBackground.SetActive(true);*/
-                
                 _canWaterRise = false;
                 _canWaterLow = true;
                 _meterComboTimer += Time.deltaTime;
@@ -292,20 +282,6 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                if (_meterValue >= currentMeterSpreadValue)
-                {
-                    /*negativeBackground.SetActive(false);
-                    positiveBackground.SetActive(true);
-                    neutralBackground.SetActive(false);*/
-                }
-
-                if (_meterValue <= currentMeterSpreadValue)
-                {
-                    /*negativeBackground.SetActive(true);
-                    positiveBackground.SetActive(false);
-                    neutralBackground.SetActive(false);*/
-                }
-                
                 _canWaterRise = true;
                 _canWaterLow = false;
                 _meterComboTimer = 0;
@@ -365,14 +341,6 @@ public class GameManager : MonoBehaviour
                 _meterLimitsTimer = 0;
             }
         }
-        /*else
-        {
-            _meterValue = 0;
-            _meterIncrementValue = 0;
-            _meterMoveSpeedMultiplier = 0;
-            _lastMeterIncrementValue = 0;
-            _meterComboMultiplier = 1;
-        }*/
 
         _meterValue += _meterIncrementValue * _meterMoveSpeed * _meterMoveSpeedMultiplier * Time.deltaTime;
         _meterValue = Mathf.Clamp(_meterValue, meterSlider.minValue, meterSlider.maxValue);
@@ -576,7 +544,12 @@ public class GameManager : MonoBehaviour
 
     private void GameOver()
     {
-        _sceneManager.LoadScene(2);
+        scoreData.lastScore = _scoreValue;
+        if (scoreData.bestScore <= scoreData.lastScore)
+        {
+            scoreData.bestScore = scoreData.lastScore;
+        }
+        _sceneManager.LoadScene(3);
     }
 
     //---------------- PostProcessing, Visual Effects and UI Related Functions ------------------------------------
@@ -592,22 +565,12 @@ public class GameManager : MonoBehaviour
         {
             _vignette.intensity.value = Mathf.Lerp(_vignette.intensity.value, _vignette.intensity.min, 2 * Time.deltaTime);
         }
-        //_vignette.intensity.value = (Mathf.Abs(_meterValue) * 0.5f);
     }
 
     //Updates post processing white balance filter based on the meter balance values
     void UpdateWhiteBalanceFilter()
     {
-        _whiteBalance.temperature.value = _meterValue*_whiteBalance.temperature.max;                                                                   
-        /*if (_meterValue < -currentMeterSpreadValue || _meterValue > currentMeterSpreadValue)
-        {
-            _whiteBalance.temperature.value = (Mathf.Sign(_meterValue))*_whiteBalance.temperature.max;
-            //_whiteBalance.temperature.value = (((Mathf.Sign(_meterValue))*Mathf.Abs(_meterValue - Mathf.Sign(_meterValue) * currentMeterSpreadValue)) * 48) -8*Mathf.Sign(_meterValue);
-        }
-        else
-        {
-            _whiteBalance.temperature.value = 0;
-        }*/
+        _whiteBalance.temperature.value = _meterValue*_whiteBalance.temperature.max;
     }
 
     public IEnumerator ChromaticAberrationFeedback()
@@ -704,10 +667,18 @@ public class GameManager : MonoBehaviour
         }
         SetLevelParameters();
         showerParticleSystem.Stop();
+        if (_audioManager != null)
+        {
+            _audioManager.StopShowerLoopSFX();
+        }
         dayUI.gameObject.SetActive(true);
         yield return new WaitForSeconds(levelTransitionTimeDuration);
         dayUI.gameObject.SetActive(false);
         showerParticleSystem.Play();
+        if (_audioManager != null)
+        {
+            _audioManager.PlayShowerLoopSFX();
+        }
         canSpawn = true;
         StartCoroutine(SpawnThoughts());
         _canStartGame = true;

@@ -10,7 +10,12 @@
         <e p="InputS" t="Include">
           <e p="Controls.cs" t="Include" />
         </e>
+        <e p="KawaseBlur" t="Include">
+          <e p="KawaseBlur.cs" t="Include" />
+          <e p="KawaseBlur.shader" t="Include" />
+        </e>
         <e p="Scripts" t="Include">
+          <e p="AudioManager.cs" t="Include" />
           <e p="AutomaticPlay.cs" t="Include" />
           <e p="BackgroundTransition.cs" t="Include" />
           <e p="DDOL.cs" t="Include" />
@@ -18,10 +23,12 @@
           <e p="GameLogic" t="Include">
             <e p="GameManager.cs" t="Include" />
             <e p="LevelParametersScriptableObject.cs" t="Include" />
+            <e p="Score.cs" t="Include" />
             <e p="SetLevelLimits.cs" t="Include" />
             <e p="WaveBehaviour.cs" t="Include" />
           </e>
           <e p="Player" t="Include">
+            <e p="PlayerAnimation.cs" t="Include" />
             <e p="PlayerController.cs" t="Include" />
           </e>
           <e p="SceneManager.cs" t="Include" />
@@ -38,6 +45,9 @@
             <e p="MainMenu.cs" t="Include" />
             <e p="MeterUI.cs" t="Include" />
             <e p="PauseMenu.cs" t="Include" />
+            <e p="QuotesScriptableObject.cs" t="Include" />
+            <e p="ScoreBoard.cs" t="Include" />
+            <e p="UIFallAnimation.cs" t="Include" />
           </e>
           <e p="Vibration.cs" t="Include" />
         </e>

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PulseAnimation : MonoBehaviour
 {
@@ -10,8 +11,8 @@ public class PulseAnimation : MonoBehaviour
     [Header("TextMeshPro Component in Thought Prefab", order = 1)]
     [Space(15, order = 2)]
     
-    [Tooltip("gameobject with TextMeshPro attached")]
-    public TextMeshPro text;
+    [Tooltip("gameobject with TextMeshPro/TextMeshProUGUI attached")]
+    public GameObject textObject;
     
     [Space(30, order = 3)]
     [Header("Pulse Time and Enable/Disable Animation", order = 4)]
@@ -22,13 +23,17 @@ public class PulseAnimation : MonoBehaviour
     
     [Tooltip("Enable/disable animation bool")]
     public bool animate;
-    
+
+    private TextMeshPro _text;
+    private TextMeshProUGUI _textUI;
+    private bool _isUI;
     private float _colorPulseSpeed;
     private float _currentDilatationValue;
     private int _colorDilatationSign;
 
     private void Awake()
     {
+        GetTextMeshPro();
         //Sets default animation related values and calculates the color pulse speed based on the given color pulse time
         //the "4" value below is the delta on the font shader Underlay Dilate property (Glow similar effect)
         //the Underlay Dilate property varies between the values of -1 and 1, so it goes from the default -1 to 1 and turns back -1 which equals a delta of 4
@@ -47,7 +52,7 @@ public class PulseAnimation : MonoBehaviour
         else
         {
             _currentDilatationValue = 1;
-            text.fontMaterial.SetFloat(ShaderUtilities.ID_UnderlayDilate, _currentDilatationValue);
+            _text.fontMaterial.SetFloat(ShaderUtilities.ID_UnderlayDilate, _currentDilatationValue);
         }
     }
     
@@ -61,9 +66,16 @@ public class PulseAnimation : MonoBehaviour
         
         //Sets the Underlay Dilation property value
         //text.fontMaterial.SetFloat(ShaderUtilities.ID_UnderlayDilate, _currentDilatationValue);
-        text.fontMaterial.SetFloat(ShaderUtilities.ID_UnderlayDilate, _currentDilatationValue);
-        
-        
+        if (_isUI)
+        {
+            _textUI.fontMaterial.SetFloat(ShaderUtilities.ID_UnderlayDilate, _currentDilatationValue);
+        }
+        else
+        {
+            _text.fontMaterial.SetFloat(ShaderUtilities.ID_UnderlayDilate, _currentDilatationValue);  
+        }
+
+
         //Switch the increment sign on min and max values
         if (_currentDilatationValue == -1)
         {
@@ -82,5 +94,22 @@ public class PulseAnimation : MonoBehaviour
     {
         _colorDilatationSign = 1;
         _currentDilatationValue = -1;
+    }
+
+    public void GetTextMeshPro()
+    {
+        if (textObject.GetComponent<TextMeshPro>())
+        {
+            _text = textObject.GetComponent<TextMeshPro>();
+            Destroy(_textUI);
+            _isUI = false;
+        }
+        else
+        {
+            _textUI = textObject.GetComponent<TextMeshProUGUI>();
+            Destroy(_text);
+            _isUI = true;
+        }
+        
     }
 }

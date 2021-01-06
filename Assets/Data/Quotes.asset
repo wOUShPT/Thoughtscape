@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2b6f7ffdfafbbf48afa264f8ca19f2e, type: 3}
+  m_Name: Quotes
+  m_EditorClassIdentifier: 
+  QuotesList:
+  - <font="Le Havre Italic Italic SDF">Our greatest glory is not in never falling,
+    but in rising every time we fall.</font> - Confucius
+  - <font="Le Havre Italic Italic SDF">In the midst of winter, I finally learned
+    that there was in me an invincible summer.</font> - Albert Camus
+  - <font="Le Havre Italic Italic SDF">But I know, somehow, that only when it is
+    dark enough can you see the stars.</font> - Martin Luther King, Jr.
+  - <font="Le Havre Italic Italic SDF">Walking with a friend in the dark is better
+    than walking alone in the light.</font> - Anonymous
+  - <font="Le Havre Italic Italic SDF">Being Alone has a power that very few people
+    can handle.</font> - Anonymous
+  - "<font=\"Le Havre Italic Italic SDF\">When one door closes, another opens. But
+    we often look so regretfully upon the closed door that we don\u2019t see the
+    one that has opened for us.</font> - Alexander Graham Bell"
+  - "<font=\"Le Havre Italic Italic SDF\">There is some good in this world, and it\u2019s
+    worth fighting for.</font> - J.R.R. Tolkien"
+  - <font="Le Havre Italic Italic SDF">You may have to fight a battle more than once
+    to win it.</font> -  Margaret Thatcher
+  - <font="Le Havre Italic Italic SDF">Character cannot be developed in ease and
+    quiet. Only through experience of trial and suffering can the soul be strengthened,
+    ambition inspired, and success achieved.</font> -  Helen Keller
+  - "<font=\"Le Havre Italic Italic SDF\">Sometimes you climb out of bed in the morning
+    and you think, I\u2019m not going to make it, but you laugh inside - remembering
+    all the times you\u2019ve felt that way.</font> - Charles Bukowski"
+  - <font="Le Havre Italic Italic SDF">Man is fond of counting his troubles but he
+    does not count his joys. If he counted them up, as he ought to, he would see
+    that every lot has enough happiness provided for it.</font> -  Fyodor Dostoevsky
+  - "<font=\"Le Havre Italic Italic SDF\">The real fear of depression isn\u2019t
+    dying, it\u2019s living with yourself, forever.</font> - Anonymous"
+  - "<font=\"Le Havre Italic Italic SDF\">After the rain, the sun will reappear.
+    There is life. After the pain, the joy will still be here.</font> \u2013 Walt
+    Disney"

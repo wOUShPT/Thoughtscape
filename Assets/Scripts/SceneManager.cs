@@ -15,12 +15,6 @@ public class SceneManager : MonoBehaviour
         LoadScene(1);
     }
 
-    //Load Main Menu screen
-    public void LoadMainMenu()
-    {
-        LoadScene(1);
-    }
-
     //Load Main Loop scene 
     public void LoadScene(int levelIndex)
     {
@@ -37,6 +31,12 @@ public class SceneManager : MonoBehaviour
         sceneTransition.SetTrigger("Start");
         yield return new WaitForSeconds(1f);
         UnityEngine.SceneManagement.SceneManager.LoadScene(levelIndex);
+    }
+    
+    public IEnumerator WaitTimeToLoad(float time, int scene)
+    {
+        yield return new WaitForSeconds(1);
+        LoadScene(scene);
     }
 
 

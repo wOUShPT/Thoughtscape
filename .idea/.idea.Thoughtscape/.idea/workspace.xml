@@ -24,59 +24,88 @@
   <component name="ChangeListManager">
     <list default="true" id="94b1ba36-4175-4be2-8485-43bb35793fab" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Thoughtscape/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Thoughtscape/.idea/contentModel.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Thoughtscape/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Thoughtscape/.idea/indexLayout.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Thoughtscape/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Thoughtscape/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Data/2D Renderer Data.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Data/2D Renderer Data.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Data/Levels Data/Level_0_Parameters.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Data/Levels Data/Level_0_Parameters.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Data/Levels Data/Level_1_Parameters.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Data/Levels Data/Level_1_Parameters.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Data/Levels Data/Level_2_Parameters.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Data/Levels Data/Level_2_Parameters.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animations/Player/Idle.anim" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/Player/Idle.anim" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animations/Player/Player.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/Player/Player.controller" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animations/Player/Player.controller.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/Player/Player.controller.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Data/Post-Processing.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Data/Post-Processing.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Data/Thoughts Data/BadThoughts.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Data/Thoughts Data/BadThoughts.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Data/Thoughts Data/DoubtThoughts.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Data/Thoughts Data/DoubtThoughts.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Data/Thoughts Data/ExtraBadThoughts.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Data/Thoughts Data/ExtraBadThoughts.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Data/Thoughts Data/ExtraGoodThoughts.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Data/Thoughts Data/ExtraGoodThoughts.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Data/Thoughts Data/ForbiddenThoughts.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Data/Thoughts Data/ForbiddenThoughts.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Data/Thoughts Data/GoodThoughts.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Data/Thoughts Data/GoodThoughts.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Data/Thoughts Data/NegativeDoubtThoughtsAttributes.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Data/Thoughts Data/NegativeDoubtThoughtsAttributes.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Data/Thoughts Data/PositiveDoubtThoughtsAttributes.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Data/Thoughts Data/PositiveDoubtThoughtsAttributes.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Data/Thoughts Data/PowerUp.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Data/Thoughts Data/PowerUp.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/BackgroundBlurMaterial.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/BackgroundBlurMaterial.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/PlayerBlurMaterial.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/PlayerBlurMaterial.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Data/UniversalRenderPipelineAsset.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Data/UniversalRenderPipelineAsset.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Data/UniversalRenderPipelineAsset_Renderer.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Data/UniversalRenderPipelineAsset_Renderer.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ForwardRenderer.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ForwardRenderer.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Materials/DissolveNeutralShelf.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/DissolveNeutralShelf.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Materials/DissolveNeutralWall.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/DissolveNeutralWall.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Materials/DissolvePositiveShelf.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/DissolvePositiveShelf.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Materials/DissolvePositiveWall.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/DissolvePositiveWall.mat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Thought.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Thought.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Game.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Game.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/MainMenu.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/MainMenu.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/_preload.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/_preload.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/BackgroundTransition.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/BackgroundTransition.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/GameLogic/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GameLogic/GameManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GameLogic/LevelParametersScriptableObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GameLogic/LevelParametersScriptableObject.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GameLogic/SetLevelLimits.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GameLogic/SetLevelLimits.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Player/PlayerController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/SceneManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SceneManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/ScreenProperties.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/ScreenProperties.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Thoughts/ThoughtBehaviour.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Thoughts/ThoughtBehaviour.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Thoughts/PulseAnimation.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Thoughts/PulseAnimation.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/MainMenu.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/MainMenu.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/Background/background_shelf_negative.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/Background/background_shelf_negative.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/Background/background_shelf_neutral 1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/Background/background_shelf_neutral 1.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/Background/background_shelf_neutral.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/Background/background_shelf_neutral.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/Background/background_shelf_positive.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/Background/background_shelf_positive.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/Background/background_wall_negative.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/Background/background_wall_negative.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/Background/background_wall_neutral 1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/Background/background_wall_neutral 1.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/Background/background_wall_neutral.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/Background/background_wall_neutral.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/Background/background_wall_positive.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/Background/background_wall_positive.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprites/showerhead.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/showerhead.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/UI/Fonts/Le Havre Regular SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UI/Fonts/Le Havre Regular SDF.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/VacuumShaders/Advanced Dissolve/Editor/CustomEditors/Basic/UnlitShader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/VacuumShaders/Advanced Dissolve/Editor/CustomEditors/Basic/UnlitShader.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/GraphicsSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/GraphicsSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/PresetManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/PresetManager.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/Background/New Render Texture.renderTexture" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/Background/New Render Texture.renderTexture.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/Background/neutral_wall.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/Background/neutral_wall.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/Background/normal_shelf.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/Background/normal_shelf.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/Background/normal_wall 1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/Background/normal_wall 1.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/Background/normal_wall.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/Background/normal_wall.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/Background/positive_shelf.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/Background/positive_shelf.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/Background/positive_shelf.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/Background/positive_shelf.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/Background/positive_smiles.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/Background/positive_smiles.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/Background/positive_smiles.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/Background/positive_smiles.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/Background/positive_wall.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/Background/positive_wall.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/Background/positive_wall.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/Background/positive_wall.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/character.psb" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/character.psb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Sprites/character.psb.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprites/character.psb.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/TMP Settings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/TMP Settings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Fonts.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Fonts/Afterparty SDF.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Fonts/Afterparty SDF.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Fonts/Afterparty.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Fonts/Afterparty.ttf.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Fonts/Le Havre Italic Italic SDF.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Fonts/Le Havre Italic Italic SDF.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Fonts/Le Havre Italic Italic.otf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Fonts/Le Havre Italic Italic.otf.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Fonts/Le Havre Light Italic Light Italic SDF.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Fonts/Le Havre Light Italic Light Italic SDF.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Fonts/Le Havre Light Italic Light Italic.otf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Fonts/Le Havre Light Italic Light Italic.otf.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Fonts/Le Havre Light Light SDF.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Fonts/Le Havre Light Light SDF.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Fonts/Le Havre Light Light.otf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Fonts/Le Havre Light Light.otf.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Fonts/Le Havre Regular SDF.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Fonts/Le Havre Regular SDF.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Fonts/Le Havre Regular.otf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Fonts/Le Havre Regular.otf.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Fonts/PENCIL SHARP SDF.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Fonts/PENCIL SHARP SDF.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Fonts/PENCIL SHARP.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Fonts/PENCIL SHARP.ttf.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Meter.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Meter/Meter.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Meter/Meter.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Meter/Metermdpi.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Meter/Metermdpi.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Meter/Metermdpi2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Meter/Metermdpi2.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Meter/Metermdpi3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Meter/Metermdpi3.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Meter/Metermdpi5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Meter/Metermdpi5.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Meter/Pointer.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UI/Meter/Pointer.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/URPProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/URPProjectSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,30 +116,24 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@7.3.1/Editor/AssetPostProcessors/MaterialPostprocessor.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/GameLogic/LevelParametersScriptableObject.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/SceneManager.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.textmeshpro@2.1.3/Scripts/Runtime/TMP_SubMeshUI.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/ScreenProperties.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@7.3.1/Runtime/UniversalRenderPipelineCore.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@7.3.1/Runtime/UniversalRenderPipeline.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.shadergraph@7.3.1/Editor/Drawing/MaterialGraphEditWindow.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/DDOL.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@7.3.1/Editor/AssetPostProcessors/MaterialPostprocessor.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/GameLogic/LevelParametersScriptableObject.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.textmeshpro@2.1.3/Scripts/Runtime/TMP_SubMeshUI.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/ScreenProperties.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@7.3.1/Runtime/UniversalRenderPipelineCore.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/GameLogic/Score.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/AudioManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/PauseMenu.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/DebugFPS.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Player/PlayerAnimation.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Assets/Scripts/Pulse Animation.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/PlayerBehaviour.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/SetLevelLimits.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/DDOL.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/ScoreManager.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/LevelManager.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/WaveGenerator.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/WaveBehaviour.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/PlayerController.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/LevelValues.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/LevelsManager.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/SpawnManager.cs" />
@@ -137,19 +160,31 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/Thoughts/ThoughtDoubtBehaviour.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Thoughts/DoubtThoughtsAttributesScriptableObject.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Thoughts/ThoughtsAttributesScriptableObject.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/UI/MainMenu.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Instantiator.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/SceneManager.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/AutomaticPlay.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/ScreenProperties.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Player/PlayerController.cs" />
         <option value="$PROJECT_DIR$/Assets/VacuumShaders/Advanced Dissolve/Editor/CustomEditors/Basic/UnlitShader.cs" />
         <option value="$PROJECT_DIR$/Assets/VacuumShaders/Advanced Dissolve/Editor/CustomEditors/TextMesh Pro/TMP_BitmapShaderGUI.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/GameLogic/LevelParametersScriptableObject.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/GameLogic/SetLevelLimits.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/GameLogic/GameManager.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/BackgroundTransition.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Thoughts/ThoughtBehaviour.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/BackgroundTransition.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/GameLogic/Score.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/FallAnimation.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/UIFallAnimation.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/SceneManager.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/UI/UIFallAnimation.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/ScoreBoard.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/UI/MainMenu.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/UI/QuotesScriptableObject.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/UI/ScoreBoard.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/UI/UITextGlowStrobe.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/UI/UIPulseAnimation.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Player/PlayerController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Thoughts/PulseAnimation.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/AudioManager.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/GameLogic/GameManager.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Player/PlayerAnimation.cs" />
       </list>
     </option>
   </component>
@@ -277,6 +312,11 @@
       <workItem from="1607450409274" duration="3059000" />
       <workItem from="1607459041875" duration="13732000" />
       <workItem from="1607526034191" duration="16270000" />
+      <workItem from="1609544993702" duration="4020000" />
+      <workItem from="1609614910866" duration="4202000" />
+      <workItem from="1609688703012" duration="5429000" />
+      <workItem from="1609785620224" duration="11133000" />
+      <workItem from="1609961319053" duration="2005000" />
     </task>
     <servers />
   </component>
@@ -323,11 +363,12 @@
     </state>
     <state x="937" y="331" key="run.anything.popup/0.0.2560.1400/3840.506.1920.1040@0.0.2560.1400" timestamp="1605821318479" />
     <state x="4543" y="752" key="run.anything.popup/0.0.2560.1400/3840.506.1920.1040@3840.506.1920.1040" timestamp="1607472784953" />
-    <state x="4547" y="740" width="672" height="504" key="search.everywhere.popup" timestamp="1607463479040">
-      <screen x="3840" y="506" width="1920" height="1040" />
+    <state x="4547" y="1304" width="672" height="495" key="search.everywhere.popup" timestamp="1609693847653">
+      <screen x="3840" y="1074" width="1920" height="1020" />
     </state>
     <state x="566" y="185" width="672" height="400" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1605787039523" />
     <state x="943" y="315" width="672" height="678" key="search.everywhere.popup/0.0.2560.1400/3840.506.1920.1040@0.0.2560.1400" timestamp="1606766337895" />
     <state x="4547" y="740" width="672" height="504" key="search.everywhere.popup/0.0.2560.1400/3840.506.1920.1040@3840.506.1920.1040" timestamp="1607463479040" />
+    <state x="4547" y="1304" width="672" height="495" key="search.everywhere.popup/3840.1074.1920.1020/0.0.2560.1400@3840.1074.1920.1020" timestamp="1609693847653" />
   </component>
 </project>

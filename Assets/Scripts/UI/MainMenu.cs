@@ -7,8 +7,8 @@ using UnityEngine.UI;
 public class MainMenu : MonoBehaviour
 {
     private SceneManager _sceneManager;
+    public UIFallAnimation playButtonFallAnimation;
     public Button playButton;
-    public Rigidbody2D playButtonRb;
     void Awake()
     {
         _sceneManager = FindObjectOfType<SceneManager>();
@@ -22,13 +22,9 @@ public class MainMenu : MonoBehaviour
 
     void Play()
     {
-        StartCoroutine(FallAnimation());
+        playButtonFallAnimation.Animation(0.5f);
+        StartCoroutine(_sceneManager.WaitTimeToLoad(0.25f, 2));
     }
+
     
-    IEnumerator FallAnimation()
-    {
-        playButtonRb.velocity = Vector2.down * 8;
-        yield return new WaitForSeconds(0.5f);
-        _sceneManager.LoadScene(2);
-    }
 }

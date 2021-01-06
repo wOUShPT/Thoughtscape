@@ -15,6 +15,8 @@ public class BackgroundTransition : MonoBehaviour
     public SpriteRenderer neutralShelfSprite;
     public SpriteRenderer positiveShelfSprite;
     public SpriteRenderer negativeShelfSprite;
+    public SpriteRenderer positiveSmiles;
+    //public SpriteRenderer negativeDirtiness;
     public List<SpriteRenderer> backgroundStuff;
     private bool _isPositive;
     private bool _isNegative;
@@ -26,9 +28,11 @@ public class BackgroundTransition : MonoBehaviour
         neutralWallSprite.material.SetFloat("_DissolveCutoff", 0);
         positiveWallSprite.material.SetFloat("_DissolveCutoff", 1);
         negativeWallSprite.material.SetFloat("_DissolveCutoff", 1);
-        neutralWallSprite.material.SetFloat("_DissolveCutoff", 0);
-        positiveWallSprite.material.SetFloat("_DissolveCutoff", 1);
-        negativeWallSprite.material.SetFloat("_DissolveCutoff", 1);
+        neutralShelfSprite.material.SetFloat("_DissolveCutoff", 0);
+        positiveShelfSprite.material.SetFloat("_DissolveCutoff", 1);
+        negativeShelfSprite.material.SetFloat("_DissolveCutoff", 1);
+        positiveSmiles.material.SetFloat("_DissolveCutoff", 1);
+        //negativeDirtiness.material.SetFloat("_DissolveCutoff", 1);
     }
 
     // Update is called once per frame
@@ -38,6 +42,8 @@ public class BackgroundTransition : MonoBehaviour
         if (meterSlider.value > -_gameManager.currentMeterSpreadValue &&
             meterSlider.value < _gameManager.currentMeterSpreadValue)
         {
+            positiveSmiles.material.SetFloat("_DissolveCutoff", 1);
+            //negativeDirtiness.material.SetFloat("_DissolveCutoff", 1 - Mathf.Clamp((_gameManager.currentMeterSpreadValue*1)/Mathf.Abs(meterSlider.value), 0 , 1 ));
             if (neutralWallSprite.material.GetFloat("_DissolveCutoff") >= 1)
             {
                 if (_isPositive)
@@ -71,6 +77,7 @@ public class BackgroundTransition : MonoBehaviour
         //Positive background transition
         if (meterSlider.value >= _gameManager.currentMeterSpreadValue)
         {
+            positiveSmiles.material.SetFloat("_DissolveCutoff", Mathf.Clamp((_gameManager.currentMeterSpreadValue*1)/meterSlider.value, 0 , 1 ));
             if (positiveWallSprite.material.GetFloat("_DissolveCutoff") >= 1)
             {
                 StartCoroutine(BackgroundTransitionAnimation(neutralWallSprite, positiveWallSprite));
