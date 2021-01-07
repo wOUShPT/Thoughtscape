@@ -73,3 +73,10 @@ MonoBehaviour:
     positiveZoneMeterSpawnRatePercentage: 0
     negativeZoneMeterSpawnRatePercentage: 0
     limitZoneMeterSpawnRatePercentage: 0
+  - category: Surprise
+    hasHorizontalForce: 0
+    dropSpeed: 3.8
+    centerMeterZoneSpawnRatePercentage: 80
+    positiveZoneMeterSpawnRatePercentage: 80
+    negativeZoneMeterSpawnRatePercentage: 80
+    limitZoneMeterSpawnRatePercentage: 80

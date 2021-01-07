@@ -1378,7 +1378,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: PENCIL SHARP Atlas Material
   m_Shader: {fileID: 4800000, guid: 5a579c27d3645e444bd1981312bc6f1a, type: 3}
-  m_ShaderKeywords: UNDERLAY_ON _DISSOLVEALPHASOURCE_CUSTOM_MAP _DISSOLVEEDGETEXTURESOURCE_NONE
+  m_ShaderKeywords: OUTLINE_ON UNDERLAY_ON _DISSOLVEALPHASOURCE_CUSTOM_MAP _DISSOLVEEDGETEXTURESOURCE_NONE
     _DISSOLVEGLOBALCONTROL_NONE _DISSOLVEMAPPINGTYPE_NORMAL _DISSOLVEMASKCOUNT_ONE
     _DISSOLVEMASK_NONE
   m_LightmapFlags: 4
@@ -1507,7 +1507,7 @@ Material:
     - _DissolveSourceAlphaTexturesBlend: 0
     - _DissolveTriplanarMappingSpace: 0
     - _DstBlend: 0
-    - _FaceDilate: 0
+    - _FaceDilate: 0.2
     - _FaceUVSpeedX: 0
     - _FaceUVSpeedY: 0
     - _GlossMapScale: 1
@@ -1526,13 +1526,13 @@ Material:
     - _OutlineSoftness: 0
     - _OutlineUVSpeedX: 0
     - _OutlineUVSpeedY: 0
-    - _OutlineWidth: 0
+    - _OutlineWidth: 0.3
     - _Parallax: 0.02
     - _PerspectiveFilter: 0.875
     - _Reflectivity: 10
     - _ScaleRatioA: 0.9
     - _ScaleRatioB: 0.73125
-    - _ScaleRatioC: 0.73125
+    - _ScaleRatioC: 0.275625
     - _ScaleX: 1
     - _ScaleY: 1
     - _ShaderFlags: 0
@@ -1552,7 +1552,7 @@ Material:
     - _UnderlayDilate: 1
     - _UnderlayOffsetX: 0
     - _UnderlayOffsetY: 0
-    - _UnderlaySoftness: 0
+    - _UnderlaySoftness: 1
     - _VertexOffsetX: 0
     - _VertexOffsetY: 0
     - _WeightBold: 0.75

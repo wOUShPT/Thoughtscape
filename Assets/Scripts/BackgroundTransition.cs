@@ -16,6 +16,7 @@ public class BackgroundTransition : MonoBehaviour
     public SpriteRenderer positiveShelfSprite;
     public SpriteRenderer negativeShelfSprite;
     public SpriteRenderer positiveSmiles;
+    public SpriteRenderer negativeCracks;
     //public SpriteRenderer negativeDirtiness;
     public List<SpriteRenderer> backgroundStuff;
     private bool _isPositive;
@@ -32,6 +33,7 @@ public class BackgroundTransition : MonoBehaviour
         positiveShelfSprite.material.SetFloat("_DissolveCutoff", 1);
         negativeShelfSprite.material.SetFloat("_DissolveCutoff", 1);
         positiveSmiles.material.SetFloat("_DissolveCutoff", 1);
+        negativeCracks.material.SetFloat("_DissolveCutoff", 1);
         //negativeDirtiness.material.SetFloat("_DissolveCutoff", 1);
     }
 
@@ -43,6 +45,7 @@ public class BackgroundTransition : MonoBehaviour
             meterSlider.value < _gameManager.currentMeterSpreadValue)
         {
             positiveSmiles.material.SetFloat("_DissolveCutoff", 1);
+            negativeCracks.material.SetFloat("_DissolveCutoff", 1);
             //negativeDirtiness.material.SetFloat("_DissolveCutoff", 1 - Mathf.Clamp((_gameManager.currentMeterSpreadValue*1)/Mathf.Abs(meterSlider.value), 0 , 1 ));
             if (neutralWallSprite.material.GetFloat("_DissolveCutoff") >= 1)
             {
@@ -64,10 +67,10 @@ public class BackgroundTransition : MonoBehaviour
         //Negative background transition
         if (meterSlider.value <= -_gameManager.currentMeterSpreadValue)
         {
+            negativeCracks.material.SetFloat("_DissolveCutoff", Mathf.Clamp((_gameManager.currentMeterSpreadValue*1)/Mathf.Abs(meterSlider.value), 0 , 1 ));
             if (negativeWallSprite.material.GetFloat("_DissolveCutoff") >= 1)
             {
                 StartCoroutine(BackgroundTransitionAnimation(neutralWallSprite, negativeWallSprite));
-                
                 StartCoroutine(BackgroundTransitionAnimation(neutralShelfSprite, negativeShelfSprite));
                 _isNegative = true;
             }

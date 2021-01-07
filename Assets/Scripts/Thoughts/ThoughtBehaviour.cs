@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using RDG;
+using UnityEngine.Rendering.Universal;
 using Random = UnityEngine.Random;
 
 public class ThoughtBehaviour : MonoBehaviour
@@ -96,7 +97,8 @@ public class ThoughtBehaviour : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             StopCoroutine(HorizontalMovement());
-            StopCoroutine(Intermittence());
+            StopCoroutine(Doubt());
+            StopCoroutine(Surprise());
             _catchEvent.Invoke(scoreValue);
             Vibration.Vibrate(250);
             Fade();
@@ -106,7 +108,8 @@ public class ThoughtBehaviour : MonoBehaviour
         if (other.CompareTag("Despawn Trigger"))
         {
             StopCoroutine(HorizontalMovement());
-            StopCoroutine(Intermittence());
+            StopCoroutine(Doubt());
+            StopCoroutine(Surprise());
             gameObject.SetActive(false);
         }
     }
@@ -125,7 +128,21 @@ public class ThoughtBehaviour : MonoBehaviour
         category = thoughtsAttributesList[currentIndex].category;
         if (category == "Doubt")
         {
-            StartCoroutine(Intermittence());
+            StartCoroutine(Doubt());
+            _pulseAnimation.animate = thoughtsAttributesList[currentIndex].animate;
+            _pulseAnimation.colorPulseTime = thoughtsAttributesList[currentIndex].animationCycleTime;
+            _horizontalForceTimer = 0;
+            _randomTimeInterval = Random.Range(minHorizontalForceTriggerTimeInterval, maxHorizontalForceTriggerTimeInterval);
+            _currentTransform.localRotation = Quaternion.identity;
+            _rb.velocity = Vector2.zero;
+            _rb.angularVelocity = 0;
+            StartCoroutine(HorizontalMovement());
+            return;
+        }
+
+        if (category == "Surprise")
+        {
+            StartCoroutine(Surprise());
             _pulseAnimation.animate = thoughtsAttributesList[currentIndex].animate;
             _pulseAnimation.colorPulseTime = thoughtsAttributesList[currentIndex].animationCycleTime;
             _horizontalForceTimer = 0;
@@ -182,7 +199,7 @@ public class ThoughtBehaviour : MonoBehaviour
     }
     
     
-    IEnumerator Intermittence()
+    IEnumerator Doubt()
     {
         _randomIndex = Random.Range(0, _positiveDoubtThoughtAttributes.thoughts.Count);
         yield return new WaitForSeconds(Random.Range(0,0.2f));
@@ -216,6 +233,37 @@ public class ThoughtBehaviour : MonoBehaviour
             yield return new WaitForSeconds(thoughtsAttributesList[currentIndex].animationCycleTime);
             yield return null;
         }
+    }
+
+    IEnumerator Surprise()
+    {
+        category = thoughtsAttributesList[currentIndex].category;
+        int index = Random.Range(0, thoughtsAttributesList.Count);
+        while (thoughtsAttributesList[index].category == "Doubt" || thoughtsAttributesList[index].category == "Surprise")
+        {
+            yield return null;
+        }
+        Debug.Log(thoughtsAttributesList[index].category + " " + index);
+        _randomIndex = Random.Range(0, thoughtsAttributesList[index].thoughts.Count);
+        thoughtString = thoughtsAttributesList[index].thoughts[_randomIndex];
+        _text.text = thoughtString;
+        scoreValue = thoughtsAttributesList[index].defaultValue;
+        textColor = thoughtsAttributesList[currentIndex].textColor;
+        outerColor = thoughtsAttributesList[currentIndex].outerColor;
+        _text.fontMaterial.SetColor(ShaderUtilities.ID_FaceColor, textColor);
+        _text.fontMaterial.SetColor(ShaderUtilities.ID_UnderlayColor, outerColor);
+        _text.fontMaterial.SetColor("_DissolveEdgeColor", outerColor);
+        _text.ForceMeshUpdate();
+        _collider.enabled = true;
+        _collider.offset = Vector2.zero;
+        _collider.size = new Vector2(_text.GetRenderedValues(true).x, _text.GetRenderedValues(true).y);
+        float fallTime = dropSpeed*((_currentPosition.y + Math.Abs(ScreenProperties.currentScreenCoords.yMin)) - (_currentPosition.y - (ScreenProperties.currentScreenCoords.yMax + Math.Abs(ScreenProperties.currentScreenCoords.yMin))));
+        yield return new WaitForSeconds(1.5f);
+        textColor = thoughtsAttributesList[index].textColor;
+        outerColor = thoughtsAttributesList[index].outerColor;
+        _text.fontMaterial.SetColor(ShaderUtilities.ID_FaceColor, textColor);
+        _text.fontMaterial.SetColor(ShaderUtilities.ID_UnderlayColor, outerColor);
+        _text.fontMaterial.SetColor("_DissolveEdgeColor", outerColor);
     }
 }
 

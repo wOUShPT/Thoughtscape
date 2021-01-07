@@ -103,6 +103,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 49a3f18add9f2364bafec1e3fe096c57, type: 2}
   - {fileID: 11400000, guid: aa7e83c61a41323449f42fb89c2b3fc8, type: 2}
   - {fileID: 11400000, guid: d42e8e29606dc864d9a5ca3a7d3e1dbb, type: 2}
+  - {fileID: 11400000, guid: 58e4624490201024bb84117ee216eee1, type: 2}
   _positiveDoubtThoughtAttributes: {fileID: 11400000, guid: faa94ff2ab85654499d7de37362da72e,
     type: 2}
   _negativeDoubtThoughtAttributes: {fileID: 11400000, guid: e19b30643afb6984dacc03e6f81568d4,

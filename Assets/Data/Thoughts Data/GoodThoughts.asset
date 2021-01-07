@@ -21,8 +21,8 @@ MonoBehaviour:
   canSpawn: 1
   hasHorizontalForce: 0
   defaultValue: 0.03
-  textColor: {r: 1, g: 0.9330109, b: 0, a: 1}
-  outerColor: {r: 0, g: 0, b: 0, a: 1}
+  textColor: {r: 1, g: 0.97333336, b: 0.6, a: 1}
+  outerColor: {r: 1, g: 0.9333334, b: 0, a: 1}
   animate: 0
   animationCycleTime: 0
   thoughts:
