@@ -19,6 +19,8 @@ public class ThoughtBehaviour : MonoBehaviour
     [Space(15)]
     public ThoughtsAttributesScriptableObject _positiveDoubtThoughtAttributes;
     public ThoughtsAttributesScriptableObject _negativeDoubtThoughtAttributes;
+    [Space(15)]
+    public List<ThoughtsAttributesScriptableObject> thoughtsAttributesSurpriseList;
 
     [Space(30, order = 3)]
     [Header("Thought current attributes", order = 4)]
@@ -35,7 +37,6 @@ public class ThoughtBehaviour : MonoBehaviour
     public float minHorizontalForceValue;
     [Tooltip("Horizontal maximum force value")]
     public float maxHorizontalForceValue;
-    public float horizontalForceComboIncrementValue;
 
     public float minHorizontalForceTriggerTimeInterval;
     public float maxHorizontalForceTriggerTimeInterval;
@@ -64,7 +65,6 @@ public class ThoughtBehaviour : MonoBehaviour
     private BoxCollider2D _collider;
     public int currentIndex = 0;
     private int _randomIndex;
-    private float _horizontalForceTimer;
     private float _randomTimeInterval;
 
     private PulseAnimation _pulseAnimation;
@@ -82,7 +82,7 @@ public class ThoughtBehaviour : MonoBehaviour
         _catchEvent = new CatchEvent();
         _catchEvent.AddListener(_gameManager.OnCatchEvent);
     }
-    
+
     private void Update()
     {
         //Drop movement
@@ -125,13 +125,14 @@ public class ThoughtBehaviour : MonoBehaviour
     //Reset the Thoughts attributes randomly, based on a collection of Thoughts attributes data containers (ScriptableObjects) / reset other behaviour default values
     public virtual void ResetBehaviour()
     {
+        _currentTransform.position = new Vector3(Random.Range(ScreenProperties.currentScreenCoords.xMin+0.5f, ScreenProperties.currentScreenCoords.xMax-0.5f),ScreenProperties.currentScreenCoords.yMax+1,0);
+        _currentPosition = _currentTransform.position;
         category = thoughtsAttributesList[currentIndex].category;
         if (category == "Doubt")
         {
             StartCoroutine(Doubt());
             _pulseAnimation.animate = thoughtsAttributesList[currentIndex].animate;
             _pulseAnimation.colorPulseTime = thoughtsAttributesList[currentIndex].animationCycleTime;
-            _horizontalForceTimer = 0;
             _randomTimeInterval = Random.Range(minHorizontalForceTriggerTimeInterval, maxHorizontalForceTriggerTimeInterval);
             _currentTransform.localRotation = Quaternion.identity;
             _rb.velocity = Vector2.zero;
@@ -145,7 +146,6 @@ public class ThoughtBehaviour : MonoBehaviour
             StartCoroutine(Surprise());
             _pulseAnimation.animate = thoughtsAttributesList[currentIndex].animate;
             _pulseAnimation.colorPulseTime = thoughtsAttributesList[currentIndex].animationCycleTime;
-            _horizontalForceTimer = 0;
             _randomTimeInterval = Random.Range(minHorizontalForceTriggerTimeInterval, maxHorizontalForceTriggerTimeInterval);
             _currentTransform.localRotation = Quaternion.identity;
             _rb.velocity = Vector2.zero;
@@ -168,7 +168,6 @@ public class ThoughtBehaviour : MonoBehaviour
         _collider.enabled = true;
         _collider.offset = Vector2.zero;
         _collider.size = new Vector2(_text.GetRenderedValues(true).x, _text.GetRenderedValues(true).y);
-        _horizontalForceTimer = 0;
         _randomTimeInterval = Random.Range(minHorizontalForceTriggerTimeInterval, maxHorizontalForceTriggerTimeInterval);
         _currentTransform.localRotation = Quaternion.identity;
         _rb.velocity = Vector2.zero;
@@ -191,7 +190,6 @@ public class ThoughtBehaviour : MonoBehaviour
             float randomSign = Random.Range(0, 2) * 2 - 1;
             Vector2 randomForce = Vector2.right * (Random.Range(minHorizontalForceValue, maxHorizontalForceValue) * randomSign);
             _rb.AddForce(randomForce, ForceMode2D.Impulse);
-            _horizontalForceTimer = 0;
             _randomTimeInterval = Random.Range(minHorizontalForceTriggerTimeInterval, maxHorizontalForceTriggerTimeInterval);
             yield return new WaitForSeconds(_randomTimeInterval);
             yield return null;
@@ -237,19 +235,42 @@ public class ThoughtBehaviour : MonoBehaviour
 
     IEnumerator Surprise()
     {
-        category = thoughtsAttributesList[currentIndex].category;
-        int index = Random.Range(0, thoughtsAttributesList.Count);
-        while (thoughtsAttributesList[index].category == "Doubt" || thoughtsAttributesList[index].category == "Surprise")
-        {
-            yield return null;
-        }
-        Debug.Log(thoughtsAttributesList[index].category + " " + index);
-        _randomIndex = Random.Range(0, thoughtsAttributesList[index].thoughts.Count);
-        thoughtString = thoughtsAttributesList[index].thoughts[_randomIndex];
-        _text.text = thoughtString;
-        scoreValue = thoughtsAttributesList[index].defaultValue;
+        Debug.Log(_currentPosition.y.ToString());
+        int index = Random.Range(0, thoughtsAttributesSurpriseList.Count);
+        scoreValue = thoughtsAttributesSurpriseList[index].defaultValue;
         textColor = thoughtsAttributesList[currentIndex].textColor;
         outerColor = thoughtsAttributesList[currentIndex].outerColor;
+        _text.fontMaterial.SetColor(ShaderUtilities.ID_FaceColor, textColor);
+        _text.fontMaterial.SetColor(ShaderUtilities.ID_UnderlayColor, outerColor);
+        _text.fontMaterial.SetColor("_DissolveEdgeColor", outerColor);
+        Debug.Log("waiting");
+        _randomIndex = Random.Range(0, thoughtsAttributesList[currentIndex].thoughts.Count);
+        thoughtString = thoughtsAttributesList[currentIndex].thoughts[_randomIndex];
+        _text.text = thoughtString;
+        _text.ForceMeshUpdate();
+        _collider.enabled = false;
+        _collider.offset = Vector2.zero;
+        _collider.size = new Vector2(_text.GetRenderedValues(true).x, _text.GetRenderedValues(true).y);
+        float timer = 0;
+        while (_currentPosition.y > 0)
+        {
+            timer += Time.deltaTime;
+            if (timer > 0.1f)
+            {
+                timer = 0;
+                _randomIndex = Random.Range(0, thoughtsAttributesList[currentIndex].thoughts.Count);
+                thoughtString = thoughtsAttributesList[currentIndex].thoughts[_randomIndex];
+                _text.text = thoughtString;
+            }
+            yield return null;
+        }
+        yield return new WaitUntil(() => _currentPosition.y < 0);
+        Debug.Log("Waited");
+        _randomIndex = Random.Range(0, thoughtsAttributesSurpriseList[index].thoughts.Count);
+        thoughtString = thoughtsAttributesSurpriseList[index].thoughts[_randomIndex];
+        _text.text = thoughtString;
+        textColor = thoughtsAttributesSurpriseList[index].textColor;
+        outerColor = thoughtsAttributesSurpriseList[index].outerColor;
         _text.fontMaterial.SetColor(ShaderUtilities.ID_FaceColor, textColor);
         _text.fontMaterial.SetColor(ShaderUtilities.ID_UnderlayColor, outerColor);
         _text.fontMaterial.SetColor("_DissolveEdgeColor", outerColor);
@@ -257,13 +278,6 @@ public class ThoughtBehaviour : MonoBehaviour
         _collider.enabled = true;
         _collider.offset = Vector2.zero;
         _collider.size = new Vector2(_text.GetRenderedValues(true).x, _text.GetRenderedValues(true).y);
-        float fallTime = dropSpeed*((_currentPosition.y + Math.Abs(ScreenProperties.currentScreenCoords.yMin)) - (_currentPosition.y - (ScreenProperties.currentScreenCoords.yMax + Math.Abs(ScreenProperties.currentScreenCoords.yMin))));
-        yield return new WaitForSeconds(1.5f);
-        textColor = thoughtsAttributesList[index].textColor;
-        outerColor = thoughtsAttributesList[index].outerColor;
-        _text.fontMaterial.SetColor(ShaderUtilities.ID_FaceColor, textColor);
-        _text.fontMaterial.SetColor(ShaderUtilities.ID_UnderlayColor, outerColor);
-        _text.fontMaterial.SetColor("_DissolveEdgeColor", outerColor);
     }
 }
 

@@ -22,8 +22,12 @@ public class GameManager : MonoBehaviour
 
     [Tooltip("List of level related parameters data containers")]
     public List<LevelParametersScriptableObject> levelParametersDataList;
+
+    private List<string> _daysList;
+    private int _week;
     [Tooltip("List of score goals to level up")]
     public List<int> scoreGoalsToLevelUp;
+    private int _scoreGoalEndlessMultiplier;
     private int _levelIndex;
     public float levelTransitionTimeDuration;
     private float _levelTransitionTimer;
@@ -77,9 +81,10 @@ public class GameManager : MonoBehaviour
     
     [Tooltip("Meter current move speed")]
     public float meterCurrentMoveSpeed;
-
+    
     private float _timer;
     private bool _canStartGame;
+    [SerializeField]
     private int _scoreValue;
     private float _scoreComboTimer;
     private float _scoreTimeInterval;
@@ -113,6 +118,8 @@ public class GameManager : MonoBehaviour
     private bool _canWaterRise;
     private bool _canWaterLow;
 
+    private BackgroundTransition _backgroundTransitionController;
+
     #endregion
     
     //-------------------------------------------------------------------------------------------------------------
@@ -131,13 +138,17 @@ public class GameManager : MonoBehaviour
 
     [Tooltip("UI score increment text component")]
     public TextMeshProUGUI scoreIncrementUI;
-    
-    [Tooltip("UI balance meter slider component")]
+    private TextAnimation _scoreIncrementTextAnimationController;
+
+        [Tooltip("UI balance meter slider component")]
     public Slider meterSlider;
     private MeterUI _meterUI;
 
     [Tooltip("UI day text component")]
     public Text dayUI;
+
+    [Tooltip("Fade transition prefab animator component")]
+    public Animator levelFadeTransitionAnimator;
     
     #endregion
 
@@ -146,19 +157,19 @@ public class GameManager : MonoBehaviour
     #region Post Processing Parameters Declaration
 
     [Space(30, order = 0)]
-    [Header("Post Processing and Particle System", order = 1)]
+    [Header("Post Processing, Particle System and Effects", order = 1)]
     [Space(15, order = 2)]
     
     [Tooltip("Post Processing Volume component")]
     public Volume postProcessingVolume;
     private WhiteBalance _whiteBalance;
-    private Vignette _vignette;
     private ChromaticAberration _chromaticAberration;
     public float chromaticAberrationFeedbackEffectTime;
     private int _chromaticAberrationSign;
 
     public ParticleSystem showerParticleSystem;
-    public bool canSpawnParticles;
+
+    public Animator vaporEffectAnimator;
 
     #endregion
     
@@ -183,6 +194,10 @@ public class GameManager : MonoBehaviour
         
         _meterUI = meterSlider.gameObject.GetComponent<MeterUI>();
 
+        _backgroundTransitionController = FindObjectOfType<BackgroundTransition>();
+
+        _scoreIncrementTextAnimationController = scoreIncrementUI.GetComponent<TextAnimation>();
+
         //Instantiate thoughts and create a pool based on a pre-established capacity
         _thoughtsPool = new List<ThoughtBehaviour>();
         for (int i = 0; i < thoughtsPoolCapacity; i++)
@@ -197,21 +212,23 @@ public class GameManager : MonoBehaviour
         }
 
         Physics2D.IgnoreLayerCollision(9, 9);
-        canSpawn = false;
-
+        
         //Initialize the first level
+        showerParticleSystem.Stop();
+        levelFadeTransitionAnimator.speed = 0.5f;
         _levelIndex = 0;
+        _scoreGoalEndlessMultiplier = 0;
+        _week = 1;
+        _daysList = new List<string>();
+        SetDaysList();
         SetLevelParameters();
         StartCoroutine(LevelTransition());
 
         //Get postprocessing filters and set base values
         postProcessingVolume.profile.TryGet(out _whiteBalance);
-        postProcessingVolume.profile.TryGet(out _vignette);
         postProcessingVolume.profile.TryGet(out _chromaticAberration);
         _whiteBalance.temperature.min = -60;
         _whiteBalance.temperature.max = 60;
-        _vignette.intensity.min = 0.2f;
-        _vignette.intensity.max = 0.5f;
         _chromaticAberration.intensity.min = 0f;
         _chromaticAberration.intensity.max = 1f;
         _chromaticAberrationSign = 1;
@@ -265,7 +282,6 @@ public class GameManager : MonoBehaviour
                 {
                     _meterComboTimer = 0;
                     _meterComboMultiplier += 0.1f;
-                    SetHorizontalForce(_meterComboMultiplier);
                     SetDropSpeed(_meterComboMultiplier);
                 }
                 
@@ -278,7 +294,6 @@ public class GameManager : MonoBehaviour
 
                 _meterMoveSpeedMultiplier =
                     Mathf.Abs(Mathf.Abs(_meterValue)-(1*currentMeterSpreadValue*1.5f)) * _scoreIncrementCombo;
-                //_meterMoveSpeedMultiplier = (1f - Mathf.Abs(_meterValue) * _currentMeterSpreadValue*2) * 1.2f * _scoreIncrementCombo;
             }
             else
             {
@@ -290,8 +305,7 @@ public class GameManager : MonoBehaviour
                 _meterComboMultiplier = 1;
                 
                 SetDropSpeed(1f);
-                SetHorizontalForce(0);
-                
+
                 if (_isMovingUp && Mathf.Sign(_meterValue) == -1 || !_isMovingUp && Mathf.Sign(_meterValue) == 1)
                 {
                     _meterMoveSpeedMultiplier = (Mathf.Abs(_meterValue)/1.5f) * _scoreIncrementCombo;
@@ -340,16 +354,16 @@ public class GameManager : MonoBehaviour
 
                 _meterLimitsTimer = 0;
             }
+            
+            _meterValue += _meterIncrementValue * _meterMoveSpeed * _meterMoveSpeedMultiplier * Time.deltaTime;
+            _meterValue = Mathf.Clamp(_meterValue, meterSlider.minValue, meterSlider.maxValue);
+
+            if (Mathf.Approximately(waterWaveTransform.position.y, ScreenProperties.currentScreenCoords.yMin + 0.8f))
+            {
+                GameOver();
+            }
         }
 
-        _meterValue += _meterIncrementValue * _meterMoveSpeed * _meterMoveSpeedMultiplier * Time.deltaTime;
-        _meterValue = Mathf.Clamp(_meterValue, meterSlider.minValue, meterSlider.maxValue);
-
-        if (Mathf.Approximately(waterWaveTransform.position.y, ScreenProperties.currentScreenCoords.yMin + 0.8f))
-        {
-            GameOver();
-        }
-        
         UpdateWhiteBalanceFilter();
 
         //UI Update
@@ -389,7 +403,6 @@ public class GameManager : MonoBehaviour
         thought.currentIndex = randomIndex;
         thought.gameObject.SetActive(true);
         thought.ResetBehaviour();
-        thought.transform.position = new Vector3(Random.Range(ScreenProperties.currentScreenCoords.xMin+0.5f, ScreenProperties.currentScreenCoords.xMax-0.5f),ScreenProperties.currentScreenCoords.yMax+1,0);
         SetDropSpeed(thought);
         SetHorizontalForce(thought);
     }
@@ -435,14 +448,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SetHorizontalForce(float forceIncrement)
-    {
-        foreach (var thought in _thoughtsPool)
-        {
-            thought.horizontalForceComboIncrementValue = forceIncrement;
-        }
-    }
-    
     void AllowThoughtSpawn(string category, bool canSpawn)
     {
         foreach (var though in thoughtsAttributesList)
@@ -554,19 +559,6 @@ public class GameManager : MonoBehaviour
 
     //---------------- PostProcessing, Visual Effects and UI Related Functions ------------------------------------
 
-    //Updates post processing vignette filter based on the meter balance values
-    void UpdateVignetteFilter()
-    {
-        if (Mathf.Abs(_meterValue) == 1)
-        {
-            _vignette.intensity.value = Mathf.Lerp(_vignette.intensity.value, _vignette.intensity.max, ((_vignette.intensity.max - _vignette.intensity.min)/_meterLimitsTimeToDeath) * Time.deltaTime);
-        }
-        else
-        {
-            _vignette.intensity.value = Mathf.Lerp(_vignette.intensity.value, _vignette.intensity.min, 2 * Time.deltaTime);
-        }
-    }
-
     //Updates post processing white balance filter based on the meter balance values
     void UpdateWhiteBalanceFilter()
     {
@@ -610,9 +602,9 @@ public class GameManager : MonoBehaviour
 
     IEnumerator UpdateScoreIncrementUI()
     {
-        scoreIncrementUI.gameObject.SetActive(true);
-        yield return new WaitForSeconds((_scoreTimeInterval - (_scoreComboMultiplier))/1.1f);
-        scoreIncrementUI.gameObject.SetActive(false);
+        _scoreIncrementTextAnimationController.Show();
+        yield return new WaitForSeconds(1f);
+       _scoreIncrementTextAnimationController.Hide();
         yield return null;
     }
 
@@ -625,7 +617,7 @@ public class GameManager : MonoBehaviour
             {
                 waterWaveTransform.position = new Vector3(waterWaveTransform.position.x,
                     Mathf.Clamp(waterWaveTransform.position.y - waterLevelDropSpeed * Time.deltaTime,
-                        ScreenProperties.currentScreenCoords.yMin - 2.5f, ScreenProperties.currentScreenCoords.yMin+ 0.8f)
+                        _waterLevelDefaultPosition.y, ScreenProperties.currentScreenCoords.yMin+ 0.8f)
                     , waterWaveTransform.position.z);
                 yield return null;
             }
@@ -634,14 +626,14 @@ public class GameManager : MonoBehaviour
             {
                 waterWaveTransform.position = new Vector3(waterWaveTransform.position.x,
                     Mathf.Clamp(waterWaveTransform.position.y + waterLevelRiseSpeed * Time.deltaTime,
-                        ScreenProperties.currentScreenCoords.yMin - 2.5f, ScreenProperties.currentScreenCoords.yMin + 0.8f)
+                        _waterLevelDefaultPosition.y, ScreenProperties.currentScreenCoords.yMin + 0.8f)
                     , waterWaveTransform.position.z);
             }
 
             if (!_canStartGame)
             {
                 waterWaveTransform.position =                                                                                                   
-                    new Vector3(waterWaveTransform.position.x, ScreenProperties.currentScreenCoords.yMin - 2.5f, waterWaveTransform.position.z);
+                    new Vector3(waterWaveTransform.position.x, _waterLevelDefaultPosition.y, waterWaveTransform.position.z);
             }
 
             yield return null;
@@ -651,7 +643,7 @@ public class GameManager : MonoBehaviour
     //Check if can level up
     public void CheckIfLevelUp()
     {
-        if (_scoreValue == scoreGoalsToLevelUp[_levelIndex] && _levelIndex < levelParametersDataList.Count)
+        if (_scoreValue == (scoreGoalsToLevelUp[_levelIndex]+(50*_scoreGoalEndlessMultiplier)))
         {
             _levelIndex++;
             StartCoroutine(LevelTransition());
@@ -665,23 +657,39 @@ public class GameManager : MonoBehaviour
         {
             DeSpawnThought(thought);
         }
-        SetLevelParameters();
+        _canStartGame = false;
+        if (_levelIndex != 0)
+        {
+            levelFadeTransitionAnimator.SetTrigger("Start");
+            yield return new WaitForSeconds(2f);
+            _backgroundTransitionController.ChangeBackgroundProps();
+            levelFadeTransitionAnimator.SetTrigger("End");
+        }
+        else
+        {
+            _backgroundTransitionController.ChangeBackgroundProps();
+        }
         showerParticleSystem.Stop();
+        vaporEffectAnimator.SetBool("CanFade", false);
         if (_audioManager != null)
         {
             _audioManager.StopShowerLoopSFX();
         }
+
+        SetLevelParameters();
+        dayUI.text = _daysList[_levelIndex-(7*(_week-1))];
         dayUI.gameObject.SetActive(true);
         yield return new WaitForSeconds(levelTransitionTimeDuration);
         dayUI.gameObject.SetActive(false);
         showerParticleSystem.Play();
+        vaporEffectAnimator.SetBool("CanFade", true);
         if (_audioManager != null)
         {
             _audioManager.PlayShowerLoopSFX();
         }
+        yield return new WaitForSeconds(2f);
         canSpawn = true;
         StartCoroutine(SpawnThoughts());
-        _canStartGame = true;
     }
 
     //Set level parameters (ex: drop speed, meter move speed, spawn ratio, etc)
@@ -692,10 +700,9 @@ public class GameManager : MonoBehaviour
             case 0:
 
                 //Sets timer and score related default values
-                _canStartGame = false;
-                dayUI.text = levelParametersDataList[_levelIndex].day;
                 currentMinTimeBetweenSpawns = levelParametersDataList[_levelIndex].minTimeBetweenSpawns;
                 currentMaxTimeBetweenSpawns = levelParametersDataList[_levelIndex].maxTimeBetweenSpawns;
+                SetDropSpeed(1);
                 _scoreComboTimer = 0;
                 _scoreComboMultiplier = 0;
                 _meterComboMultiplier = 1;
@@ -719,10 +726,9 @@ public class GameManager : MonoBehaviour
             case 1:
 
                 //Sets timer and score related default value
-                 _canStartGame = false;
-                dayUI.text = levelParametersDataList[_levelIndex].day;
                 currentMinTimeBetweenSpawns = levelParametersDataList[_levelIndex].minTimeBetweenSpawns;
                 currentMaxTimeBetweenSpawns = levelParametersDataList[_levelIndex].maxTimeBetweenSpawns;
+                SetDropSpeed(1);
                 _scoreComboTimer = 0;
                 _scoreComboMultiplier = 0;
                 _meterComboMultiplier = 1;
@@ -746,10 +752,9 @@ public class GameManager : MonoBehaviour
             case 2:
 
                 //Sets timer and score related default value
-                _canStartGame = false;
-                dayUI.text = levelParametersDataList[_levelIndex].day;
                 currentMinTimeBetweenSpawns = levelParametersDataList[_levelIndex].minTimeBetweenSpawns;
                 currentMaxTimeBetweenSpawns = levelParametersDataList[_levelIndex].maxTimeBetweenSpawns;
+                SetDropSpeed(1);
                 _scoreComboTimer = 0;
                 _scoreComboMultiplier = 0;
                 _meterComboMultiplier = 1;
@@ -773,10 +778,9 @@ public class GameManager : MonoBehaviour
             case 3:
 
                 //Sets timer and score related default value
-                _canStartGame = false;
-                dayUI.text = levelParametersDataList[_levelIndex].day;
                 currentMinTimeBetweenSpawns = levelParametersDataList[_levelIndex].minTimeBetweenSpawns;
                 currentMaxTimeBetweenSpawns = levelParametersDataList[_levelIndex].maxTimeBetweenSpawns;
+                SetDropSpeed(1);
                 _scoreComboTimer = 0;
                 _scoreComboMultiplier = 0;
                 _meterComboMultiplier = 1;
@@ -800,10 +804,9 @@ public class GameManager : MonoBehaviour
             case 4:
 
                 //Sets timer and score related default value
-                _canStartGame = false;
-                dayUI.text = levelParametersDataList[_levelIndex].day;
                 currentMinTimeBetweenSpawns = levelParametersDataList[_levelIndex].minTimeBetweenSpawns;
                 currentMaxTimeBetweenSpawns = levelParametersDataList[_levelIndex].maxTimeBetweenSpawns;
+                SetDropSpeed(1);
                 _scoreComboTimer = 0;
                 _scoreComboMultiplier = 0;
                 _meterComboMultiplier = 1;
@@ -827,10 +830,9 @@ public class GameManager : MonoBehaviour
             case 5:
 
                 //Sets timer and score related default value
-                _canStartGame = false;
-                dayUI.text = levelParametersDataList[_levelIndex].day;
                 currentMinTimeBetweenSpawns = levelParametersDataList[_levelIndex].minTimeBetweenSpawns;
                 currentMaxTimeBetweenSpawns = levelParametersDataList[_levelIndex].maxTimeBetweenSpawns;
+                SetDropSpeed(1);
                 _scoreComboTimer = 0;
                 _scoreComboMultiplier = 0;
                 _meterComboMultiplier = 1;
@@ -854,10 +856,9 @@ public class GameManager : MonoBehaviour
             case 6:
 
                 //Sets timer and score related default value
-                _canStartGame = false;
-                dayUI.text = levelParametersDataList[_levelIndex].day;
                 currentMinTimeBetweenSpawns = levelParametersDataList[_levelIndex].minTimeBetweenSpawns;
                 currentMaxTimeBetweenSpawns = levelParametersDataList[_levelIndex].maxTimeBetweenSpawns;
+                SetDropSpeed(1);
                 _scoreComboTimer = 0;
                 _scoreComboMultiplier = 0;
                 _meterComboMultiplier = 1;
@@ -879,10 +880,27 @@ public class GameManager : MonoBehaviour
                 break;
 
             case 7:
-                _levelIndex = 0;
+            
+                _scoreGoalEndlessMultiplier++;
+                _levelIndex = 6;
+                if (_scoreGoalEndlessMultiplier / (7 * _week) == 0)
+                {
+                    _week++;
+                }
                 SetLevelParameters();
                 break;
         }
+    }
+    
+    void SetDaysList()
+    {
+        _daysList.Add("monday");
+        _daysList.Add("tuesday");
+        _daysList.Add("wednesday");
+        _daysList.Add("thursday");
+        _daysList.Add("friday");
+        _daysList.Add("saturday");
+        _daysList.Add("sunday");
     }
 }
 

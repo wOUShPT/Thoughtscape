@@ -124,7 +124,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: .14 alpha
+  bundleVersion: .3 beta
   preloadedAssets:
   - {fileID: 11400000, guid: 55dd2f3fbc287f043b6a11c657eb9247, type: 2}
   metroInputSource: 0
@@ -384,7 +384,7 @@ PlayerSettings:
   - m_BuildTarget: LuminSupport
     m_GraphicsJobs: 0
   - m_BuildTarget: AndroidPlayer
-    m_GraphicsJobs: 0
+    m_GraphicsJobs: 1
   - m_BuildTarget: WebGLSupport
     m_GraphicsJobs: 0
   m_BuildTargetGraphicsJobMode:

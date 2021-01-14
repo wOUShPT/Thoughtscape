@@ -20,7 +20,7 @@ MonoBehaviour:
   limitZoneMeterSpawnRatePercentage: 0
   canSpawn: 1
   hasHorizontalForce: 0
-  defaultValue: -0.06
+  defaultValue: -0.05
   textColor: {r: 0.6, g: 0.6666666, b: 1, a: 1}
   outerColor: {r: 0, g: 0.16666651, b: 1, a: 1}
   animate: 0

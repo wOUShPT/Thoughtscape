@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-2156897069091883124
+--- !u!114 &-1775777350655837086
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -16,15 +16,15 @@ MonoBehaviour:
   m_AdvancedMode: 0
   type:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 4
   intensity:
     m_OverrideState: 1
-    m_Value: 0.2
+    m_Value: 0.193
     min: 0
     max: 1
   response:
     m_OverrideState: 0
-    m_Value: 0.8
+    m_Value: 0.827
     min: 0
     max: 1
   texture:
@@ -44,9 +44,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   components:
   - {fileID: 2903096179728668543}
-  - {fileID: 6840196532743186391}
-  - {fileID: -2156897069091883124}
   - {fileID: 7336927994859594854}
+  - {fileID: -1775777350655837086}
 --- !u!114 &2903096179728668543
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -71,42 +70,6 @@ MonoBehaviour:
     m_Value: 0
     min: -100
     max: 100
---- !u!114 &6840196532743186391
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 899c54efeace73346a0a16faa3afe726, type: 3}
-  m_Name: Vignette
-  m_EditorClassIdentifier: 
-  active: 1
-  m_AdvancedMode: 0
-  color:
-    m_OverrideState: 1
-    m_Value: {r: 0, g: 0, b: 0, a: 1}
-    hdr: 0
-    showAlpha: 0
-    showEyeDropper: 1
-  center:
-    m_OverrideState: 1
-    m_Value: {x: 0.5, y: 0.5}
-  intensity:
-    m_OverrideState: 1
-    m_Value: 0.315
-    min: 0
-    max: 1
-  smoothness:
-    m_OverrideState: 1
-    m_Value: 0.538
-    min: 0.01
-    max: 1
-  rounded:
-    m_OverrideState: 1
-    m_Value: 0
 --- !u!114 &7336927994859594854
 MonoBehaviour:
   m_ObjectHideFlags: 3

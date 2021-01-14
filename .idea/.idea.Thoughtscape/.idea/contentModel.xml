@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Users\woush\AppData\local\JetBrains\Rider2020.1\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\woush\AppData\local\JetBrains\Rider2020.1\resharper-host\local\Transient\ReSharperHost\v201\SolutionCaches\_Thoughtscape.203078270.00" t="ExcludeRecursive" />
-    <e p="C:\Users\woush\Documents\GitHub\Thoughtscape" t="IncludeRecursive">
+    <e p="C:\Users\gusta\AppData\local\JetBrains\Rider2020.2\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\gusta\AppData\local\JetBrains\Rider2020.2\resharper-host\local\Transient\Rider\v202\SolutionCaches\_Thoughtscape.1366204263.00" t="ExcludeRecursive" />
+    <e p="E:\Users\Gustavo\Documents\GitHub\Thoughtscape" t="IncludeRecursive">
       <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
@@ -12,7 +12,6 @@
         </e>
         <e p="Scripts" t="Include">
           <e p="AudioManager.cs" t="Include" />
-          <e p="AutomaticPlay.cs" t="Include" />
           <e p="BackgroundTransition.cs" t="Include" />
           <e p="DDOL.cs" t="Include" />
           <e p="DebugFPS.cs" t="Include" />
@@ -23,12 +22,14 @@
             <e p="SetLevelLimits.cs" t="Include" />
             <e p="WaveBehaviour.cs" t="Include" />
           </e>
+          <e p="InputManager.cs" t="Include" />
           <e p="Player" t="Include">
             <e p="PlayerAnimation.cs" t="Include" />
             <e p="PlayerController.cs" t="Include" />
           </e>
           <e p="SceneManager.cs" t="Include" />
           <e p="ScreenProperties.cs" t="Include" />
+          <e p="SwipeDetection.cs" t="Include" />
           <e p="Thoughts" t="Include">
             <e p="FadeAnimation.cs" t="Include" />
             <e p="PulseAnimation.cs" t="Include" />
@@ -43,9 +44,13 @@
             <e p="PauseMenu.cs" t="Include" />
             <e p="QuotesScriptableObject.cs" t="Include" />
             <e p="ScoreBoard.cs" t="Include" />
+            <e p="TextAnimation.cs" t="Include" />
             <e p="UIFallAnimation.cs" t="Include" />
           </e>
           <e p="Vibration.cs" t="Include" />
+        </e>
+        <e p="Shaders" t="Include">
+          <e p="VaporShader.shader" t="Include" />
         </e>
         <e p="TextMesh Pro" t="Include">
           <e p="Fonts" t="Include">
