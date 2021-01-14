@@ -2,21 +2,13 @@
     "name": "Controls",
     "maps": [
         {
-            "name": "Touch",
+            "name": "Player",
             "id": "a8e4e2d6-d806-4cb3-9740-e00e5d48562f",
             "actions": [
                 {
-                    "name": "PrimaryContact",
-                    "type": "PassThrough",
+                    "name": "MoveGesture",
+                    "type": "Value",
                     "id": "286d5757-9f33-4959-9e22-d2ba9ecafbfa",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": ""
-                },
-                {
-                    "name": "PrimaryPosition",
-                    "type": "PassThrough",
-                    "id": "76adb588-8daa-4a35-be77-077b02bbdff7",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": ""
@@ -26,22 +18,57 @@
                 {
                     "name": "",
                     "id": "090cdc04-a8c7-4cd9-9fab-e247cc3baee0",
-                    "path": "<Touchscreen>/primaryTouch/press",
+                    "path": "<Touchscreen>/primaryTouch/position",
                     "interactions": "",
                     "processors": "",
                     "groups": "Mobile",
-                    "action": "PrimaryContact",
+                    "action": "MoveGesture",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "UI",
+            "id": "01693d71-3d20-4935-bffb-b918e51b0395",
+            "actions": [
+                {
+                    "name": "Tap",
+                    "type": "Value",
+                    "id": "57307c76-5861-4d8a-9633-4b2c3b013414",
+                    "expectedControlType": "Touch",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "TouchPosition",
+                    "type": "Value",
+                    "id": "004d9e93-629c-43e4-adee-44c0295e0b38",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "ba647767-d49b-496a-9295-db5d20e7e55f",
+                    "path": "<Touchscreen>/touch0",
+                    "interactions": "Tap",
+                    "processors": "",
+                    "groups": "Mobile",
+                    "action": "Tap",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "5f8eae38-f83d-4678-a1d4-8e22fa9e6b1d",
+                    "id": "9e20c92b-2e9d-4044-aa0a-553f75b23817",
                     "path": "<Touchscreen>/primaryTouch/position",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "PrimaryPosition",
+                    "groups": "Mobile",
+                    "action": "TouchPosition",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

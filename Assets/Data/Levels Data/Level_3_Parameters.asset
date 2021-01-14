@@ -22,7 +22,7 @@ MonoBehaviour:
   waterLevelRiseSpeed: 0.15
   waterLevelDropSpeed: 0.3
   minTimeBetweenSpawns: 0.4
-  maxTimeBetweenSpawns: 1.2
+  maxTimeBetweenSpawns: 1.1
   thoughtSpawnPropertiesList:
   - category: Good
     hasHorizontalForce: 1
@@ -73,10 +73,3 @@ MonoBehaviour:
     positiveZoneMeterSpawnRatePercentage: 20
     negativeZoneMeterSpawnRatePercentage: 20
     limitZoneMeterSpawnRatePercentage: 40
-  - category: Suprise
-    hasHorizontalForce: 1
-    dropSpeed: 4.2
-    centerMeterZoneSpawnRatePercentage: 0
-    positiveZoneMeterSpawnRatePercentage: 0
-    negativeZoneMeterSpawnRatePercentage: 0
-    limitZoneMeterSpawnRatePercentage: 0

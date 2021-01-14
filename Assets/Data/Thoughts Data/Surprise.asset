@@ -25,9 +25,4 @@ MonoBehaviour:
   outerColor: {r: 0.254717, g: 0.254717, b: 0.254717, a: 1}
   animate: 0
   animationCycleTime: 0
-  thoughts:
-  - '#%?"#/=&'
-  - '#%&"#=/?'
-  - '%#&=#"/?'
-  - '%#/=#"&?'
-  - ?#/=#"&%
+  thoughts: []

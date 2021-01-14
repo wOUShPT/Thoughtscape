@@ -1,6 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SceneManager : MonoBehaviour
 {
@@ -32,7 +35,7 @@ public class SceneManager : MonoBehaviour
     
     public IEnumerator WaitTimeToLoad(float time, int scene)
     {
-        yield return new WaitForSeconds(time);
+        yield return new WaitForSeconds(1);
         LoadScene(scene);
     }
 

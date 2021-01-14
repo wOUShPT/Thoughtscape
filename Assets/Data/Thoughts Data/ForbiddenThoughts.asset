@@ -21,14 +21,11 @@ MonoBehaviour:
   canSpawn: 1
   hasHorizontalForce: 0
   defaultValue: -10
-  textColor: {r: 0.3490566, g: 0.3490566, b: 0.3490566, a: 1}
-  outerColor: {r: 0, g: 0, b: 0, a: 1}
+  textColor: {r: 0, g: 0.012837195, b: 0.254717, a: 1}
+  outerColor: {r: 0.3490566, g: 0.3490566, b: 0.3490566, a: 1}
   animate: 1
   animationCycleTime: 0.5
   thoughts:
-  - if I'm gone
-  - there's no way back
-  - "can\xB4t handle anymore"
-  - no one will miss me
-  - It can't be fixed
-  - It can't be fixed
+  - if I'm gone...
+  - there's no way back...
+  - "can\xB4t handle anymore..."

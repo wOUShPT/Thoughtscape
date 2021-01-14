@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
+using UnityEngine.UIElements;
 using Slider = UnityEngine.UI.Slider;
 
 public class BackgroundTransition : MonoBehaviour
@@ -17,8 +17,8 @@ public class BackgroundTransition : MonoBehaviour
     public SpriteRenderer negativeShelfSprite;
     public SpriteRenderer positiveSmiles;
     public SpriteRenderer negativeCracks;
-    public List<GameObject> backgroundPropsList;
-    public GameObject lastProp;
+    //public SpriteRenderer negativeDirtiness;
+    public List<SpriteRenderer> backgroundStuff;
     private bool _isPositive;
     private bool _isNegative;
     void Awake()
@@ -34,6 +34,7 @@ public class BackgroundTransition : MonoBehaviour
         negativeShelfSprite.material.SetFloat("_DissolveCutoff", 1);
         positiveSmiles.material.SetFloat("_DissolveCutoff", 1);
         negativeCracks.material.SetFloat("_DissolveCutoff", 1);
+        //negativeDirtiness.material.SetFloat("_DissolveCutoff", 1);
     }
 
     // Update is called once per frame
@@ -102,16 +103,5 @@ public class BackgroundTransition : MonoBehaviour
             yield return null;
         }
         previousBackground.material.SetFloat("_DissolveCutoff", 1);
-    }
-
-    public void ChangeBackgroundProps()
-    {
-        int randomIndex = Random.Range(0, backgroundPropsList.Count);
-        if (lastProp != null)
-        {
-            Destroy(lastProp);
-        }
-        lastProp = Instantiate(backgroundPropsList[randomIndex]);
-        lastProp.transform.parent = GameObject.Find("Level").transform;
     }
 }
