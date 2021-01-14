@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class MainMenu : MonoBehaviour
 {
     private SceneManager _sceneManager;
+    public Animator introAnimator;
     public UIFallAnimation playButtonFallAnimation;
     public Button playButton;
     void Awake()
@@ -23,7 +24,8 @@ public class MainMenu : MonoBehaviour
     void Play()
     {
         playButtonFallAnimation.Animation(0.5f);
-        StartCoroutine(_sceneManager.WaitTimeToLoad(0.25f, 2));
+        introAnimator.SetTrigger("Start");
+        StartCoroutine(_sceneManager.WaitTimeToLoad(5.5f, 2));
     }
 
     

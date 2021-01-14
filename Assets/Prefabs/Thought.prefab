@@ -108,6 +108,13 @@ MonoBehaviour:
     type: 2}
   _negativeDoubtThoughtAttributes: {fileID: 11400000, guid: e19b30643afb6984dacc03e6f81568d4,
     type: 2}
+  thoughtsAttributesSurpriseList:
+  - {fileID: 11400000, guid: 05624a09b5578ce41aa1a6101a0fc5d8, type: 2}
+  - {fileID: 11400000, guid: 5d7a8d54ae74ecc489724874997c8f81, type: 2}
+  - {fileID: 11400000, guid: 7760f3dd80fcc734eb1c61d7a41e5a33, type: 2}
+  - {fileID: 11400000, guid: d4028124973ac3545afcefd8a80593e5, type: 2}
+  - {fileID: 11400000, guid: 49a3f18add9f2364bafec1e3fe096c57, type: 2}
+  - {fileID: 11400000, guid: aa7e83c61a41323449f42fb89c2b3fc8, type: 2}
   dropSpeed: 1
   dropSpeedMultiplier: 1
   hasHorizontalMovement: 0

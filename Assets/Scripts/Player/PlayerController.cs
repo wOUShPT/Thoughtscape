@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using TMPro;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 
@@ -6,7 +8,9 @@ public class PlayerController : MonoBehaviour
 {
     [Tooltip("SpriteRenderer component of the body sprite section")]
     public BoxCollider2D touchDragCollider;
-    private Controls _playerControls;
+
+    private InputManager _inputManager;
+    private Controls _controls;
     private Transform _playerTransform;
     private PauseMenu _pauseMenu;
     private Camera _mainCamera;
@@ -14,6 +18,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+
         _touchPosition = Vector2.zero;
 
         _playerTransform = GetComponent<Transform>();
@@ -51,21 +56,53 @@ public class PlayerController : MonoBehaviour
             _playerTransform.position = new Vector3(Mathf.Clamp(touchPositionOnWorld.x,ScreenProperties.currentScreenCoords.xMin+0.5f,ScreenProperties.currentScreenCoords.xMax-0.5f), ScreenProperties.currentScreenCoords.yMin-0.25f, _playerTransform.position.z);
         }
     }
-    
-    
+
+    private void Update()
+    {
+        if (touchDragCollider.bounds.Contains(new Vector3(_touchPosition.x, _touchPosition.y, 0)))
+        {
+            _playerTransform.position = new Vector3(Mathf.Clamp(_touchPosition.x,ScreenProperties.currentScreenCoords.xMin+0.5f,ScreenProperties.currentScreenCoords.xMax-0.5f), ScreenProperties.currentScreenCoords.yMin-0.25f, _playerTransform.position.z);
+        }
+    }
+
+
     private void OnDisable()
     {
         //Unregisters the player movement function on the input action event and disables the action when this script is disabled
-        _playerControls.Player.MoveGesture.performed -= context => OnMoveGesture(context);
-        _playerControls.Disable();
-        _playerControls.Dispose();
+        _controls.Touch.PrimaryPosition.performed -= context => OnMoveGesture(context);
+        _controls.Disable();
+        _controls.Dispose();
+        /*_inputManager.onStartTouch.RemoveListener(TouchStart);
+        _inputManager.onEndTouch.RemoveListener(TouchEnd);*/
     }
 
     private void OnEnable()
     {
         //Registers the player movement function on the input action event and enables the action when this script is enabled
-        _playerControls = new Controls();
-        _playerControls.Player.MoveGesture.performed += context => OnMoveGesture(context);
-        _playerControls.Enable();
+        _controls = new Controls();
+        _controls.Touch.PrimaryPosition.performed += context => OnMoveGesture(context);
+        _controls.Enable();
+
+        if (!FindObjectOfType<InputManager>())
+        {
+            _inputManager = gameObject.AddComponent<InputManager>();
+        }
+        else
+        {
+            _inputManager = FindObjectOfType<InputManager>();
+        }
+        _inputManager.onStartTouch.AddListener(TouchStart);
+        _inputManager.onEndTouch.AddListener(TouchEnd);
     }
+
+    private void TouchStart(Vector2 position, float time)
+    {
+        _touchPosition = position;
+    }
+
+    private void TouchEnd(Vector2 position, float time)
+    {
+        
+    }
+        
 }
