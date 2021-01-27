@@ -97,8 +97,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   thoughtsAttributesList:
   - {fileID: 11400000, guid: 05624a09b5578ce41aa1a6101a0fc5d8, type: 2}
-  - {fileID: 11400000, guid: 5d7a8d54ae74ecc489724874997c8f81, type: 2}
+  - {fileID: 11400000, guid: acdd8279bb55ff74dba55592f5060f6c, type: 2}
+  - {fileID: 11400000, guid: 40ce514a31601e64aac6ecb973e465d8, type: 2}
   - {fileID: 11400000, guid: 7760f3dd80fcc734eb1c61d7a41e5a33, type: 2}
+  - {fileID: 11400000, guid: 5d7a8d54ae74ecc489724874997c8f81, type: 2}
+  - {fileID: 11400000, guid: b911ff2da202f94448bd31aef16ee2ae, type: 2}
+  - {fileID: 11400000, guid: d025cf53e0470f241be4ee5a6f0646ee, type: 2}
   - {fileID: 11400000, guid: d4028124973ac3545afcefd8a80593e5, type: 2}
   - {fileID: 11400000, guid: 49a3f18add9f2364bafec1e3fe096c57, type: 2}
   - {fileID: 11400000, guid: aa7e83c61a41323449f42fb89c2b3fc8, type: 2}
@@ -110,8 +114,12 @@ MonoBehaviour:
     type: 2}
   thoughtsAttributesSurpriseList:
   - {fileID: 11400000, guid: 05624a09b5578ce41aa1a6101a0fc5d8, type: 2}
-  - {fileID: 11400000, guid: 5d7a8d54ae74ecc489724874997c8f81, type: 2}
+  - {fileID: 11400000, guid: acdd8279bb55ff74dba55592f5060f6c, type: 2}
+  - {fileID: 11400000, guid: 40ce514a31601e64aac6ecb973e465d8, type: 2}
   - {fileID: 11400000, guid: 7760f3dd80fcc734eb1c61d7a41e5a33, type: 2}
+  - {fileID: 11400000, guid: 5d7a8d54ae74ecc489724874997c8f81, type: 2}
+  - {fileID: 11400000, guid: b911ff2da202f94448bd31aef16ee2ae, type: 2}
+  - {fileID: 11400000, guid: d025cf53e0470f241be4ee5a6f0646ee, type: 2}
   - {fileID: 11400000, guid: d4028124973ac3545afcefd8a80593e5, type: 2}
   - {fileID: 11400000, guid: 49a3f18add9f2364bafec1e3fe096c57, type: 2}
   - {fileID: 11400000, guid: aa7e83c61a41323449f42fb89c2b3fc8, type: 2}
@@ -120,7 +128,6 @@ MonoBehaviour:
   hasHorizontalMovement: 0
   minHorizontalForceValue: 0.1
   maxHorizontalForceValue: 0.2
-  horizontalForceComboIncrementValue: 0
   minHorizontalForceTriggerTimeInterval: 0.4
   maxHorizontalForceTriggerTimeInterval: 1.2
   category: 

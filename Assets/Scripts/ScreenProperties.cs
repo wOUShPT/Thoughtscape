@@ -18,12 +18,6 @@ public class ScreenProperties : MonoBehaviour
 
     }
 
-    /*public static Vector3 ScreenToWorldPosition(Camera camera, Vector3 position)
-    {
-        position.z = camera.nearClipPlane;
-        return camera.ScreenToWorldPoint(position);
-    }*/
-    
     public struct ScreenCoords
     {
         public float xMin;

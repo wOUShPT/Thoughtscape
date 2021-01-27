@@ -2,53 +2,40 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
 
 public class PlayerController : MonoBehaviour
 {
-    [Tooltip("SpriteRenderer component of the body sprite section")]
+    [Tooltip("Player touch detection collider component")]
     public BoxCollider2D touchDragCollider;
-
     private InputManager _inputManager;
     private Controls _controls;
     private Transform _playerTransform;
-    private PauseMenu _pauseMenu;
-    private Camera _mainCamera;
+    private OptionsMenu _optionsMenu;
     private Vector2 _touchPosition;
 
     void Start()
     {
-
+        _inputManager = FindObjectOfType<InputManager>();
+        
+        //Registers the player movement function on the input action event and enables the action when this script is enabled
+        _inputManager.onStartTouch.AddListener(OnTouch);
+        
         _touchPosition = Vector2.zero;
 
         _playerTransform = GetComponent<Transform>();
 
-        _pauseMenu = FindObjectOfType<PauseMenu>();
+        _optionsMenu = FindObjectOfType<OptionsMenu>();
 
-        _mainCamera = FindObjectOfType<Camera>();
-        
         //Sets the player yAxis position based on the screen size
         _playerTransform.position = new Vector3(_playerTransform.position.x, ScreenProperties.currentScreenCoords.yMin-0.25f, 0);
     }
-
-    //OnMoveGesture input event called function
-    public void OnMoveGesture(InputAction.CallbackContext context)
-    {
-        _touchPosition = context.ReadValue<Vector2>();
-        if (!_pauseMenu.isPaused)
-        {
-            MovePlayer();
-        }
-    }
+    
     
     void MovePlayer()
     {
-        //Sets the touch position on pixels given by argument and moves player
-        Vector3 touchPositionOnScreen = new Vector3(_touchPosition.x, _touchPosition.y, 0);
-        
-        //Convert touch/mouse position from pixels coordinates to world coordinates
-        Vector3 touchPositionOnWorld = _mainCamera.ScreenToWorldPoint(touchPositionOnScreen);
-        touchPositionOnWorld = new Vector3(touchPositionOnWorld.x, touchPositionOnWorld.y, 0);
+        Vector3 touchPositionOnWorld = new Vector3(_touchPosition.x, _touchPosition.y, 0);
         
         //Check if the touch/mouse position is inside the player body sprite bounds and if it's true move the player to the touch/mouse position on the X axis within the screen borders
         if (touchDragCollider.bounds.Contains(touchPositionOnWorld))
@@ -56,51 +43,25 @@ public class PlayerController : MonoBehaviour
             _playerTransform.position = new Vector3(Mathf.Clamp(touchPositionOnWorld.x,ScreenProperties.currentScreenCoords.xMin+0.5f,ScreenProperties.currentScreenCoords.xMax-0.5f), ScreenProperties.currentScreenCoords.yMin-0.25f, _playerTransform.position.z);
         }
     }
-
-    private void Update()
-    {
-        if (touchDragCollider.bounds.Contains(new Vector3(_touchPosition.x, _touchPosition.y, 0)))
-        {
-            _playerTransform.position = new Vector3(Mathf.Clamp(_touchPosition.x,ScreenProperties.currentScreenCoords.xMin+0.5f,ScreenProperties.currentScreenCoords.xMax-0.5f), ScreenProperties.currentScreenCoords.yMin-0.25f, _playerTransform.position.z);
-        }
-    }
-
-
+    
     private void OnDisable()
     {
         //Unregisters the player movement function on the input action event and disables the action when this script is disabled
-        _controls.Touch.PrimaryPosition.performed -= context => OnMoveGesture(context);
-        _controls.Disable();
-        _controls.Dispose();
-        /*_inputManager.onStartTouch.RemoveListener(TouchStart);
-        _inputManager.onEndTouch.RemoveListener(TouchEnd);*/
+        _inputManager.onStartTouch.RemoveListener(OnTouch);
     }
+    
 
-    private void OnEnable()
-    {
-        //Registers the player movement function on the input action event and enables the action when this script is enabled
-        _controls = new Controls();
-        _controls.Touch.PrimaryPosition.performed += context => OnMoveGesture(context);
-        _controls.Enable();
-
-        if (!FindObjectOfType<InputManager>())
-        {
-            _inputManager = gameObject.AddComponent<InputManager>();
-        }
-        else
-        {
-            _inputManager = FindObjectOfType<InputManager>();
-        }
-        _inputManager.onStartTouch.AddListener(TouchStart);
-        _inputManager.onEndTouch.AddListener(TouchEnd);
-    }
-
-    private void TouchStart(Vector2 position, float time)
+    private void OnTouch(TouchPhase phase, Vector2 position, float time)
     {
         _touchPosition = position;
+        if (!_optionsMenu.isToggled)
+        {
+            MovePlayer();
+        }
+        MovePlayer();
     }
 
-    private void TouchEnd(Vector2 position, float time)
+    private void TouchEnd(TouchPhase phase, Vector2 position, float time)
     {
         
     }

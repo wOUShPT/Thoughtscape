@@ -5,7 +5,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using RDG;
-using UnityEngine.Rendering.Universal;
 using Random = UnityEngine.Random;
 
 public class ThoughtBehaviour : MonoBehaviour
@@ -57,7 +56,9 @@ public class ThoughtBehaviour : MonoBehaviour
     public string thoughtString;
     
     private CatchEvent _catchEvent;
-    private GameManager _gameManager;
+    private bool _canVibrate;
+    private GameController _gameController;
+    private InputManager _inputManager;
     private TextMeshPro _text;
     private Transform _currentTransform;
     private Vector3 _currentPosition;
@@ -68,19 +69,20 @@ public class ThoughtBehaviour : MonoBehaviour
     private float _randomTimeInterval;
 
     private PulseAnimation _pulseAnimation;
-    private FadeAnimation fadeAnimation;
+    private FadeAnimation _fadeAnimation;
 
     public virtual void Awake()
     {
-        _gameManager = FindObjectOfType<GameManager>();
+        _gameController = FindObjectOfType<GameController>();
+        _inputManager = FindObjectOfType<InputManager>();
         _text = GetComponentInChildren<TextMeshPro>();
         _currentTransform = GetComponent<Transform>();
         _rb = GetComponent<Rigidbody2D>();
         _collider = GetComponent<BoxCollider2D>();
         _pulseAnimation = GetComponent<PulseAnimation>();
-        fadeAnimation = GetComponent<FadeAnimation>();
+        _fadeAnimation = GetComponent<FadeAnimation>();
         _catchEvent = new CatchEvent();
-        _catchEvent.AddListener(_gameManager.OnCatchEvent);
+        _catchEvent.AddListener(_gameController.OnCatchEvent);
     }
 
     private void Update()
@@ -100,7 +102,7 @@ public class ThoughtBehaviour : MonoBehaviour
             StopCoroutine(Doubt());
             StopCoroutine(Surprise());
             _catchEvent.Invoke(scoreValue);
-            Vibration.Vibrate(250);
+            _inputManager.Vibrate();
             Fade();
         }
 
@@ -179,7 +181,7 @@ public class ThoughtBehaviour : MonoBehaviour
     public void Fade()
     {
         _collider.enabled = false;
-        StartCoroutine(fadeAnimation.AnimateFade(textColor, outerColor));
+        StartCoroutine(_fadeAnimation.AnimateFade(textColor, outerColor));
     }
 
     //Add Horizontal force on a random time interval
@@ -280,6 +282,9 @@ public class ThoughtBehaviour : MonoBehaviour
         _collider.size = new Vector2(_text.GetRenderedValues(true).x, _text.GetRenderedValues(true).y);
     }
 }
+
+
+
 
 
 

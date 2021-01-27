@@ -25,7 +25,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 4f1fe7d4f9e5bdf4c9ef6c33e1407af1, type: 3}
+        m_Texture: {fileID: 2800000, guid: 81854dd7b0cbe9f40a182a057025aa98, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DissolveEdgeTexture:
@@ -45,7 +45,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 4f1fe7d4f9e5bdf4c9ef6c33e1407af1, type: 3}
+        m_Texture: {fileID: 2800000, guid: 81854dd7b0cbe9f40a182a057025aa98, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskTex:

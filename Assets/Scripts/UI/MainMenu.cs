@@ -7,26 +7,43 @@ using UnityEngine.UI;
 public class MainMenu : MonoBehaviour
 {
     private SceneManager _sceneManager;
+    private AudioManager _audioManager;
+    public OptionsMenu optionsMenu;
     public Animator introAnimator;
-    public UIFallAnimation playButtonFallAnimation;
-    public Button playButton;
-    void Awake()
+    public Animator logoAnimator;
+    public Animator swipeArrowAnimator;
+    private SwipeDetection _swipeBehaviour;
+    void Start()
     {
         _sceneManager = FindObjectOfType<SceneManager>();
-        playButton.onClick.AddListener(Play);
+        _audioManager = FindObjectOfType<AudioManager>();
+        _swipeBehaviour = FindObjectOfType<SwipeDetection>();
+        optionsMenu.optionsToggle.onValueChanged.AddListener(ShowHideArrow);
+        _audioManager.PlayMainMenuAmbience();
+        _swipeBehaviour.Swipe.AddListener(Play);
     }
 
     private void OnDisable()
     {
-        playButton.onClick.RemoveListener(Play);
+        _audioManager.StopMainMenuAmbience();
+        _swipeBehaviour.Swipe.RemoveListener(Play);
+        optionsMenu.optionsToggle.onValueChanged.RemoveListener(ShowHideArrow);
     }
 
-    void Play()
+    void Play(Vector2 direction)
     {
-        playButtonFallAnimation.Animation(0.5f);
-        introAnimator.SetTrigger("Start");
-        StartCoroutine(_sceneManager.WaitTimeToLoad(5.5f, 2));
+        if (direction == Vector2.up && !optionsMenu.isToggled)
+        {
+            swipeArrowAnimator.SetTrigger("Start");
+            logoAnimator.SetTrigger("Start");
+            introAnimator.SetTrigger("Start");
+            optionsMenu.Hide();
+            StartCoroutine(_sceneManager.WaitTimeToLoad(6f, 2));
+        }
     }
 
-    
+    void ShowHideArrow(bool state)
+    {
+        swipeArrowAnimator.gameObject.SetActive(state);
+    }
 }

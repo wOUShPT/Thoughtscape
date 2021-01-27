@@ -1,0 +1,64 @@
+{
+    "name": "Controls",
+    "maps": [
+        {
+            "name": "Touch",
+            "id": "a8e4e2d6-d806-4cb3-9740-e00e5d48562f",
+            "actions": [
+                {
+                    "name": "PrimaryContact",
+                    "type": "Value",
+                    "id": "286d5757-9f33-4959-9e22-d2ba9ecafbfa",
+                    "expectedControlType": "Touch",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "PrimaryPosition",
+                    "type": "PassThrough",
+                    "id": "76adb588-8daa-4a35-be77-077b02bbdff7",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "d1e26458-2ed6-4889-b639-27e2603ea4dd",
+                    "path": "<Touchscreen>/primaryTouch",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mobile",
+                    "action": "PrimaryContact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5f8eae38-f83d-4678-a1d4-8e22fa9e6b1d",
+                    "path": "<Touchscreen>/primaryTouch/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PrimaryPosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "Mobile",
+            "bindingGroup": "Mobile",
+            "devices": [
+                {
+                    "devicePath": "<Touchscreen>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
+}

@@ -19,38 +19,66 @@ MonoBehaviour:
   horizontalForceIncrement: 0
   meterBaseMoveSpeed: 11
   meterLimitsTimeToDeath: 5
-  waterLevelRiseSpeed: 0.2
-  waterLevelDropSpeed: 0.4
+  waterLevelRiseSpeed: 0.1
+  waterLevelDropSpeed: 0.2
   minTimeBetweenSpawns: 0.4
   maxTimeBetweenSpawns: 1.2
   thoughtSpawnPropertiesList:
-  - category: Good
+  - category: Good Positive Context
+    hasHorizontalForce: 1
+    dropSpeed: 4.2
+    centerMeterZoneSpawnRatePercentage: 0
+    positiveZoneMeterSpawnRatePercentage: 10
+    negativeZoneMeterSpawnRatePercentage: 0
+    limitZoneMeterSpawnRatePercentage: 0
+  - category: Good Negative Context
     hasHorizontalForce: 1
     dropSpeed: 4.2
     centerMeterZoneSpawnRatePercentage: 50
-    positiveZoneMeterSpawnRatePercentage: 10
+    positiveZoneMeterSpawnRatePercentage: 0
     negativeZoneMeterSpawnRatePercentage: 50
     limitZoneMeterSpawnRatePercentage: 0
-  - category: Bad
+  - category: Extra Good Positive Context
+    hasHorizontalForce: 1
+    dropSpeed: 4.4
+    centerMeterZoneSpawnRatePercentage: 0
+    positiveZoneMeterSpawnRatePercentage: 25
+    negativeZoneMeterSpawnRatePercentage: 0
+    limitZoneMeterSpawnRatePercentage: 0
+  - category: Extra Good Negative Context
+    hasHorizontalForce: 1
+    dropSpeed: 4.4
+    centerMeterZoneSpawnRatePercentage: 20
+    positiveZoneMeterSpawnRatePercentage: 0
+    negativeZoneMeterSpawnRatePercentage: 30
+    limitZoneMeterSpawnRatePercentage: 0
+  - category: Bad Positive Context
     hasHorizontalForce: 1
     dropSpeed: 4.2
     centerMeterZoneSpawnRatePercentage: 50
     positiveZoneMeterSpawnRatePercentage: 50
+    negativeZoneMeterSpawnRatePercentage: 0
+    limitZoneMeterSpawnRatePercentage: 0
+  - category: Bad Negative Context
+    hasHorizontalForce: 1
+    dropSpeed: 4.2
+    centerMeterZoneSpawnRatePercentage: 0
+    positiveZoneMeterSpawnRatePercentage: 0
     negativeZoneMeterSpawnRatePercentage: 10
     limitZoneMeterSpawnRatePercentage: 0
-  - category: Extra Good
-    hasHorizontalForce: 1
-    dropSpeed: 4.4
-    centerMeterZoneSpawnRatePercentage: 20
-    positiveZoneMeterSpawnRatePercentage: 10
-    negativeZoneMeterSpawnRatePercentage: 25
-    limitZoneMeterSpawnRatePercentage: 25
-  - category: Extra Bad
+  - category: Extra Bad Positive Context
     hasHorizontalForce: 1
     dropSpeed: 4.4
     centerMeterZoneSpawnRatePercentage: 20
     positiveZoneMeterSpawnRatePercentage: 25
-    negativeZoneMeterSpawnRatePercentage: 10
+    negativeZoneMeterSpawnRatePercentage: 0
+    limitZoneMeterSpawnRatePercentage: 25
+  - category: Extra Bad Negative Context
+    hasHorizontalForce: 1
+    dropSpeed: 4.4
+    centerMeterZoneSpawnRatePercentage: 0
+    positiveZoneMeterSpawnRatePercentage: 0
+    negativeZoneMeterSpawnRatePercentage: 15
     limitZoneMeterSpawnRatePercentage: 25
   - category: Forbidden
     hasHorizontalForce: 0
@@ -59,7 +87,7 @@ MonoBehaviour:
     positiveZoneMeterSpawnRatePercentage: 40
     negativeZoneMeterSpawnRatePercentage: 40
     limitZoneMeterSpawnRatePercentage: 20
-  - category: PowerUp
+  - category: Hope
     hasHorizontalForce: 0
     dropSpeed: 4.9
     centerMeterZoneSpawnRatePercentage: 0

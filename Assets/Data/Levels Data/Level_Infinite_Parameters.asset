@@ -1,0 +1,110 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ecda9848713bd04a96b9bb803b45454, type: 3}
+  m_Name: Level_Infinite_Parameters
+  m_EditorClassIdentifier: 
+  day: sunday
+  scoreBaseTime: 6
+  meterCenterSpreadValue: 0.15
+  horizontalForceTriggerTime: 0
+  horizontalForceIncrement: 0
+  meterBaseMoveSpeed: 12
+  meterLimitsTimeToDeath: 5
+  waterLevelRiseSpeed: 0.13
+  waterLevelDropSpeed: 0.22
+  minTimeBetweenSpawns: 0.2
+  maxTimeBetweenSpawns: 1.2
+  thoughtSpawnPropertiesList:
+  - category: Good Positive Context
+    hasHorizontalForce: 1
+    dropSpeed: 4.35
+    centerMeterZoneSpawnRatePercentage: 0
+    positiveZoneMeterSpawnRatePercentage: 15
+    negativeZoneMeterSpawnRatePercentage: 0
+    limitZoneMeterSpawnRatePercentage: 30
+  - category: Good Negative Context
+    hasHorizontalForce: 1
+    dropSpeed: 4.35
+    centerMeterZoneSpawnRatePercentage: 25
+    positiveZoneMeterSpawnRatePercentage: 0
+    negativeZoneMeterSpawnRatePercentage: 50
+    limitZoneMeterSpawnRatePercentage: 30
+  - category: Extra Good Positive Context
+    hasHorizontalForce: 1
+    dropSpeed: 4.55
+    centerMeterZoneSpawnRatePercentage: 0
+    positiveZoneMeterSpawnRatePercentage: 10
+    negativeZoneMeterSpawnRatePercentage: 0
+    limitZoneMeterSpawnRatePercentage: 10
+  - category: Extra Good Negative Context
+    hasHorizontalForce: 1
+    dropSpeed: 4.55
+    centerMeterZoneSpawnRatePercentage: 25
+    positiveZoneMeterSpawnRatePercentage: 0
+    negativeZoneMeterSpawnRatePercentage: 25
+    limitZoneMeterSpawnRatePercentage: 10
+  - category: Bad Positive Context
+    hasHorizontalForce: 1
+    dropSpeed: 4.35
+    centerMeterZoneSpawnRatePercentage: 25
+    positiveZoneMeterSpawnRatePercentage: 50
+    negativeZoneMeterSpawnRatePercentage: 0
+    limitZoneMeterSpawnRatePercentage: 0
+  - category: Bad Negative Context
+    hasHorizontalForce: 1
+    dropSpeed: 4.5
+    centerMeterZoneSpawnRatePercentage: 0
+    positiveZoneMeterSpawnRatePercentage: 0
+    negativeZoneMeterSpawnRatePercentage: 15
+    limitZoneMeterSpawnRatePercentage: 0
+  - category: Extra Bad Positive Context
+    hasHorizontalForce: 1
+    dropSpeed: 4.35
+    centerMeterZoneSpawnRatePercentage: 25
+    positiveZoneMeterSpawnRatePercentage: 25
+    negativeZoneMeterSpawnRatePercentage: 0
+    limitZoneMeterSpawnRatePercentage: 10
+  - category: Extra Bad Negative Context
+    hasHorizontalForce: 1
+    dropSpeed: 4.55
+    centerMeterZoneSpawnRatePercentage: 0
+    positiveZoneMeterSpawnRatePercentage: 0
+    negativeZoneMeterSpawnRatePercentage: 10
+    limitZoneMeterSpawnRatePercentage: 10
+  - category: Forbidden
+    hasHorizontalForce: 0
+    dropSpeed: 5.05
+    centerMeterZoneSpawnRatePercentage: 20
+    positiveZoneMeterSpawnRatePercentage: 20
+    negativeZoneMeterSpawnRatePercentage: 20
+    limitZoneMeterSpawnRatePercentage: 20
+  - category: Hope
+    hasHorizontalForce: 0
+    dropSpeed: 5.05
+    centerMeterZoneSpawnRatePercentage: 0
+    positiveZoneMeterSpawnRatePercentage: 8
+    negativeZoneMeterSpawnRatePercentage: 8
+    limitZoneMeterSpawnRatePercentage: 25
+  - category: Doubt
+    hasHorizontalForce: 1
+    dropSpeed: 5.05
+    centerMeterZoneSpawnRatePercentage: 30
+    positiveZoneMeterSpawnRatePercentage: 10
+    negativeZoneMeterSpawnRatePercentage: 10
+    limitZoneMeterSpawnRatePercentage: 5
+  - category: Surprise
+    hasHorizontalForce: 1
+    dropSpeed: 4.55
+    centerMeterZoneSpawnRatePercentage: 40
+    positiveZoneMeterSpawnRatePercentage: 30
+    negativeZoneMeterSpawnRatePercentage: 30
+    limitZoneMeterSpawnRatePercentage: 30

@@ -12,7 +12,7 @@ public class DebugFPS : MonoBehaviour
     private void Awake()
     {
         _style = new GUIStyle();
-       _style.normal.textColor = Color.white;
+       _style.normal.textColor = Color.black;
         _style.fontSize = 25;
         _style.alignment = TextAnchor.MiddleCenter;
     }

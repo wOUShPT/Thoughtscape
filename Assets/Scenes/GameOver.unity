@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -289,7 +289,7 @@ MonoBehaviour:
   m_text: Your best score is X points
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c330ab061f60a94479573f90735311e6, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 72156589d0550c74baf164aec957432a, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 40d90811a6f5bae4cbddbbee9dcd65c3, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -363,6 +363,125 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 121460090}
   m_CullTransparentMesh: 0
+--- !u!1001 &131639484
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3533674716267831189, guid: 114113af24bea344eb45aa28f13be56f,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3533674716267831189, guid: 114113af24bea344eb45aa28f13be56f,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3533674716267831189, guid: 114113af24bea344eb45aa28f13be56f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3533674716267831189, guid: 114113af24bea344eb45aa28f13be56f,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3533674716267831189, guid: 114113af24bea344eb45aa28f13be56f,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3533674716267831189, guid: 114113af24bea344eb45aa28f13be56f,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3533674716267831189, guid: 114113af24bea344eb45aa28f13be56f,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3533674716267831189, guid: 114113af24bea344eb45aa28f13be56f,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3533674716267831189, guid: 114113af24bea344eb45aa28f13be56f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3533674716267831189, guid: 114113af24bea344eb45aa28f13be56f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3533674716267831189, guid: 114113af24bea344eb45aa28f13be56f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3533674716267831189, guid: 114113af24bea344eb45aa28f13be56f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3533674716267831189, guid: 114113af24bea344eb45aa28f13be56f,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3533674716267831189, guid: 114113af24bea344eb45aa28f13be56f,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3533674716267831189, guid: 114113af24bea344eb45aa28f13be56f,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3533674716267831189, guid: 114113af24bea344eb45aa28f13be56f,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3533674716267831189, guid: 114113af24bea344eb45aa28f13be56f,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3533674716267831189, guid: 114113af24bea344eb45aa28f13be56f,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3533674716267831189, guid: 114113af24bea344eb45aa28f13be56f,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3533674716267831189, guid: 114113af24bea344eb45aa28f13be56f,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3533674716267831189, guid: 114113af24bea344eb45aa28f13be56f,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5280162469270978280, guid: 114113af24bea344eb45aa28f13be56f,
+        type: 3}
+      propertyPath: m_Name
+      value: SceneFadeTransition
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 114113af24bea344eb45aa28f13be56f, type: 3}
 --- !u!1 &181611537
 GameObject:
   m_ObjectHideFlags: 0
@@ -542,7 +661,7 @@ MonoBehaviour:
   m_text: You did X points
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c330ab061f60a94479573f90735311e6, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 72156589d0550c74baf164aec957432a, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 40d90811a6f5bae4cbddbbee9dcd65c3, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -675,7 +794,7 @@ MonoBehaviour:
   m_text: <font="Le Havre Italic Italic SDF">motivational quote here</font>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c330ab061f60a94479573f90735311e6, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 72156589d0550c74baf164aec957432a, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: f4f46c518e9deec419e64dc6267801af, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -703,7 +822,7 @@ MonoBehaviour:
   m_fontSizeBase: 4
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 80
+  m_fontSizeMin: 70
   m_fontSizeMax: 100
   m_fontStyle: 0
   m_HorizontalAlignment: 2
