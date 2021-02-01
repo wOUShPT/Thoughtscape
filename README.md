@@ -9,6 +9,8 @@ Package Dependencies:
 2D PSD Importer (v2.1.6)<br>
 2D Sprite (v1.0.0)<br>
 2D Tilemap Editor (v1.0.0)<br>
+Advanced Dissolve (v2020.5.0)
+Input System (v1.0.1)
 Post Processing (v2.3.0)<br>
 Test Framework (v1.1.18)<br>
 TextMeshPro (v2.1.3)<br>
