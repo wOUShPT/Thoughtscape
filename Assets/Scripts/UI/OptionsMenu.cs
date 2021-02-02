@@ -18,7 +18,7 @@ public class OptionsMenu : MonoBehaviour
     private Image _optionsToggleImage;
     public Toggle muteToggle;
     public Toggle creditsToggle;
-    public Score scoreScriptableObject;
+    public ScoreScriptableObject scoreScriptableObjectScriptableObject;
     public TextMeshProUGUI scoreText;
     public Image muteImageComponent;
     public Image vibrationImageComponent;
@@ -35,7 +35,7 @@ public class OptionsMenu : MonoBehaviour
         vibrationToggle.onValueChanged.AddListener(_inputManager.ToggleVibrate);
         muteToggle.isOn = _audioManager.isMuted;
         vibrationToggle.isOn = _inputManager.canVibrate;
-        scoreText.text = "Your best score is " + scoreScriptableObject.bestScore;
+        scoreText.text = "Your best score is " + scoreScriptableObjectScriptableObject.bestScore;
     }
 
     void Pause(bool state)

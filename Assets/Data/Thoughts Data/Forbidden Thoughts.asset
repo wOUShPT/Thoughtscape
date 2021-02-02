@@ -24,7 +24,7 @@ MonoBehaviour:
   textColor: {r: 0.5283019, g: 0.5283019, b: 0.5283019, a: 1}
   outerColor: {r: 0.20754719, g: 0.20754719, b: 0.20754719, a: 1}
   animate: 1
-  animationCycleTime: 0.5
+  animationCycleTime: 0.25
   thoughts:
   - if I'm gone...
   - there's no way back

@@ -18,7 +18,7 @@ public class BackgroundTransition : MonoBehaviour
     public SpriteRenderer positiveSmiles;
     public SpriteRenderer negativeCracks;
     public List<GameObject> backgroundPropsList;
-    public GameObject currentProp;
+    private GameObject _currentProp;
     private bool _isPositive;
     private bool _isNegative;
 
@@ -37,7 +37,6 @@ public class BackgroundTransition : MonoBehaviour
         negativeCracks.material.SetFloat("_DissolveCutoff", 1);
     }
 
-    // Update is called once per frame
     void Update()
     {
         //Neutral background Transition
@@ -93,6 +92,7 @@ public class BackgroundTransition : MonoBehaviour
         }
     }
 
+    //Transition dissolve animation
     IEnumerator BackgroundTransitionAnimation(SpriteRenderer previousBackground, SpriteRenderer nextBackground)
     {
         int order = nextBackground.sortingOrder;
@@ -109,16 +109,18 @@ public class BackgroundTransition : MonoBehaviour
         previousBackground.material.SetFloat("_DissolveCutoff", 1);
     }
 
+    
+    //Switch background Props between days/levels
     public void ChangeBackgroundProps()
     {
         int randomIndex = Random.Range(0, backgroundPropsList.Count);
-        if (currentProp != null)
+        if (_currentProp != null)
         {
-            Destroy(currentProp);
+            Destroy(_currentProp);
         }
 
-        currentProp = Instantiate(backgroundPropsList[randomIndex]);
-        currentProp.transform.position = new Vector3(1.2f, -0.35f, -10);
-        currentProp.transform.parent = GameObject.Find("Level").transform;
+        _currentProp = Instantiate(backgroundPropsList[randomIndex]);
+        _currentProp.transform.position = new Vector3(1.2f, -0.35f, -10);
+        _currentProp.transform.parent = GameObject.Find("Level").transform;
     }
 }

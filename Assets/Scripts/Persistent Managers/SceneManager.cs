@@ -10,7 +10,6 @@ public class SceneManager : MonoBehaviour
     void OnEnable()
     {
         UnityEngine.SceneManagement.SceneManager.sceneLoaded += (arg0, mode) =>  OnSceneLoaded(arg0, mode);
-        //LoadScene(1);
         UnityEngine.SceneManagement.SceneManager.LoadScene(1);
     }
 

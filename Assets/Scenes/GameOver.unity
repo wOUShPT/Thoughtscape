@@ -594,7 +594,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 388fbf6bbe8b5104bb41ae7b82dabd5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreData: {fileID: 11400000, guid: 0398ba81ff9192a4da4a749a8f6fd09d, type: 2}
+  scoreScriptableObjectData: {fileID: 11400000, guid: 0398ba81ff9192a4da4a749a8f6fd09d,
+    type: 2}
   quote: {fileID: 876600391}
   quotesData: {fileID: 11400000, guid: a46d88c5d040ee2419d9e7910d3a4750, type: 2}
   lastScore: {fileID: 624100902}

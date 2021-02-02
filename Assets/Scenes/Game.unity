@@ -463,6 +463,7 @@ Transform:
   m_Children:
   - {fileID: 1850973787}
   - {fileID: 1684171637}
+  - {fileID: 453408654}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -867,7 +868,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 428641513}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.03, y: -0.8, z: 0}
+  m_LocalPosition: {x: 0.03, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 844452656}
@@ -913,7 +914,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10
+  m_SortingOrder: 2
   m_RenderMode: 0
   m_SortMode: 0
   m_MinParticleSize: 0
@@ -5595,6 +5596,53 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!1 &453408653
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 453408654}
+  - component: {fileID: 453408655}
+  m_Layer: 0
+  m_Name: UIController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &453408654
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 453408653}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 252064599}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &453408655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 453408653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7852b430de6f8484ea2c626af272a4a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scoreUI: {fileID: 1322403262}
+  meterSlider: {fileID: 245860700}
+  dayUI: {fileID: 1444523061}
+  optionsMenu: {fileID: 584032904}
 --- !u!1 &485430039
 GameObject:
   m_ObjectHideFlags: 0
@@ -5859,7 +5907,6 @@ MonoBehaviour:
   - {fileID: 5554058026977367899, guid: 7d9e3008b180d644db8a396c4c7a848a, type: 3}
   - {fileID: 5032272133717099557, guid: ca0c5d2417bbd1845a5ee4e2f6260cdb, type: 3}
   - {fileID: 215054913866715171, guid: 31797b20e30fdd24691b54d97662ea81, type: 3}
-  currentProp: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -5984,7 +6031,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 27cf51f8d09b9a04eb2ab7a09fd9a6ae, type: 3}
   m_Name: 
@@ -6199,6 +6246,12 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 1600187607350673711, guid: 5c374e29740fe74468089ad58e0c2bf2,
+        type: 3}
+      propertyPath: scoreScriptableObjectScriptableObject
+      value: 
+      objectReference: {fileID: 11400000, guid: 0398ba81ff9192a4da4a749a8f6fd09d,
+        type: 2}
     - target: {fileID: 1600187608758926588, guid: 5c374e29740fe74468089ad58e0c2bf2,
         type: 3}
       propertyPath: m_SpriteState.m_DisabledSprite
@@ -7083,6 +7136,7 @@ GameObject:
   - component: {fileID: 1322403261}
   - component: {fileID: 1322403263}
   - component: {fileID: 1322403262}
+  - component: {fileID: 1322403264}
   m_Layer: 5
   m_Name: Score_value
   m_TagString: Untagged
@@ -7206,6 +7260,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1322403260}
   m_CullTransparentMesh: 0
+--- !u!95 &1322403264
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1322403260}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 660f0dd80f13ebd4ab0714b4532fb51b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1394956081
 GameObject:
   m_ObjectHideFlags: 0
@@ -7699,7 +7772,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 142d65a6ce7cdba48a6198f9617b46bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thoughtPrefab: {fileID: 6071474114341930165, guid: 95e86d78fe0f3dc428b0f31bc5fa30dd,
+  thoughtPrefab: {fileID: 6522416938475723736, guid: 95e86d78fe0f3dc428b0f31bc5fa30dd,
     type: 3}
   thoughtsAttributesList:
   - {fileID: 11400000, guid: 05624a09b5578ce41aa1a6101a0fc5d8, type: 2}
@@ -8856,7 +8929,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1babd4c02e689ee408bf84910e27430a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreData: {fileID: 11400000, guid: 0398ba81ff9192a4da4a749a8f6fd09d, type: 2}
+  scoreScriptableObjectData: {fileID: 11400000, guid: 0398ba81ff9192a4da4a749a8f6fd09d,
+    type: 2}
   levelParametersDataList:
   - {fileID: 11400000, guid: 4fa45d678247e2a40864208092c2dc54, type: 2}
   - {fileID: 11400000, guid: c8e4b5c99d4481a40b3ec2636f700dae, type: 2}
@@ -8866,14 +8940,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c99903dc8ac72924ca3a1b46119686da, type: 2}
   - {fileID: 11400000, guid: 55128086a3279db4e96fb3cd50632c2e, type: 2}
   - {fileID: 11400000, guid: 9572da493bce23442a549a93c9dff70f, type: 2}
-  scoreGoalsToLevelUp: 64000000c80000002c01000090010000f401000058020000bc02000020030000
+  scoreGoalsToLevelUp: 0a000000140000001e00000028000000320000003c0000004600000050000000
   levelTransitionTimeDuration: 5
   meterCurrentMoveSpeed: 0
-  _scoreValue: 0
   currentMeterSpreadValue: 0
-  levelUp:
-    m_PersistentCalls:
-      m_Calls: []
+  currentMeterValue: 0
   waterWaveTransform: {fileID: 485430040}
   waterLevelRiseSpeed: 0.1
   waterLevelDropSpeed: 0.3
@@ -8886,6 +8957,24 @@ MonoBehaviour:
   vaporEffectAnimator: {fileID: 167206445}
   levelFadeTransitionAnimator: {fileID: 322890421}
   chromaticAberrationFeedbackEffectTime: 0.15
+  scoreEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  levelUp:
+    m_PersistentCalls:
+      m_Calls: []
+  startSpawn:
+    m_PersistentCalls:
+      m_Calls: []
+  stopSpawn:
+    m_PersistentCalls:
+      m_Calls: []
+  startLevel:
+    m_PersistentCalls:
+      m_Calls: []
+  stopLevel:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &1850973787
 Transform:
   m_ObjectHideFlags: 0

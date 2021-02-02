@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Level_1_Parameters
   m_EditorClassIdentifier: 
   day: tuesday
-  scoreBaseTime: 6
+  scoreBaseTime: 4
   meterCenterSpreadValue: 0.2
   horizontalForceTriggerTime: 0
   horizontalForceIncrement: 0
   meterBaseMoveSpeed: 9
-  meterLimitsTimeToDeath: 5
+  meterLimitsTimeToDeath: 100000000
   waterLevelRiseSpeed: 0.05
   waterLevelDropSpeed: 0.1
   minTimeBetweenSpawns: 0.4

@@ -12,8 +12,6 @@
           <e p="GameLoop" t="Include">
             <e p="BackgroundTransition.cs" t="Include" />
             <e p="GameController.cs" t="Include" />
-            <e p="LevelParametersScriptableObject.cs" t="Include" />
-            <e p="Score.cs" t="Include" />
             <e p="SetLevelLimits.cs" t="Include" />
             <e p="SpawnController.cs" t="Include" />
             <e p="WaveBehaviour.cs" t="Include" />
@@ -35,21 +33,26 @@
             <e p="PlayerController.cs" t="Include" />
           </e>
           <e p="ScreenProperties.cs" t="Include" />
+          <e p="ScriptableObjects" t="Include">
+            <e p="LevelParametersScriptableObject.cs" t="Include" />
+            <e p="QuotesScriptableObject.cs" t="Include" />
+            <e p="ScoreScriptableObject.cs" t="Include" />
+            <e p="ThoughtsAttributesScriptableObject.cs" t="Include" />
+          </e>
           <e p="Thoughts" t="Include">
             <e p="FadeAnimation.cs" t="Include" />
             <e p="PulseAnimation.cs" t="Include" />
             <e p="ThoughtBehaviour.cs" t="Include" />
-            <e p="ThoughtDoubtBehaviour.cs" t="Include" />
-            <e p="ThoughtsAttributesScriptableObject.cs" t="Include" />
+            <e p="ThoughtController.cs" t="Include" />
+            <e p="ThoughtDefaultBehaviour.cs" t="Include" />
+            <e p="ThoughtInsecurityBehaviour.cs" t="Include" />
           </e>
           <e p="UI" t="Include">
-            <e p="BlurUIRenderer.cs" t="Include" />
             <e p="GameOver.cs" t="Include" />
             <e p="MainMenu.cs" t="Include" />
             <e p="MeterUI.cs" t="Include" />
             <e p="OptionsMenu.cs" t="Include" />
-            <e p="QuotesScriptableObject.cs" t="Include" />
-            <e p="TextAnimation.cs" t="Include" />
+            <e p="UIController.cs" t="Include" />
             <e p="UIFallAnimation.cs" t="Include" />
           </e>
         </e>

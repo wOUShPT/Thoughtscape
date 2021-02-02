@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 
 public class SaveManager : MonoBehaviour
 {
-    public Score scoreScriptableObject;
+    public ScoreScriptableObject scoreScriptableObjectScriptableObject;
     private SceneManager _sceneManager;
     private AudioManager _audioManager;
     private InputManager _inputManager;
@@ -31,7 +31,7 @@ public class SaveManager : MonoBehaviour
                 FileStream fs = File.OpenRead(Application.persistentDataPath + "/0.sav");
                 BinaryFormatter formatter = new BinaryFormatter();
                 Data data = (Data)formatter.Deserialize(fs);
-                scoreScriptableObject.bestScore = data.score;
+                scoreScriptableObjectScriptableObject.bestScore = data.score;
                 Debug.Log(data.score.ToString());
                 _audioManager.isMuted = data.audioMute;
                 _inputManager.canVibrate = data.vibrationOnOff;
@@ -44,7 +44,7 @@ public class SaveManager : MonoBehaviour
         BinaryFormatter formatter = new BinaryFormatter();
         FileStream fS = File.OpenWrite(Application.persistentDataPath + "/0.sav");
         Data data = new Data();
-        data.score = scoreScriptableObject.bestScore;
+        data.score = scoreScriptableObjectScriptableObject.bestScore;
         Debug.Log(data.score.ToString());
         data.audioMute = _audioManager.isMuted;
         data.vibrationOnOff = _inputManager.canVibrate;

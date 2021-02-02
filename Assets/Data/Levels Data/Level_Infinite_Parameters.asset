@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Level_Infinite_Parameters
   m_EditorClassIdentifier: 
   day: sunday
-  scoreBaseTime: 6
+  scoreBaseTime: 4
   meterCenterSpreadValue: 0.15
   horizontalForceTriggerTime: 0
   horizontalForceIncrement: 0
   meterBaseMoveSpeed: 12
-  meterLimitsTimeToDeath: 5
+  meterLimitsTimeToDeath: 100000000
   waterLevelRiseSpeed: 0.13
   waterLevelDropSpeed: 0.22
   minTimeBetweenSpawns: 0.2
@@ -104,7 +104,7 @@ MonoBehaviour:
   - category: Surprise
     hasHorizontalForce: 1
     dropSpeed: 4.55
-    centerMeterZoneSpawnRatePercentage: 40
+    centerMeterZoneSpawnRatePercentage: 35
     positiveZoneMeterSpawnRatePercentage: 30
     negativeZoneMeterSpawnRatePercentage: 30
     limitZoneMeterSpawnRatePercentage: 30

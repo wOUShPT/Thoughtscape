@@ -13,9 +13,10 @@ public class GameController : MonoBehaviour
 {
     private SceneManager _sceneManager;
     private SpawnController _spawnController;
+    private UIController _uiController;
     private AudioManager _audioManager;
     private SaveManager _saveManager;
-    public Score scoreData;
+    public ScoreScriptableObject scoreScriptableObjectData;
 
     #region Level Progression Related Declaration
 
@@ -27,7 +28,6 @@ public class GameController : MonoBehaviour
     public List<LevelParametersScriptableObject> levelParametersDataList;
 
     private List<string> _daysList;
-    private int _week;
     private int _dayCounter;
     [Tooltip("List of score goals to level up")]
     public List<int> scoreGoalsToLevelUp;
@@ -41,7 +41,7 @@ public class GameController : MonoBehaviour
 
     //-------------------------------------------------------------------------------------------------------------
 
-    #region Current Game Related Parameters Declaration
+    #region Current Game Related Variables Declaration
     
     [Space(30, order = 0)]
     [Header("Current Level Settings", order = 1)]
@@ -51,7 +51,6 @@ public class GameController : MonoBehaviour
     public float meterCurrentMoveSpeed;
     
     private bool _canStartGame;
-    [SerializeField]
     private int _scoreValue;
     private float _scoreComboTimer;
     private float _scoreTimeInterval;
@@ -61,7 +60,7 @@ public class GameController : MonoBehaviour
     private float _scoreIncrementCombo;
 
     public float currentMeterSpreadValue;
-    private float _meterValue;
+    public float currentMeterValue;
     private bool _isMovingUp;
     private float _meterComboTimer;
     private float _meterComboMultiplier;
@@ -69,13 +68,9 @@ public class GameController : MonoBehaviour
     private float _meterMoveSpeedMultiplier;
     private float _meterLimitsTimer;
     private float _meterLimitsTimeToDeath;
-    
-    public UnityEvent levelUp;       
-    private UnityEvent _startSpawn;    
-    private UnityEvent _stopSpawn;     
-    
+
     [Space(15, order = 0)]
-    [Tooltip("Transform component of water wave gameobject")]
+    [Tooltip("Transform component of water wave gameObject")]
     public Transform waterWaveTransform;
 
     private Vector3 _waterLevelDefaultPosition;
@@ -95,7 +90,7 @@ public class GameController : MonoBehaviour
     
     //-------------------------------------------------------------------------------------------------------------
     
-    #region UI Related Parameters Declaration
+    #region UI Related Variables Declaration
    
     [Space(30, order = 0)]
     [Header("UI Settings", order = 1)]
@@ -103,6 +98,7 @@ public class GameController : MonoBehaviour
 
     [Tooltip("UI score text component")] 
     public TextMeshProUGUI scoreUI;
+    private Animator _scoreUIAnimator;
 
     [Tooltip("UI balance meter slider component")]
     public Slider meterSlider;
@@ -118,7 +114,7 @@ public class GameController : MonoBehaviour
 
     //-------------------------------------------------------------------------------------------------------------
 
-    #region Post Processing Parameters Declaration
+    #region Post Processing and Various Effects Variables Declaration
 
     [Space(30, order = 0)]
     [Header("Post Processing, Particle System and Effects", order = 1)]
@@ -130,6 +126,7 @@ public class GameController : MonoBehaviour
     private ChromaticAberration _chromaticAberration;
     private int _chromaticAberrationSign;
 
+    [Tooltip("Show particle system component")]
     public ParticleSystem showerParticleSystem;
 
     [Tooltip("Vapor fog effect animator component")]
@@ -143,6 +140,17 @@ public class GameController : MonoBehaviour
     
     #endregion
     
+    #region Events
+
+    public ScoreEvent scoreEvent;
+    public UnityEvent levelUp;       
+    public UnityEvent startSpawn;    
+    public UnityEvent stopSpawn;
+    public UnityEvent startLevel;
+    public UnityEvent stopLevel;
+
+    #endregion
+    
     private Camera _mainCamera;
     private Vector3 _screenBordersCoords;
 
@@ -151,22 +159,12 @@ public class GameController : MonoBehaviour
     void Awake()
     {
         _sceneManager = FindObjectOfType<SceneManager>();
+        
+        _saveManager = FindObjectOfType<SaveManager>();
 
         _spawnController = FindObjectOfType<SpawnController>();
 
-        _saveManager = FindObjectOfType<SaveManager>();
-        
-        levelUp = new UnityEvent();
-
-        _startSpawn = new UnityEvent();
-        
-        _stopSpawn = new UnityEvent();
-        
-        levelUp.AddListener(_spawnController.UpdateLevel);
-        
-        _startSpawn.AddListener(_spawnController.SpawnThoughts);
-        
-        _stopSpawn.AddListener(_spawnController.DeSpawnThoughts);
+        _uiController = FindObjectOfType<UIController>();
 
         _audioManager = FindObjectOfType<AudioManager>();
         
@@ -174,18 +172,14 @@ public class GameController : MonoBehaviour
         
         _meterUI = meterSlider.gameObject.GetComponent<MeterUI>();
 
+        _scoreUIAnimator = scoreUI.GetComponent<Animator>();
+
         _backgroundTransitionController = FindObjectOfType<BackgroundTransition>();
 
-        Physics2D.IgnoreLayerCollision(9, 9);
-        
         //Initialize the first level
         showerParticleSystem.Stop();
         _levelIndex = 0;
         _scoreGoalEndlessMultiplier = 0;
-        _week = 1;
-        _dayCounter = 0;
-        _daysList = new List<string>();
-        SetDaysList();
         SetLevelParameters();
         StartCoroutine(LevelTransition());
 
@@ -206,16 +200,17 @@ public class GameController : MonoBehaviour
         
         //Set score and game timer to zero
         _scoreValue = 0;
+        scoreEvent.Invoke(_scoreValue);
     }
 
 
     private void OnDisable()
     {
-        levelUp.RemoveListener(_spawnController.UpdateLevel);        
+        levelUp.RemoveListener(_spawnController.UpdateLevelIndex);        
                                                         
-        _startSpawn.RemoveListener(_spawnController.SpawnThoughts);   
+        startSpawn.RemoveListener(_spawnController.SpawnThoughts);   
                                                         
-        _stopSpawn.RemoveListener(_spawnController.DeSpawnThoughts);  
+        stopSpawn.RemoveListener(_spawnController.DeSpawnThoughts);  
     }
 
     void Update()
@@ -223,23 +218,24 @@ public class GameController : MonoBehaviour
         //Check if the player caught a thought and if it's true begins the timer, score and meter logic
         if (_canStartGame)
         {
-
             //Update the spawn rate in accord to the meter current position
-            _spawnController.UpdateSpawnRate(_meterValue, _levelIndex);
+            _spawnController.UpdateSpawnRate(currentMeterValue, _levelIndex);
 
             //Checks if the player it's in the center zone of the meter
-            if (_meterValue < currentMeterSpreadValue && _meterValue > -currentMeterSpreadValue)
+            if (currentMeterValue < currentMeterSpreadValue && currentMeterValue > -currentMeterSpreadValue)
             {
                 _canWaterRise = false;
                 _canWaterLow = true;
                 _meterComboTimer += Time.deltaTime;
                 _scoreComboTimer += Time.deltaTime;
 
-                if (_scoreComboTimer > Mathf.Clamp(_scoreTimeInterval - (_scoreComboMultiplier), 1f, 5f))
+                if (_scoreComboTimer > Mathf.Clamp(_scoreTimeInterval+1 - (_scoreComboMultiplier), 0.2f, _scoreTimeInterval + 1))
                 {
                     _scoreComboMultiplier++;
-                    _scoreValue += 10;
+                    _scoreValue += 2;
+                    scoreEvent.Invoke(_scoreValue);
                     _scoreComboTimer = 0;
+                    _scoreUIAnimator.SetTrigger("Pop");
                     CheckIfLevelUp();
                 }
                 
@@ -251,7 +247,7 @@ public class GameController : MonoBehaviour
                 }
                 
                 _meterMoveSpeedMultiplier =
-                    Mathf.Abs(Mathf.Abs(_meterValue)-(1*currentMeterSpreadValue*1.5f)) * _scoreIncrementCombo;
+                    Mathf.Abs(Mathf.Abs(currentMeterValue)-(1*currentMeterSpreadValue*1.5f)) * _scoreIncrementCombo;
             }
             else
             {
@@ -259,21 +255,21 @@ public class GameController : MonoBehaviour
                 _canWaterLow = false;
                 _meterComboTimer = 0;
                 _scoreComboTimer = 0;
-                _scoreComboMultiplier = 0;
+                _scoreComboMultiplier = 1;
                 _meterComboMultiplier = 1;
                 
                 _spawnController.SetDropSpeed(1f);
 
-                if (_isMovingUp && Mathf.Sign(_meterValue) == -1 || !_isMovingUp && Mathf.Sign(_meterValue) == 1)
+                if (_isMovingUp && Mathf.Sign(currentMeterValue) == -1 || !_isMovingUp && Mathf.Sign(currentMeterValue) == 1)
                 {
-                    _meterMoveSpeedMultiplier = (Mathf.Abs(_meterValue)/1.5f) * _scoreIncrementCombo;
+                    _meterMoveSpeedMultiplier = (Mathf.Abs(currentMeterValue)/1.5f) * _scoreIncrementCombo;
                 }
                 else
                 {
-                    _meterMoveSpeedMultiplier = ((1 - Mathf.Abs(_meterValue))/1.5f) * _scoreIncrementCombo;
+                    _meterMoveSpeedMultiplier = ((1 - Mathf.Abs(currentMeterValue))/1.5f) * _scoreIncrementCombo;
                 }
 
-                if (Mathf.Abs(_meterValue) == 1)
+                if (Mathf.Abs(currentMeterValue) == 1)
                 {
                     _meterLimitsTimer += Time.deltaTime;
                     if (_meterLimitsTimer > _meterLimitsTimeToDeath)
@@ -285,8 +281,8 @@ public class GameController : MonoBehaviour
                 _meterLimitsTimer = 0;
             }
             
-            _meterValue += _meterIncrementValue * _meterMoveSpeed * _meterMoveSpeedMultiplier * Time.deltaTime;
-            _meterValue = Mathf.Clamp(_meterValue, meterSlider.minValue, meterSlider.maxValue);
+            currentMeterValue += _meterIncrementValue * _meterMoveSpeed * _meterMoveSpeedMultiplier * Time.deltaTime;
+            currentMeterValue = Mathf.Clamp(currentMeterValue, meterSlider.minValue, meterSlider.maxValue);
 
             if (Mathf.Approximately(waterWaveTransform.position.y, ScreenProperties.currentScreenCoords.yMin + 0.8f))
             {
@@ -297,15 +293,18 @@ public class GameController : MonoBehaviour
         UpdateWhiteBalanceFilter();
 
         //UI Update
-        UpdateUI();
+        _uiController.UpdateMeterUI(currentMeterValue);
     }
     
     //sets the meter multipliers and score combos based on increment or decrement passed through 
     public void OnCatchEvent(float value)
     {
         StartCoroutine(ChromaticAberrationFeedback());
+        _audioManager.PlayCatch();
         if (_lastMeterIncrementValue == 0)
         {
+            _scoreUIAnimator.SetBool("Idle", false);
+            startLevel.Invoke();
             _canStartGame = true;
         }
 
@@ -338,7 +337,7 @@ public class GameController : MonoBehaviour
         {
             if (value == 10)
             {
-                _meterValue = 0;
+                currentMeterValue = 0;
                 _meterMoveSpeedMultiplier = 2;
                 _scoreIncrementCombo = 1;
                 return;
@@ -346,18 +345,19 @@ public class GameController : MonoBehaviour
             _meterIncrementValue = value;
             _scoreIncrementCombo = 1;
             _lastMeterIncrementValue = value;
+            
         }
     }
 
     private void GameOver()
     {
         _spawnController.DeSpawnThoughts();
-        scoreData.lastScore = _scoreValue;
-        _saveManager.SaveData();
-        if (scoreData.bestScore <= scoreData.lastScore)
+        scoreScriptableObjectData.lastScore = _scoreValue;
+        if (scoreScriptableObjectData.bestScore <= scoreScriptableObjectData.lastScore)
         {
-            scoreData.bestScore = scoreData.lastScore;
+            scoreScriptableObjectData.bestScore = scoreScriptableObjectData.lastScore;
         }
+        _saveManager.SaveData();
         _sceneManager.LoadScene(3);
     }
 
@@ -366,10 +366,31 @@ public class GameController : MonoBehaviour
     //Updates post processing white balance filter based on the meter balance values
     void UpdateWhiteBalanceFilter()
     {
-        _whiteBalance.temperature.value = _meterValue*_whiteBalance.temperature.max;
+        _whiteBalance.temperature.value = currentMeterValue*_whiteBalance.temperature.max;
     }
 
     public IEnumerator ChromaticAberrationFeedback()
+    {
+        float speed = (_chromaticAberration.intensity.max - _chromaticAberration.intensity.min) / (chromaticAberrationFeedbackEffectTime/2);
+        while (_chromaticAberration.intensity.value <= _chromaticAberration.intensity.max)
+        {
+            _chromaticAberration.intensity.value += _chromaticAberrationSign * speed * Time.deltaTime;
+            _chromaticAberration.intensity.value = Mathf.Clamp(_chromaticAberration.intensity.value, _chromaticAberration.intensity.min, _chromaticAberration.intensity.max);
+            if (_chromaticAberration.intensity.value == _chromaticAberration.intensity.max)
+            {
+                _chromaticAberrationSign = -_chromaticAberrationSign;
+            }
+
+            if (_chromaticAberration.intensity.value == _chromaticAberration.intensity.min)
+            {
+                _chromaticAberrationSign = -_chromaticAberrationSign;
+                break;
+            }
+            yield return null;
+        }
+    }
+    
+    public IEnumerator LensesDistortionEffect()
     {
         float speed = (_chromaticAberration.intensity.max - _chromaticAberration.intensity.min) / (chromaticAberrationFeedbackEffectTime/2);
         while (_chromaticAberration.intensity.value <= _chromaticAberration.intensity.max)
@@ -396,7 +417,7 @@ public class GameController : MonoBehaviour
         scoreUI.text = _scoreValue.ToString();
         
         //Update Meter Value on UI
-        meterSlider.value = _meterValue;
+        meterSlider.value = currentMeterValue;
     }
 
     //Water level Update loop
@@ -448,9 +469,10 @@ public class GameController : MonoBehaviour
 
     IEnumerator LevelTransition()
     {
-        _stopSpawn.Invoke();
+        stopSpawn.Invoke();
         optionsMenu.Hide();
         _canStartGame = false;
+        stopLevel.Invoke();
         scoreUI.gameObject.SetActive(false);
         
         if (_levelIndex != 0)
@@ -474,21 +496,22 @@ public class GameController : MonoBehaviour
         {
             _dayCounter = 0;
         }
-        dayUI.text = _daysList[_dayCounter];
-        dayUI.gameObject.SetActive(true);
         
+        _uiController.UpdateDayUI();
+
         yield return new WaitForSeconds(levelTransitionTimeDuration);
         
         dayUI.gameObject.SetActive(false);
         scoreUI.gameObject.SetActive(true);
+        _scoreUIAnimator.SetBool("Idle", true);
         optionsMenu.Show();
         showerParticleSystem.Play();
         _audioManager.PlayShowerLoopSFX();
         vaporEffectAnimator.SetBool("CanFade", true);
 
         yield return new WaitForSeconds(2f);
-        
-        _startSpawn.Invoke();
+
+        startSpawn.Invoke();
     }
 
     //Set level parameters (ex: drop speed, meter move speed, spawn ratio, etc)
@@ -502,7 +525,7 @@ public class GameController : MonoBehaviour
                 _spawnController.SetSpawnTimeInterval(_levelIndex);
                 _spawnController.SetDropSpeed(1);
                 _scoreComboTimer = 0;
-                _scoreComboMultiplier = 0;
+                _scoreComboMultiplier = 1;
                 _meterComboMultiplier = 1;
                 _scoreTimeInterval = levelParametersDataList[_levelIndex].scoreBaseTime;
                 _scoreIncrementCombo = 1;
@@ -512,7 +535,7 @@ public class GameController : MonoBehaviour
                 _meterUI.SetMeterUI(currentMeterSpreadValue);
                 _meterMoveSpeed = levelParametersDataList[_levelIndex].meterBaseMoveSpeed;
                 _meterMoveSpeedMultiplier = 0;
-                _meterValue = 0;
+                currentMeterValue = 0;
                 _meterIncrementValue = 0;
                 _lastMeterIncrementValue = 0;
                 _meterLimitsTimer = 0;
@@ -527,7 +550,7 @@ public class GameController : MonoBehaviour
                 _spawnController.SetSpawnTimeInterval(_levelIndex);
                 _spawnController.SetDropSpeed(1);
                 _scoreComboTimer = 0;
-                _scoreComboMultiplier = 0;
+                _scoreComboMultiplier = 1;
                 _meterComboMultiplier = 1;
                 _scoreTimeInterval = levelParametersDataList[_levelIndex].scoreBaseTime;
                 _scoreIncrementCombo = 1;
@@ -537,7 +560,7 @@ public class GameController : MonoBehaviour
                 _meterUI.SetMeterUI(currentMeterSpreadValue);
                 _meterMoveSpeed = levelParametersDataList[_levelIndex].meterBaseMoveSpeed;
                 _meterMoveSpeedMultiplier = 0;
-                _meterValue = 0.6f;
+                currentMeterValue = 0.6f;
                 _meterIncrementValue = 0;
                 _lastMeterIncrementValue = 0;
                 _meterLimitsTimer = 0;
@@ -549,11 +572,10 @@ public class GameController : MonoBehaviour
             case 2:
 
                 //Sets timer and score related default value
-                
                 _spawnController.SetSpawnTimeInterval(_levelIndex);             
                 _spawnController.SetDropSpeed(1);
                 _scoreComboTimer = 0;
-                _scoreComboMultiplier = 0;
+                _scoreComboMultiplier = 1;
                 _meterComboMultiplier = 1;
                 _scoreTimeInterval = levelParametersDataList[_levelIndex].scoreBaseTime;
                 _scoreIncrementCombo = 1;
@@ -563,7 +585,7 @@ public class GameController : MonoBehaviour
                 _meterUI.SetMeterUI(currentMeterSpreadValue);
                 _meterMoveSpeed = levelParametersDataList[_levelIndex].meterBaseMoveSpeed;
                 _meterMoveSpeedMultiplier = 0;
-                _meterValue = -0.6f;
+                currentMeterValue = -0.6f;
                 _meterIncrementValue = 0;
                 _lastMeterIncrementValue = 0;
                 _meterLimitsTimer = 0;
@@ -575,7 +597,6 @@ public class GameController : MonoBehaviour
             case 3:
 
                 //Sets timer and score related default value
-                
                 _spawnController.SetSpawnTimeInterval(_levelIndex);             
                 _spawnController.SetDropSpeed(1);
                 _scoreComboTimer = 0;
@@ -590,7 +611,7 @@ public class GameController : MonoBehaviour
                 _meterUI.SetMeterUI(currentMeterSpreadValue);
                 _meterMoveSpeed = levelParametersDataList[_levelIndex].meterBaseMoveSpeed;
                 _meterMoveSpeedMultiplier = 0;
-                _meterValue = -0.8f;
+                currentMeterValue = -0.8f;
                 _meterIncrementValue = 0;
                 _lastMeterIncrementValue = 0;
                 _meterLimitsTimer = 0;
@@ -602,22 +623,20 @@ public class GameController : MonoBehaviour
             case 4:
 
                 //Sets timer and score related default value
-                
                 _spawnController.SetSpawnTimeInterval(_levelIndex);             
                 _spawnController.SetDropSpeed(1);
                 _scoreComboTimer = 0;
-                _scoreComboMultiplier = 0;
+                _scoreComboMultiplier = 1;
                 _meterComboMultiplier = 1;
                 _scoreTimeInterval = levelParametersDataList[_levelIndex].scoreBaseTime;
                 _scoreIncrementCombo = 1;
 
                 //Sets start meter speed, multiplier, internal value and UI value
-                
                 currentMeterSpreadValue = levelParametersDataList[_levelIndex].meterCenterSpreadValue;
                 _meterUI.SetMeterUI(currentMeterSpreadValue);
                 _meterMoveSpeed = levelParametersDataList[_levelIndex].meterBaseMoveSpeed;
                 _meterMoveSpeedMultiplier = 0;
-                _meterValue = 0f;
+                currentMeterValue = 0f;
                 _meterIncrementValue = 0;
                 _lastMeterIncrementValue = 0;
                 _meterLimitsTimer = 0;
@@ -629,22 +648,20 @@ public class GameController : MonoBehaviour
             case 5:
 
                 //Sets timer and score related default value
-                
                 _spawnController.SetSpawnTimeInterval(_levelIndex);             
                 _spawnController.SetDropSpeed(1);
                 _scoreComboTimer = 0;
-                _scoreComboMultiplier = 0;
+                _scoreComboMultiplier = 1;
                 _meterComboMultiplier = 1;
                 _scoreTimeInterval = levelParametersDataList[_levelIndex].scoreBaseTime;
                 _scoreIncrementCombo = 1;
 
                 //Sets start meter speed, multiplier, internal value and UI value
-                
                 currentMeterSpreadValue = levelParametersDataList[_levelIndex].meterCenterSpreadValue;
                 _meterUI.SetMeterUI(currentMeterSpreadValue);
                 _meterMoveSpeed = levelParametersDataList[_levelIndex].meterBaseMoveSpeed;
                 _meterMoveSpeedMultiplier = 0;
-                _meterValue = -0.6f;
+                currentMeterValue = -0.6f;
                 _meterIncrementValue = 0;
                 _lastMeterIncrementValue = 0;
                 _meterLimitsTimer = 0;
@@ -655,10 +672,11 @@ public class GameController : MonoBehaviour
             
             case 6:
 
+                //Sets timer and score related default value
                 _spawnController.SetSpawnTimeInterval(_levelIndex);             
                 _spawnController.SetDropSpeed(1);
                 _scoreComboTimer = 0;
-                _scoreComboMultiplier = 0;
+                _scoreComboMultiplier = 1;
                 _meterComboMultiplier = 1;
                 _scoreTimeInterval = levelParametersDataList[_levelIndex].scoreBaseTime;
                 _scoreIncrementCombo = 1;
@@ -668,7 +686,7 @@ public class GameController : MonoBehaviour
                 _meterUI.SetMeterUI(currentMeterSpreadValue);
                 _meterMoveSpeed = levelParametersDataList[_levelIndex].meterBaseMoveSpeed;
                 _meterMoveSpeedMultiplier = 0;
-                _meterValue = 0.8f;
+                currentMeterValue = 0.8f;
                 _meterIncrementValue = 0;
                 _lastMeterIncrementValue = 0;
                 _meterLimitsTimer = 0;
@@ -679,11 +697,12 @@ public class GameController : MonoBehaviour
 
             case 7:
                 
+                //Sets timer and score related default value
                 _scoreGoalEndlessMultiplier++;
                 _spawnController.SetSpawnTimeInterval(_levelIndex);             
                 _spawnController.SetDropSpeed(1);
                 _scoreComboTimer = 0;
-                _scoreComboMultiplier = 0;
+                _scoreComboMultiplier = 1;
                 _meterComboMultiplier = 1;
                 _scoreTimeInterval = levelParametersDataList[_levelIndex].scoreBaseTime;
                 _scoreIncrementCombo = 1;
@@ -693,7 +712,7 @@ public class GameController : MonoBehaviour
                 _meterUI.SetMeterUI(currentMeterSpreadValue);
                 _meterMoveSpeed = levelParametersDataList[_levelIndex].meterBaseMoveSpeed;
                 _meterMoveSpeedMultiplier = 0;
-                _meterValue = Random.Range(-0.8f,0.8f);
+                currentMeterValue = Random.Range(-0.8f,0.8f);
                 _meterIncrementValue = 0;
                 _lastMeterIncrementValue = 0;
                 _meterLimitsTimer = 0;
@@ -703,16 +722,11 @@ public class GameController : MonoBehaviour
                 break;
         }
     }
-    
-    void SetDaysList()
+
+    [System.Serializable]
+    public class ScoreEvent : UnityEvent<int>
     {
-        _daysList.Add("monday");
-        _daysList.Add("tuesday");
-        _daysList.Add("wednesday");
-        _daysList.Add("thursday");
-        _daysList.Add("friday");
-        _daysList.Add("saturday");
-        _daysList.Add("sunday");
+        
     }
 }
 

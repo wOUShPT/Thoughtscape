@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Level_5_Parameters
   m_EditorClassIdentifier: 
   day: saturday
-  scoreBaseTime: 6
+  scoreBaseTime: 4
   meterCenterSpreadValue: 0.16
   horizontalForceTriggerTime: 0
   horizontalForceIncrement: 0
   meterBaseMoveSpeed: 11
-  meterLimitsTimeToDeath: 5
+  meterLimitsTimeToDeath: 100000000
   waterLevelRiseSpeed: 0.1
   waterLevelDropSpeed: 0.2
   minTimeBetweenSpawns: 0.2
@@ -96,15 +96,15 @@ MonoBehaviour:
     limitZoneMeterSpawnRatePercentage: 25
   - category: Doubt
     hasHorizontalForce: 1
-    dropSpeed: 4.2
+    dropSpeed: 4.4
     centerMeterZoneSpawnRatePercentage: 30
-    positiveZoneMeterSpawnRatePercentage: 10
-    negativeZoneMeterSpawnRatePercentage: 10
+    positiveZoneMeterSpawnRatePercentage: 15
+    negativeZoneMeterSpawnRatePercentage: 15
     limitZoneMeterSpawnRatePercentage: 5
   - category: Surprise
     hasHorizontalForce: 1
     dropSpeed: 4.2
     centerMeterZoneSpawnRatePercentage: 30
-    positiveZoneMeterSpawnRatePercentage: 20
-    negativeZoneMeterSpawnRatePercentage: 20
+    positiveZoneMeterSpawnRatePercentage: 25
+    negativeZoneMeterSpawnRatePercentage: 25
     limitZoneMeterSpawnRatePercentage: 10

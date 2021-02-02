@@ -18,7 +18,7 @@ MonoBehaviour:
   horizontalForceTriggerTime: 0
   horizontalForceIncrement: 0
   meterBaseMoveSpeed: 11
-  meterLimitsTimeToDeath: 5
+  meterLimitsTimeToDeath: 100000000
   waterLevelRiseSpeed: 0.1
   waterLevelDropSpeed: 0.2
   minTimeBetweenSpawns: 0.4

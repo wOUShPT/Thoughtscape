@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Level_0_Parameters
   m_EditorClassIdentifier: 
   day: monday
-  scoreBaseTime: 6
+  scoreBaseTime: 4
   meterCenterSpreadValue: 0.2
   horizontalForceTriggerTime: 0
   horizontalForceIncrement: 0

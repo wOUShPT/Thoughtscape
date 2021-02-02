@@ -2,12 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class AudioManager : MonoBehaviour
 {
     public AudioSource cityLoop;
     public AudioSource showerLoop;
     public AudioSource showerStart;
+
+    public List<AudioSource> catchSounds;
+    
     public bool isMuted;
 
     private void Start()
@@ -45,6 +49,16 @@ public class AudioManager : MonoBehaviour
     {
         cityLoop.mute = isMuted;
         showerLoop.mute = isMuted;
+        foreach (var catchSound in catchSounds)
+        {
+            catchSound.mute = isMuted;
+        }
+    }
+
+    public void PlayCatch()
+    {
+        int random = Random.Range(0, catchSounds.Count);
+        catchSounds[random].Play();
     }
     
 

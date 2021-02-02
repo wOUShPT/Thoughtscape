@@ -24,7 +24,7 @@ MonoBehaviour:
   textColor: {r: 0.64247787, g: 1, b: 0.6, a: 1}
   outerColor: {r: 0.106194735, g: 1, b: 0, a: 1}
   animate: 1
-  animationCycleTime: 0.3
+  animationCycleTime: 0.25
   thoughts:
   - KEEP GOING!
   - YOU'RE NOT ALONE!

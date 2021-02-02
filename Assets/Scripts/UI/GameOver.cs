@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 public class GameOver : MonoBehaviour
 {
     private SceneManager _sceneManager;
-    public Score scoreData;
+    public ScoreScriptableObject scoreScriptableObjectData;
     public TextMeshProUGUI quote;
     public QuotesScriptableObject quotesData;
     public TextMeshProUGUI lastScore;
@@ -20,10 +20,9 @@ public class GameOver : MonoBehaviour
     {
         _sceneManager = FindObjectOfType<SceneManager>();
         restartButton.onClick.AddListener(RestartGame);
-        quote.text = quotesData.QuotesList[8];
-        //quote.text = quotesData.QuotesList[Random.Range(0, quotesData.QuotesList.Count)];
-        lastScore.text = "You did " + scoreData.lastScore.ToString() + " points";
-        bestScore.text = "Your best score is " + scoreData.bestScore.ToString() + " points";
+        quote.text = quotesData.QuotesList[Random.Range(0, quotesData.QuotesList.Count)];
+        lastScore.text = "You did " + scoreScriptableObjectData.lastScore.ToString() + " points";
+        bestScore.text = "Your best score is " + scoreScriptableObjectData.bestScore.ToString() + " points";
     }
 
     private void OnDisable()
