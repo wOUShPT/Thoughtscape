@@ -96,7 +96,7 @@ public class PulseAnimation : MonoBehaviour
         _currentDilatationValue = -1;
     }
 
-    public void GetTextMeshPro()
+    private void GetTextMeshPro()
     {
         if (textObject.GetComponent<TextMeshPro>())
         {

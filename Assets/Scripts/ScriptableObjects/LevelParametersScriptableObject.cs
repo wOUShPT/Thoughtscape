@@ -20,7 +20,7 @@ public class LevelParametersScriptableObject : ScriptableObject
     public List<ThoughtSpawnRate> thoughtSpawnPropertiesList;
 
     [Serializable]
-    public  struct ThoughtSpawnRate
+    public struct ThoughtSpawnRate
     {
         public string category;
         public bool hasHorizontalForce;

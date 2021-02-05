@@ -20,13 +20,13 @@ public class MainMenu : MonoBehaviour
         _swipeBehaviour = FindObjectOfType<SwipeDetection>();
         optionsMenu.optionsToggle.onValueChanged.AddListener(ShowHideArrow);
         _audioManager.PlayMainMenuAmbience();
-        _swipeBehaviour.Swipe.AddListener(Play);
+        _swipeBehaviour.swipeEvent.AddListener(Play);
     }
 
     private void OnDisable()
     {
         _audioManager.StopMainMenuAmbience();
-        _swipeBehaviour.Swipe.RemoveListener(Play);
+        _swipeBehaviour.swipeEvent.RemoveListener(Play);
         optionsMenu.optionsToggle.onValueChanged.RemoveListener(ShowHideArrow);
     }
 
@@ -37,7 +37,7 @@ public class MainMenu : MonoBehaviour
             swipeArrowAnimator.SetTrigger("Start");
             logoAnimator.SetTrigger("Start");
             introAnimator.SetTrigger("Start");
-            optionsMenu.Hide();
+            optionsMenu.Show(false);
             StartCoroutine(_sceneManager.WaitTimeToLoad(6f, 2));
         }
     }

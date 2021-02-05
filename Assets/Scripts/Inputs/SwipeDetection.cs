@@ -4,18 +4,18 @@ using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
 public class SwipeDetection : MonoBehaviour
 {
-    [SerializeField]
-    private float _minDistance = 0.2f;
-    [SerializeField]
-    private float _maxtime = 1f;
-    [SerializeField, Range(0, 1)]
-    private float _directionThreshold = 0.9f;
+    [Tooltip("Minimum registered swipe distance")]
+    public float minDistance = 0.2f;
+    [Tooltip("Maximum registered swipe time")]
+    public float maxTime = 1f;
+    [Range(0, 1), Tooltip("swipeEvent direction threshold")]
+    public float directionThreshold = 0.9f;
     private InputManager _inputManager;
     private Vector2 _startPosition;
     private float _startTime;
     private Vector2 _endPosition;
     private float _endTime;
-    public SwipeEvent Swipe;
+    public SwipeEvent swipeEvent;
     void Awake()
     {
         _inputManager = FindObjectOfType<InputManager>();
@@ -23,15 +23,15 @@ public class SwipeDetection : MonoBehaviour
 
     private void OnEnable()
     {
-        _inputManager.onStartTouch.AddListener(SwipeStart);
-        _inputManager.onStartTouch.AddListener(SwipeEnd);
-        Swipe = new SwipeEvent();
+        _inputManager.onStartTouchEvent.AddListener(SwipeStart);
+        _inputManager.onStartTouchEvent.AddListener(SwipeEnd);
+        swipeEvent = new SwipeEvent();
     }
 
     private void OnDisable()
     {
-        _inputManager.onStartTouch.RemoveListener(SwipeStart);
-        _inputManager.onStartTouch.RemoveListener(SwipeEnd);
+        _inputManager.onStartTouchEvent.RemoveListener(SwipeStart);
+        _inputManager.onStartTouchEvent.RemoveListener(SwipeEnd);
     }
 
     private void SwipeStart(TouchPhase phase, Vector2 position, float time)
@@ -55,7 +55,7 @@ public class SwipeDetection : MonoBehaviour
 
     private void DetectSwipe()
     {
-        if (Vector3.Distance(_startPosition, _endPosition) >= _minDistance && (_endTime - _startTime) <= _maxtime)
+        if (Vector3.Distance(_startPosition, _endPosition) >= minDistance && (_endTime - _startTime) <= maxTime)
         {
             Debug.DrawLine(_startPosition,_endPosition, Color.red, 5f);
             Vector3 direction = _endPosition - _startPosition;
@@ -66,24 +66,24 @@ public class SwipeDetection : MonoBehaviour
 
     private void SwipeDirection(Vector2 direction)
     {
-        if (Vector2.Dot(Vector2.up, direction) > _directionThreshold)
+        if (Vector2.Dot(Vector2.up, direction) > directionThreshold)
         {
-           Swipe.Invoke(Vector2.up);
+           swipeEvent.Invoke(Vector2.up);
         }
         
-        if (Vector2.Dot(Vector2.left, direction) > _directionThreshold)
+        if (Vector2.Dot(Vector2.left, direction) > directionThreshold)
         {
-           Swipe.Invoke(Vector2.left);
+           swipeEvent.Invoke(Vector2.left);
         }
         
-        if (Vector2.Dot(Vector2.right, direction) > _directionThreshold)
+        if (Vector2.Dot(Vector2.right, direction) > directionThreshold)
         {
-            Swipe.Invoke(Vector2.right);
+            swipeEvent.Invoke(Vector2.right);
         }
         
-        if (Vector2.Dot(Vector2.down, direction) > _directionThreshold)
+        if (Vector2.Dot(Vector2.down, direction) > directionThreshold)
         {
-            Swipe.Invoke(Vector2.down);
+            swipeEvent.Invoke(Vector2.down);
         }
     }
 

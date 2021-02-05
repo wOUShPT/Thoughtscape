@@ -94,14 +94,14 @@ MonoBehaviour:
     positiveZoneMeterSpawnRatePercentage: 0
     negativeZoneMeterSpawnRatePercentage: 0
     limitZoneMeterSpawnRatePercentage: 0
-  - category: Doubt
+  - category: Insecurity
     hasHorizontalForce: 0
     dropSpeed: 0
     centerMeterZoneSpawnRatePercentage: 0
     positiveZoneMeterSpawnRatePercentage: 0
     negativeZoneMeterSpawnRatePercentage: 0
     limitZoneMeterSpawnRatePercentage: 0
-  - category: Surprise
+  - category: Confusion
     hasHorizontalForce: 0
     dropSpeed: 0
     centerMeterZoneSpawnRatePercentage: 0

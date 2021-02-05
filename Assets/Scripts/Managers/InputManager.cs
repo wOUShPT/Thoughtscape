@@ -10,18 +10,18 @@ using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 public class InputManager : MonoBehaviour
 {
     private Controls _controls;
-    public TouchEvent onStartTouch;
-    public TouchEvent onTouch;
-    public TouchEvent onEndTouch;
+    public TouchEvent onStartTouchEvent;
+    public TouchEvent onTouchEvent;
+    public TouchEvent onEndTouchEvent;
     public bool canVibrate;
     private Camera _mainCamera;
     private void OnEnable()
     {
         UnityEngine.SceneManagement.SceneManager.sceneLoaded += (arg0, mode) =>  {_mainCamera = Camera.main;};
         _controls = new Controls();
-        onStartTouch = new TouchEvent();
-        onTouch =  new TouchEvent();
-        onEndTouch = new TouchEvent();
+        onStartTouchEvent = new TouchEvent();
+        onTouchEvent =  new TouchEvent();
+        onEndTouchEvent = new TouchEvent();
         canVibrate = true;
         _controls.Enable();
         _controls.Touch.PrimaryContact.started += ctx => StartTouchPrimary(ctx);
@@ -38,25 +38,25 @@ public class InputManager : MonoBehaviour
 
     void StartTouchPrimary(InputAction.CallbackContext context)
     {
-        if (onStartTouch != null)
+        if (onStartTouchEvent != null)
         {
-            onStartTouch.Invoke(_controls.Touch.PrimaryContact.ReadValue<TouchState>().phase, (ScreenToWorldPosition(_controls.Touch.PrimaryContact.ReadValue<TouchState>().position)), (float)context.startTime);
+            onStartTouchEvent.Invoke(_controls.Touch.PrimaryContact.ReadValue<TouchState>().phase, (ScreenToWorldPosition(_controls.Touch.PrimaryContact.ReadValue<TouchState>().position)), (float)context.startTime);
         }
     }
     
     void EndTouchPrimary(InputAction.CallbackContext context)
     {
-        if (onEndTouch != null)
+        if (onEndTouchEvent != null)
         {
-            onStartTouch.Invoke(_controls.Touch.PrimaryContact.ReadValue<TouchState>().phase, (ScreenToWorldPosition(_controls.Touch.PrimaryContact.ReadValue<TouchState>().position)), (float)context.startTime);
+            onStartTouchEvent.Invoke(_controls.Touch.PrimaryContact.ReadValue<TouchState>().phase, (ScreenToWorldPosition(_controls.Touch.PrimaryContact.ReadValue<TouchState>().position)), (float)context.startTime);
         }
     }
     
     void WhileTouchPrimary(InputAction.CallbackContext context)
     {
-        if (onTouch != null)
+        if (onTouchEvent != null)
         {
-            onStartTouch.Invoke(_controls.Touch.PrimaryContact.ReadValue<TouchState>().phase, (ScreenToWorldPosition(_controls.Touch.PrimaryContact.ReadValue<TouchState>().position)), (float)context.startTime);
+            onStartTouchEvent.Invoke(_controls.Touch.PrimaryContact.ReadValue<TouchState>().phase, (ScreenToWorldPosition(_controls.Touch.PrimaryContact.ReadValue<TouchState>().position)), (float)context.startTime);
         }
     }
 

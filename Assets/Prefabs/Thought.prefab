@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 1028164859568993329}
   - component: {fileID: 5783952508966375940}
   - component: {fileID: 6522416938475723736}
+  - component: {fileID: 7057344842341075871}
   - component: {fileID: 7896354135990984270}
-  - component: {fileID: 4931827882710582042}
+  - component: {fileID: 5034424877678701597}
   - component: {fileID: 7957804484150047276}
   - component: {fileID: 76581627068349460}
   m_Layer: 9
@@ -105,13 +106,28 @@ MonoBehaviour:
   currentIndex: 0
   textMeshPro: {fileID: 3131082147999968430}
   textCollider: {fileID: 1028164859568993329}
-  rb: {fileID: 5783952508966375940}
-  minHorizontalForceValue: 0
-  maxHorizontalForceValue: 0
+  rigidbody2D: {fileID: 5783952508966375940}
+  dropSpeed: 0
+  dropSpeedMultiplier: 0
+  hasHorizontalMovement: 0
+  minHorizontalForceValue: 0.1
+  maxHorizontalForceValue: 0.5
   horizontalForceTriggerRandomTimeInterval: 0
-  minHorizontalForceTriggerTimeInterval: 0
-  maxHorizontalForceTriggerTimeInterval: 0
+  minHorizontalForceTriggerTimeInterval: 0.4
+  maxHorizontalForceTriggerTimeInterval: 0.8
   currentThoughtAttributes: {fileID: 0}
+--- !u!114 &7057344842341075871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1254615031707853509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 883ab94a9c8f4f34ba904b6d685360e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7896354135990984270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -128,7 +144,7 @@ MonoBehaviour:
     type: 2}
   negativeDoubtThoughtAttributes: {fileID: 11400000, guid: e19b30643afb6984dacc03e6f81568d4,
     type: 2}
---- !u!114 &4931827882710582042
+--- !u!114 &5034424877678701597
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -137,9 +153,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1254615031707853509}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 883ab94a9c8f4f34ba904b6d685360e6, type: 3}
+  m_Script: {fileID: 11500000, guid: ae535730eade82444aa8e869e4925736, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  thoughtsAttributesList:
+  - {fileID: 11400000, guid: 05624a09b5578ce41aa1a6101a0fc5d8, type: 2}
+  - {fileID: 11400000, guid: acdd8279bb55ff74dba55592f5060f6c, type: 2}
+  - {fileID: 11400000, guid: 40ce514a31601e64aac6ecb973e465d8, type: 2}
+  - {fileID: 11400000, guid: 7760f3dd80fcc734eb1c61d7a41e5a33, type: 2}
+  - {fileID: 11400000, guid: 5d7a8d54ae74ecc489724874997c8f81, type: 2}
+  - {fileID: 11400000, guid: b911ff2da202f94448bd31aef16ee2ae, type: 2}
+  - {fileID: 11400000, guid: d025cf53e0470f241be4ee5a6f0646ee, type: 2}
+  - {fileID: 11400000, guid: d4028124973ac3545afcefd8a80593e5, type: 2}
+  - {fileID: 11400000, guid: 49a3f18add9f2364bafec1e3fe096c57, type: 2}
+  - {fileID: 11400000, guid: aa7e83c61a41323449f42fb89c2b3fc8, type: 2}
 --- !u!114 &7957804484150047276
 MonoBehaviour:
   m_ObjectHideFlags: 0

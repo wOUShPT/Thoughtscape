@@ -94,14 +94,14 @@ MonoBehaviour:
     positiveZoneMeterSpawnRatePercentage: 8
     negativeZoneMeterSpawnRatePercentage: 8
     limitZoneMeterSpawnRatePercentage: 25
-  - category: Doubt
+  - category: Insecurity
     hasHorizontalForce: 1
     dropSpeed: 5.05
     centerMeterZoneSpawnRatePercentage: 30
     positiveZoneMeterSpawnRatePercentage: 10
     negativeZoneMeterSpawnRatePercentage: 10
     limitZoneMeterSpawnRatePercentage: 5
-  - category: Surprise
+  - category: Confusion
     hasHorizontalForce: 1
     dropSpeed: 4.55
     centerMeterZoneSpawnRatePercentage: 35

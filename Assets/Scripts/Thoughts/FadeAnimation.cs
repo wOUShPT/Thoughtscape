@@ -10,8 +10,7 @@ public class FadeAnimation : MonoBehaviour
     public float fadeTimeDuration;
     private float _fadeSpeed;
     private TextMeshPro _text;
-    private Controller_Cutout _controllerCutout;
-    
+
     void Awake()
     {
         _text = GetComponentInChildren<TextMeshPro>();

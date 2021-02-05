@@ -13,13 +13,13 @@ public class PlayerAnimation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_gameController.meterSlider.value < -_gameController.currentMeterSpreadValue)
+        if (_gameController.currentMeterValue < -_gameController.currentMeterSpreadValue)
         {
             _animator.SetBool("isSad", true);
             _animator.SetBool("isHappy", false);
         }
         
-        else if (_gameController.meterSlider.value > _gameController.currentMeterSpreadValue)
+        else if (_gameController.currentMeterValue > _gameController.currentMeterSpreadValue)
         {
             _animator.SetBool("isSad", false);
             _animator.SetBool("isHappy", true);

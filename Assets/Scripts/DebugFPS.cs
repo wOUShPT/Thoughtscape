@@ -1,26 +1,18 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections;
+using System.Reflection.Emit;
+using UnityEngine.UI;
 
 public class DebugFPS : MonoBehaviour
 {
-
-    private GUIStyle _style;
+    public Text text;
     private string _label;
     private float _count;
 
-    private void Awake()
-    {
-        _style = new GUIStyle();
-       _style.normal.textColor = Color.black;
-        _style.fontSize = 25;
-        _style.alignment = TextAnchor.MiddleCenter;
-    }
-
+    
     IEnumerator Start ()
     {
-        
-        GUI.depth = 99;
         while (true) {
             if (Time.timeScale == 1) {
                 yield return new WaitForSeconds (0.1f);
@@ -29,12 +21,9 @@ public class DebugFPS : MonoBehaviour
             } else {
                 _label = "Pause";
             }
+
+            text.text = _label;
             yield return new WaitForSeconds (0.5f);
         }
-    }
-	
-    void OnGUI ()
-    {
-        GUI.Label (new Rect (ScreenProperties.currentScreenCoords.xMin - 20, ScreenProperties.currentScreenCoords.yMax, 200, 50), _label, _style);
     }
 }

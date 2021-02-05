@@ -16,7 +16,14 @@ public class UIController : MonoBehaviour
 
     [Tooltip("UI balance meter slider component")]
     public Slider meterSlider;
-    private MeterUI _meterUI;
+
+    public RectTransform centerZoneMeter;
+    public RectTransform positiveZoneMeter;
+    public RectTransform negativeZoneMeter;
+    public RectTransform sliderArea;
+    private float _lastCenterZoneSize;
+    private float _currentCenterZoneSize;
+    private float _totalMeterSize;
 
     [Tooltip("UI day text component")]
     public TextMeshProUGUI dayUI;
@@ -33,6 +40,9 @@ public class UIController : MonoBehaviour
     {
         _gameController = FindObjectOfType<GameController>();
         _gameController.scoreEvent.AddListener(UpdateScoreUI);
+        _scoreUIAnimator = scoreUI.GetComponent<Animator>();
+        _totalMeterSize = centerZoneMeter.rect.width + positiveZoneMeter.rect.width + negativeZoneMeter.rect.width;
+        _lastCenterZoneSize = centerZoneMeter.rect.width;
         _dayCounter = 0;
         _daysList = new List<string>();
         SetDaysList();
@@ -50,10 +60,49 @@ public class UIController : MonoBehaviour
         scoreUI.text = score.ToString();
     }
 
+    public void ShowScoreUI(bool state)
+    {
+        scoreUI.gameObject.SetActive(state);
+    }
+
+    public void PopScoreUI()
+    {
+        _scoreUIAnimator.SetTrigger("Pop");
+    }
+
+    public void IdleScoreUI(bool state)
+    {
+        _scoreUIAnimator.SetBool("Idle", state);
+    }
+
     public void UpdateDayUI()
     {
+        if (_dayCounter == 7)
+        {
+            _dayCounter = 0;
+        }
         dayUI.text = _daysList[_dayCounter];
-        dayUI.gameObject.SetActive(true);
+        _dayCounter++;
+    }
+
+    public void ShowDayUI(bool state)
+    {
+        dayUI.gameObject.SetActive(state);
+    }
+    
+    public void SetMeterUI(float currentSpread)
+    {
+        _currentCenterZoneSize = (_totalMeterSize * currentSpread * 2) / 2;
+        float centerSizeDifference = _currentCenterZoneSize - _lastCenterZoneSize;
+        centerZoneMeter.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _currentCenterZoneSize);
+        positiveZoneMeter.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, positiveZoneMeter.rect.width - (centerSizeDifference/2));
+        negativeZoneMeter.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, negativeZoneMeter.rect.width - (centerSizeDifference/2));
+        sliderArea.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _totalMeterSize);
+        centerZoneMeter.ForceUpdateRectTransforms();
+        positiveZoneMeter.ForceUpdateRectTransforms();
+        negativeZoneMeter.ForceUpdateRectTransforms();
+        sliderArea.ForceUpdateRectTransforms();
+        _lastCenterZoneSize = _currentCenterZoneSize;
     }
     
     void SetDaysList()
@@ -71,6 +120,9 @@ public class UIController : MonoBehaviour
     {
         _gameController.scoreEvent.RemoveListener(UpdateScoreUI);
     }
-    
-   
+
+    public void ShowOptionMenu(bool state)
+    {
+        optionsMenu.Show(state);
+    }
 }

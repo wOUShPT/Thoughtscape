@@ -8,12 +8,14 @@
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
         <e p="Scripts" t="Include">
+          <e p="ChromaticAberrationFeedbackEffect.cs" t="Include" />
           <e p="DebugFPS.cs" t="Include" />
           <e p="GameLoop" t="Include">
-            <e p="BackgroundTransition.cs" t="Include" />
+            <e p="BackgroundTransitionBehaviour.cs" t="Include" />
             <e p="GameController.cs" t="Include" />
             <e p="SetLevelLimits.cs" t="Include" />
             <e p="SpawnController.cs" t="Include" />
+            <e p="WaterController.cs" t="Include" />
             <e p="WaveBehaviour.cs" t="Include" />
           </e>
           <e p="InputS" t="Include">
@@ -21,7 +23,7 @@
             <e p="SwipeDetection.cs" t="Include" />
             <e p="Vibration.cs" t="Include" />
           </e>
-          <e p="Persistent Managers" t="Include">
+          <e p="Managers" t="Include">
             <e p="AudioManager.cs" t="Include" />
             <e p="DDOL.cs" t="Include" />
             <e p="InputManager.cs" t="Include" />
@@ -43,6 +45,7 @@
             <e p="FadeAnimation.cs" t="Include" />
             <e p="PulseAnimation.cs" t="Include" />
             <e p="ThoughtBehaviour.cs" t="Include" />
+            <e p="ThoughtConfusionBehaviour.cs" t="Include" />
             <e p="ThoughtController.cs" t="Include" />
             <e p="ThoughtDefaultBehaviour.cs" t="Include" />
             <e p="ThoughtInsecurityBehaviour.cs" t="Include" />
@@ -50,7 +53,6 @@
           <e p="UI" t="Include">
             <e p="GameOver.cs" t="Include" />
             <e p="MainMenu.cs" t="Include" />
-            <e p="MeterUI.cs" t="Include" />
             <e p="OptionsMenu.cs" t="Include" />
             <e p="UIController.cs" t="Include" />
             <e p="UIFallAnimation.cs" t="Include" />

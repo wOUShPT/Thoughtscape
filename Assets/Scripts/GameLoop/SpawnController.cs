@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -38,19 +36,15 @@ public class SpawnController : MonoBehaviour
     
     private GameController _gameController;
     private float _randomTimeInterval;
-    
     void Awake()
     {
         _gameController = FindObjectOfType<GameController>();
+        
+        _gameController.levelUpEvent.AddListener(UpdateLevelIndex);
 
-        if (_gameController != null)
-        {
-            _gameController.levelUp.AddListener(UpdateLevelIndex);
+        _gameController.startSpawnEvent.AddListener(SpawnThoughts);
 
-            _gameController.startSpawn.AddListener(SpawnThoughts);
-
-            _gameController.stopSpawn.AddListener(DeSpawnThoughts);
-        }
+        _gameController.stopSpawnEvent.AddListener(DeSpawnThoughts);
 
         _currentLevelIndex = 0;
 
@@ -66,11 +60,10 @@ public class SpawnController : MonoBehaviour
         _thoughtCurrentSpawnRatesList = new List<float>();
         for (int i = 0; i < thoughtsAttributesList.Count; i++)
         {
-            _thoughtCurrentSpawnRatesList.Add(i);
+            _thoughtCurrentSpawnRatesList.Add(0);
         }
-        
-        //Ignore Collision between thoughts
-        Physics2D.IgnoreLayerCollision(9, 9);
+
+        Physics2D.IgnoreLayerCollision(9,9);
     }
 
     public void UpdateLevelIndex()
@@ -82,7 +75,7 @@ public class SpawnController : MonoBehaviour
     }
 
     //Instantiate a new thought on the scene
-    public void InstantiateThought()
+    private void InstantiateThought()
     {
         ThoughtController thought = Instantiate(thoughtPrefab);
         thought.gameObject.SetActive(false);
@@ -97,6 +90,7 @@ public class SpawnController : MonoBehaviour
     
     IEnumerator Spawner()
     {
+        UpdateSpawnRate(_gameController.currentMeterValue, _currentLevelIndex);
         while (_canSpawn)
         {
             for (int i = 0; i < _thoughtsPool.Count; i++)
@@ -113,16 +107,20 @@ public class SpawnController : MonoBehaviour
         }
     }
 
-    //It passes a thought as an argument, activates it, resets the behaviour component and sets his spawn position
-    public void ReUseThought(ThoughtController thought)
+    //It passes a thought as an argument, activates it, resets the behaviour component and sets his spawn position using the screen borders as reference
+    private void ReUseThought(ThoughtController thought)
     {
         int randomIndex = GetWeightedRandomIndex();
-        thought.gameObject.SetActive(true);
+        while (!_gameController.canStartGame && thoughtsAttributesList[randomIndex].category == "Hope"  )
+        {
+            randomIndex = GetWeightedRandomIndex();
+        }
         thought.currentIndex = randomIndex;
-        thought.SetThought(thoughtsAttributesList[randomIndex]);
+        thought.gameObject.SetActive(true);
         thought.ResetPosition();
-        SetDropSpeed(thought);
         SetHorizontalForce(thought);
+        thought.SetThought(thoughtsAttributesList[randomIndex]);
+        SetDropSpeed(thought);
     }
 
     private void DeSpawnThought(ThoughtController thought)
@@ -140,8 +138,9 @@ public class SpawnController : MonoBehaviour
         {
             DeSpawnThought(thought);
         }
+        StopCoroutine(Spawner());
     }
-    
+
     public void SetDropSpeed(float dropSpeedMultiplier)
     {
         foreach (var thought in _thoughtsPool)
@@ -151,7 +150,7 @@ public class SpawnController : MonoBehaviour
     }
     
     
-    public void SetDropSpeed(ThoughtController thought)
+    private void SetDropSpeed(ThoughtController thought)
     {
         for (int i = 0; i < _gameController.levelParametersDataList[_currentLevelIndex].thoughtSpawnPropertiesList.Count; i++)
         {
@@ -163,7 +162,7 @@ public class SpawnController : MonoBehaviour
     }
     
 
-    public void SetHorizontalForce(ThoughtController thought)
+    private void SetHorizontalForce(ThoughtController thought)
     {
         for (int i = 0; i < _gameController.levelParametersDataList[_currentLevelIndex].thoughtSpawnPropertiesList.Count; i++)
         {
@@ -177,8 +176,6 @@ public class SpawnController : MonoBehaviour
 
     public void UpdateSpawnRate(float meterValue, int currentLevelIndex)
     {
-        
-        //Update Spawn rate when in the meter neutral section
         if (meterValue < _gameController.currentMeterSpreadValue && meterValue > -_gameController.currentMeterSpreadValue)
         {
             for (int i = 0; i < _gameController.levelParametersDataList[currentLevelIndex].thoughtSpawnPropertiesList.Count; i++)
@@ -188,7 +185,6 @@ public class SpawnController : MonoBehaviour
             }
         }
 
-        //Update Spawn rate when in the meter negative section
         if (meterValue <= -_gameController.currentMeterSpreadValue - centerZoneSpreadSpawnTolerance)
         {
             for (int i = 0; i < _gameController.levelParametersDataList[currentLevelIndex].thoughtSpawnPropertiesList.Count; i++)
@@ -198,7 +194,6 @@ public class SpawnController : MonoBehaviour
             }
         }
                 
-        //Update Spawn rate when in the meter positive section
         if(meterValue >= _gameController.currentMeterSpreadValue + centerZoneSpreadSpawnTolerance)
         {
             for (int i = 0; i < _gameController.levelParametersDataList[currentLevelIndex].thoughtSpawnPropertiesList.Count; i++)
@@ -215,8 +210,8 @@ public class SpawnController : MonoBehaviour
         currentMaxTimeBetweenSpawns = _gameController.levelParametersDataList[currentLevelIndex].maxTimeBetweenSpawns;            
     }
 
-    // Receives a list of probabilities and returns a random index based on that
-    public int GetWeightedRandomIndex()
+    // Receives a list of probabilities (percentages) and returns a random index of it based on the percentages
+    private int GetWeightedRandomIndex()
     {
         float sum = 0;
         for (int i = 0; i < _thoughtCurrentSpawnRatesList.Count; i++)
@@ -253,13 +248,15 @@ public class SpawnController : MonoBehaviour
 
         return 0;
     }
-
+    
     private void OnDisable()
     {
-        _gameController.levelUp.RemoveListener(UpdateLevelIndex);
+        _gameController.levelUpEvent.RemoveListener(UpdateLevelIndex);
 
-        _gameController.startSpawn.RemoveListener(SpawnThoughts);
+        _gameController.startSpawnEvent.RemoveListener(SpawnThoughts);
 
-        _gameController.stopSpawn.RemoveListener(DeSpawnThoughts);
+        _gameController.stopSpawnEvent.RemoveListener(DeSpawnThoughts);
     }
+    
 }
+

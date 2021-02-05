@@ -9,16 +9,14 @@ using UnityEngine.SceneManagement;
 
 public class SaveManager : MonoBehaviour
 {
-    public ScoreScriptableObject scoreScriptableObjectScriptableObject;
-    private SceneManager _sceneManager;
+    public ScoreScriptableObject scoreScriptableObject;
     private AudioManager _audioManager;
     private InputManager _inputManager;
     private int _score;
-    private bool _audioMute;
+    private bool _audioOnOff;
     private bool _vibrationOnOff;
     void Awake()
     {
-        _sceneManager = FindObjectOfType<SceneManager>();
         _audioManager = FindObjectOfType<AudioManager>();
         _inputManager = FindObjectOfType<InputManager>();
         LoadData();
@@ -31,8 +29,7 @@ public class SaveManager : MonoBehaviour
                 FileStream fs = File.OpenRead(Application.persistentDataPath + "/0.sav");
                 BinaryFormatter formatter = new BinaryFormatter();
                 Data data = (Data)formatter.Deserialize(fs);
-                scoreScriptableObjectScriptableObject.bestScore = data.score;
-                Debug.Log(data.score.ToString());
+                scoreScriptableObject.bestScore = data.score;
                 _audioManager.isMuted = data.audioMute;
                 _inputManager.canVibrate = data.vibrationOnOff;
                 fs.Close();
@@ -44,8 +41,7 @@ public class SaveManager : MonoBehaviour
         BinaryFormatter formatter = new BinaryFormatter();
         FileStream fS = File.OpenWrite(Application.persistentDataPath + "/0.sav");
         Data data = new Data();
-        data.score = scoreScriptableObjectScriptableObject.bestScore;
-        Debug.Log(data.score.ToString());
+        data.score = scoreScriptableObject.bestScore;
         data.audioMute = _audioManager.isMuted;
         data.vibrationOnOff = _inputManager.canVibrate;
         formatter.Serialize(fS, data);

@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 public class SceneManager : MonoBehaviour
 {
     private Animator _sceneTransition;
-    private AudioManager _audioManager;
     private float _sceneTransitionTime;
     void OnEnable()
     {

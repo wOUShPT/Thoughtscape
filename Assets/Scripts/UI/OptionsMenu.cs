@@ -13,15 +13,13 @@ public class OptionsMenu : MonoBehaviour
     private Animator _animator;
     private AudioManager _audioManager;
     private InputManager _inputManager;
+    private SaveManager _saveManager;
     public Toggle vibrationToggle;
     public Toggle optionsToggle;
     private Image _optionsToggleImage;
     public Toggle muteToggle;
-    public Toggle creditsToggle;
-    public ScoreScriptableObject scoreScriptableObjectScriptableObject;
+    public ScoreScriptableObject scoreScriptableObject;
     public TextMeshProUGUI scoreText;
-    public Image muteImageComponent;
-    public Image vibrationImageComponent;
     public bool isToggled;
     void Awake()
     {
@@ -29,13 +27,14 @@ public class OptionsMenu : MonoBehaviour
         _animator = GetComponent<Animator>();
         _audioManager = FindObjectOfType<AudioManager>();
         _inputManager = FindObjectOfType<InputManager>();
+        _saveManager = FindObjectOfType<SaveManager>();
         _optionsToggleImage = optionsToggle.GetComponent<Image>();
         optionsToggle.onValueChanged.AddListener(Pause);
         muteToggle.onValueChanged.AddListener(_audioManager.Mute);
         vibrationToggle.onValueChanged.AddListener(_inputManager.ToggleVibrate);
         muteToggle.isOn = _audioManager.isMuted;
         vibrationToggle.isOn = _inputManager.canVibrate;
-        scoreText.text = "Your best score is " + scoreScriptableObjectScriptableObject.bestScore;
+        scoreText.text = "Your best score is " + scoreScriptableObject.bestScore;
     }
 
     void Pause(bool state)
@@ -80,15 +79,18 @@ public class OptionsMenu : MonoBehaviour
         toggle.isOn = toggle.isOn;
     }
 
-    public void Hide()
+    public void Show(bool state)
     {
-        _optionsToggleImage.color = new Color(_optionsToggleImage.color.r, _optionsToggleImage.color.g, _optionsToggleImage.color.b, 0);
-        optionsToggle.interactable = false;
-    }
-
-    public void Show()
-    {
-        _optionsToggleImage.color = new Color(_optionsToggleImage.color.r, _optionsToggleImage.color.g, _optionsToggleImage.color.b, 1);
-        optionsToggle.interactable = true;
+        if (state)
+        {
+            _optionsToggleImage.color = new Color(_optionsToggleImage.color.r, _optionsToggleImage.color.g, _optionsToggleImage.color.b, 1);
+            optionsToggle.interactable = true;
+        }
+        else
+        {
+            _optionsToggleImage.color = new Color(_optionsToggleImage.color.r, _optionsToggleImage.color.g, _optionsToggleImage.color.b, 0);
+            optionsToggle.interactable = false;
+        }
+        
     }
 }

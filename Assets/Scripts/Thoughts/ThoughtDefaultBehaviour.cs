@@ -9,17 +9,6 @@ public class ThoughtDefaultBehaviour : ThoughtBehaviour
     public override void ResetBehaviour()
     {
         thoughtController.category = thoughtController.currentThoughtAttributes.category;
-        /*if (_thoughtController.category == "Surprise")
-        {
-            //StartCoroutine(Surprise());
-            _pulseAnimation.animate = _thoughtController.currentThoughtAttributes.animate;
-            _pulseAnimation.colorPulseTime = _thoughtController.currentThoughtAttributes.animationCycleTime;
-            _randomTimeInterval = Random.Range(minHorizontalForceTriggerTimeInterval, maxHorizontalForceTriggerTimeInterval);
-            _rb.velocity = Vector2.zero;
-            _rb.angularVelocity = 0;
-            StartCoroutine(_thoughtController.HorizontalMovement());
-            return;
-        }*/
         thoughtController.scoreValue = thoughtController.currentThoughtAttributes.defaultValue;
         thoughtController.textColor = thoughtController.currentThoughtAttributes.textColor;
         thoughtController.outerColor = thoughtController.currentThoughtAttributes.outerColor;
@@ -35,9 +24,9 @@ public class ThoughtDefaultBehaviour : ThoughtBehaviour
         thoughtController.textCollider.enabled = true;
         thoughtController.textCollider.offset = Vector2.zero;
         thoughtController.textCollider.size = new Vector2(thoughtController.textMeshPro.GetRenderedValues(true).x, thoughtController.textMeshPro.GetRenderedValues(true).y);
+        thoughtController.rigidBody2D.velocity = Vector2.zero;
+        thoughtController.rigidBody2D.angularVelocity = 0;
         thoughtController.horizontalForceTriggerRandomTimeInterval = Random.Range(thoughtController.minHorizontalForceTriggerTimeInterval, thoughtController.maxHorizontalForceTriggerTimeInterval);
-        thoughtController.rb.velocity = Vector2.zero;
-        thoughtController.rb.angularVelocity = 0;
         StartCoroutine(thoughtController.HorizontalMovement());
     }
 

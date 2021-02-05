@@ -8,7 +8,6 @@ public class AudioManager : MonoBehaviour
 {
     public AudioSource cityLoop;
     public AudioSource showerLoop;
-    public AudioSource showerStart;
 
     public List<AudioSource> catchSounds;
     
@@ -45,7 +44,7 @@ public class AudioManager : MonoBehaviour
         SetMute();
     }
 
-    public void SetMute()
+    private void SetMute()
     {
         cityLoop.mute = isMuted;
         showerLoop.mute = isMuted;

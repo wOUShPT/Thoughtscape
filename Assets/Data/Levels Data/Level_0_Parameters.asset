@@ -82,28 +82,28 @@ MonoBehaviour:
     limitZoneMeterSpawnRatePercentage: 50
   - category: Forbidden
     hasHorizontalForce: 0
-    dropSpeed: 0
+    dropSpeed: 4
     centerMeterZoneSpawnRatePercentage: 0
     positiveZoneMeterSpawnRatePercentage: 0
     negativeZoneMeterSpawnRatePercentage: 0
     limitZoneMeterSpawnRatePercentage: 0
   - category: Hope
     hasHorizontalForce: 0
-    dropSpeed: 0
+    dropSpeed: 4
     centerMeterZoneSpawnRatePercentage: 0
     positiveZoneMeterSpawnRatePercentage: 0
     negativeZoneMeterSpawnRatePercentage: 0
     limitZoneMeterSpawnRatePercentage: 0
-  - category: Doubt
+  - category: Insecurity
     hasHorizontalForce: 0
-    dropSpeed: 0
+    dropSpeed: 4
     centerMeterZoneSpawnRatePercentage: 0
     positiveZoneMeterSpawnRatePercentage: 0
     negativeZoneMeterSpawnRatePercentage: 0
     limitZoneMeterSpawnRatePercentage: 0
-  - category: Surprise
+  - category: Confusion
     hasHorizontalForce: 0
-    dropSpeed: 0
+    dropSpeed: 4
     centerMeterZoneSpawnRatePercentage: 0
     positiveZoneMeterSpawnRatePercentage: 0
     negativeZoneMeterSpawnRatePercentage: 0

@@ -30,10 +30,13 @@ public class ThoughtController : MonoBehaviour
     [Tooltip("TextMeshPro Component")]
     public TextMeshPro textMeshPro;
 
+    [Tooltip("Text BoxCollider2D Component")]
     public BoxCollider2D textCollider;
     private Transform _currentTransform;
     private Vector3 _currentPosition;
-    public Rigidbody2D rb;
+    
+    [Tooltip("Text RigidBody2D Component")]
+    public Rigidbody2D rigidBody2D;
     
     public float dropSpeed;
     public float dropSpeedMultiplier;
@@ -45,7 +48,6 @@ public class ThoughtController : MonoBehaviour
     public float maxHorizontalForceTriggerTimeInterval;
     private CatchEvent _catchEvent;
     private GameController _gameController;
-    private InputManager _inputManager;
     private FadeAnimation _fadeAnimation;
     private PulseAnimation _pulseAnimation;
     public ThoughtsAttributesScriptableObject currentThoughtAttributes;
@@ -53,16 +55,19 @@ public class ThoughtController : MonoBehaviour
 
     private ThoughtDefaultBehaviour _thoughtDefaultBehaviour;
     private ThoughtInsecurityBehaviour _thoughtInsecurityBehaviour;
+    private ThoughtConfusionBehaviour _thoughtConfusionBehaviour;
     void Awake()
     {
         _currentTransform = GetComponent<Transform>();
+        textCollider = GetComponent<BoxCollider2D>();
+        rigidBody2D = GetComponent<Rigidbody2D>();
         _catchEvent = new CatchEvent();
-        _inputManager = FindObjectOfType<InputManager>();
         _gameController = FindObjectOfType<GameController>();
         _catchEvent.AddListener(_gameController.OnCatchEvent);
         _fadeAnimation = GetComponent<FadeAnimation>();
         _thoughtDefaultBehaviour = GetComponent<ThoughtDefaultBehaviour>();
         _thoughtInsecurityBehaviour = GetComponent<ThoughtInsecurityBehaviour>();
+        _thoughtConfusionBehaviour = GetComponent<ThoughtConfusionBehaviour>();
     }
     
     private void Update()
@@ -72,12 +77,23 @@ public class ThoughtController : MonoBehaviour
         _currentPosition = new Vector3(_currentPosition.x, _currentPosition.y - ((dropSpeed*dropSpeedMultiplier)*Time.deltaTime), _currentPosition.z);
         _currentTransform.position = _currentPosition;
 
-        /*_hit = Physics2D.Raycast(transform.position, Vector2.right, 10);
-        if (_hit.transform.CompareTag("LevelLimits") &&
-            Vector2.Distance(_hit.transform.position, transform.position) <= 0.05)
+        if (!hasHorizontalMovement)
         {
-            rb.AddForce(Random.Range(minHorizontalForceValue,maxHorizontalForceValue)*Vector2.left, ForceMode2D.Impulse);
-        }*/
+            return;
+        }
+        
+        _hit = Physics2D.Raycast(new Vector3(transform.position.x + textCollider.size.x/2 + 0.005f, transform.position.y, transform.position.z), Vector2.right, 20);
+        if (_hit.collider.CompareTag("LevelLimits") && Vector2.Distance(_hit.transform.position, transform.position) <= 0.25f)
+        {
+            rigidBody2D.AddForce(Vector2.left*0.1f, ForceMode2D.Impulse);
+            return;
+        }
+
+        _hit = Physics2D.Raycast(new Vector3(transform.position.x - textCollider.size.x/2 - 0.005f, transform.position.y, transform.position.z), Vector2.left, 20);
+        if (_hit.collider.CompareTag("LevelLimits") && Vector2.Distance(_hit.transform.position, transform.position) <= 0.25f)
+        {
+            rigidBody2D.AddForce(Vector2.right*0.1f, ForceMode2D.Impulse);
+        }
     }
 
     public void ResetPosition()
@@ -90,9 +106,15 @@ public class ThoughtController : MonoBehaviour
     public void SetThought(ThoughtsAttributesScriptableObject thoughtAttributes)
     {
         currentThoughtAttributes = thoughtAttributes;
-        if (currentThoughtAttributes.category == "Doubt")
+        if (currentThoughtAttributes.category == "Insecurity")
         {
             _thoughtInsecurityBehaviour.ResetBehaviour();
+            return;
+        }
+
+        if (currentThoughtAttributes.category == "Confusion")
+        {
+            _thoughtConfusionBehaviour.ResetBehaviour();
             return;
         }
         _thoughtDefaultBehaviour.ResetBehaviour();
@@ -105,11 +127,13 @@ public class ThoughtController : MonoBehaviour
         {
             float randomSign = Random.Range(0, 2) * 2 - 1;
             Vector2 randomForce = Vector2.right * (Random.Range(minHorizontalForceValue, maxHorizontalForceValue) * randomSign);
-            rb.AddForce(randomForce, ForceMode2D.Impulse);
+            rigidBody2D.AddForce(randomForce, ForceMode2D.Impulse);
             horizontalForceTriggerRandomTimeInterval = Random.Range(minHorizontalForceTriggerTimeInterval, maxHorizontalForceTriggerTimeInterval);
             yield return new WaitForSeconds(horizontalForceTriggerRandomTimeInterval);
             yield return null;
         }
+
+        yield return null;
     }
     
     void OnTriggerEnter2D(Collider2D other)
@@ -117,20 +141,11 @@ public class ThoughtController : MonoBehaviour
         DeSpawn(other);
     }
     
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        if (other.collider.CompareTag("LevelLimits"))
-        {
-            
-        }
-    }
 
     public virtual void DeSpawn(Collider2D col)
     {
         if (col.CompareTag("Player"))
         {
-            StopCoroutine(HorizontalMovement());
-            //StopCoroutine(Surprise());
             _catchEvent.Invoke(scoreValue);
             Fade();
         }
@@ -138,8 +153,6 @@ public class ThoughtController : MonoBehaviour
         //Tests if it collides with the kill/despawn trigger out of level bounds and if it's true deactivates this object
         if (col.CompareTag("Despawn Trigger"))
         {
-            StopCoroutine(HorizontalMovement());
-            //StopCoroutine(Surprise());
             gameObject.SetActive(false);
         }
     }
@@ -150,7 +163,6 @@ public class ThoughtController : MonoBehaviour
         textCollider.enabled = false;
         StartCoroutine(_fadeAnimation.AnimateFade(textColor, outerColor));
     }
-    
 }
 
 
